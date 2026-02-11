@@ -36,7 +36,7 @@ export default function StudentsTable({ students }: StudentsTableProps) {
 
   return (
     <section className="space-y-4">
-      <Card className="p-0">
+      <Card className="p-0 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         {/* HEADER */}
         <div className="flex flex-col gap-3 border-b border-slate-200 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
           <div>
@@ -59,6 +59,7 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                 size="sm"
                 variant={filter === 'all' ? 'primary' : 'outline'}
                 onClick={() => setFilter('all')}
+                className="transition-all duration-200 hover:-translate-y-0.5"
               >
                 All Students
               </Button>
@@ -66,6 +67,7 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                 size="sm"
                 variant={filter === 'onTrack' ? 'primary' : 'outline'}
                 onClick={() => setFilter('onTrack')}
+                className="transition-all duration-200 hover:-translate-y-0.5"
               >
                 On Track
               </Button>
@@ -73,6 +75,7 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                 size="sm"
                 variant={filter === 'atRisk' ? 'primary' : 'outline'}
                 onClick={() => setFilter('atRisk')}
+                className="transition-all duration-200 hover:-translate-y-0.5"
               >
                 At Risk
               </Button>
@@ -95,7 +98,10 @@ export default function StudentsTable({ students }: StudentsTableProps) {
           ]}
         >
           {filteredStudents.map((student) => (
-            <tr key={student.id} className="align-middle">
+            <tr
+              key={student.id}
+              className="align-middle transition-all duration-200 hover:bg-slate-50"
+            >
               {/* STUDENT */}
               <td className="px-4 py-4">
                 <p className="text-sm font-semibold text-slate-900">
@@ -163,7 +169,7 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                 <Button
                   size="sm"
                   variant="outline"
-                  className="flex items-center gap-2 whitespace-nowrap"
+                  className="flex items-center gap-2 whitespace-nowrap transition-all duration-200 hover:scale-105"
                 >
                   <Eye className="h-4 w-4" />
                   View Details

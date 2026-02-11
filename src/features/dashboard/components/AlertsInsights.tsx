@@ -59,9 +59,10 @@ export default function AlertsInsights({ alerts }: AlertsInsightsProps) {
                 rounded-xl border border-slate-200 p-4
                 transition-all duration-300 ease-in-out
                 hover:-translate-y-1 hover:shadow-lg
+                transition-all duration-200 hover:shadow-md
               "
             >
-              <div className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-700 transition group-hover:scale-110">
+              <div className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-transform duration-200 group-hover:scale-110">
                 <Icon className="h-4 w-4" />
               </div>
 
@@ -76,7 +77,7 @@ export default function AlertsInsights({ alerts }: AlertsInsightsProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="px-0 text-green-600 hover:text-green-700"
+                    className="px-0 text-green-600 hover:text-green-700 transition-all duration-200 hover:-translate-y-0.5"
                   >
                     Identify Students
                     <ArrowRight className="h-4 w-4 ml-1" />

@@ -27,7 +27,7 @@ export default function RecentQuizzes({
   return (
     <section>
       {/* ONE MAIN CARD */}
-      <Card className="p-4">
+      <Card className="p-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         {/* SMALL HEADING */}
         <h3 className="text-sm font-semibold text-slate-900 mb-3">
           Recent Quizzes
@@ -38,7 +38,7 @@ export default function RecentQuizzes({
           {quizzes.map((quiz, index) => (
             <div
               key={quiz.id}
-              className={`rounded-lg border p-4 space-y-3 ${bgMap[index % 3]}`}
+              className={`group rounded-lg border p-4 space-y-3 ${bgMap[index % 3]} transition-all duration-300 hover:-translate-y-1 hover:shadow-lg`}
             >
               {/* TITLE */}
               <p className="text-sm font-medium text-slate-900">
@@ -48,17 +48,17 @@ export default function RecentQuizzes({
               {/* META */}
               <div className="flex flex-wrap gap-6 text-xs text-slate-600">
                 <div className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4" />
+                  <Calendar className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
                   {quiz.date}
                 </div>
 
                 <div className="flex items-center gap-1">
-                  <Users className="h-4 w-4" />
+                  <Users className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
                   {quiz.participants} participants
                 </div>
 
                 <div className="flex items-center gap-1 text-emerald-600 font-medium">
-                  <TrendingUp className="h-4 w-4" />
+                  <TrendingUp className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
                   {quiz.avg}% avg
                 </div>
               </div>
@@ -67,7 +67,7 @@ export default function RecentQuizzes({
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                 <Button
                   variant="outline"
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 transition-all duration-200 hover:-translate-y-0.5"
                 >
                   <BarChart3 className="h-4 w-4" />
                   View Results
@@ -75,7 +75,7 @@ export default function RecentQuizzes({
 
                 <Button
                   variant="success"
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 transition-all duration-200 hover:-translate-y-0.5"
                   onClick={() => onRelaunch(quiz.id)}
                 >
                   <Play className="h-4 w-4" />

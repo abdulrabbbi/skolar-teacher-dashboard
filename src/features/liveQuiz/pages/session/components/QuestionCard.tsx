@@ -17,7 +17,7 @@ export default function QuestionCard({
   options,
 }: QuestionCardProps) {
   return (
-    <Card className="p-5 space-y-4">
+    <Card className="p-5 space-y-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2 className="text-lg font-semibold text-slate-900">{title}</h2>

@@ -32,7 +32,7 @@ export default function CreateAssessmentModal({
         role="presentation"
         onClick={onClose}
       />
-      <Card className="relative z-10 w-full max-w-2xl space-y-4 p-5">
+      <Card className="relative z-10 w-full max-w-2xl space-y-4 p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <div className="flex items-start justify-between">
           <div>
             <h2 className="text-lg font-semibold text-slate-900">
@@ -42,10 +42,10 @@ export default function CreateAssessmentModal({
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-md hover:bg-slate-100"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-100 group"
             aria-label="Close"
           >
-            <X className="h-4 w-4" />
+            <X className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
           </button>
         </div>
 
@@ -79,10 +79,19 @@ export default function CreateAssessmentModal({
         </label>
 
         <div className="flex justify-end gap-2">
-          <Button variant="secondary" onClick={onClose}>
+          <Button
+            variant="secondary"
+            onClick={onClose}
+            className="transition-all duration-200 hover:-translate-y-0.5"
+          >
             Cancel
           </Button>
-          <Button variant="success">Create</Button>
+          <Button
+            variant="success"
+            className="transition-all duration-200 hover:-translate-y-0.5"
+          >
+            Create
+          </Button>
         </div>
       </Card>
     </div>

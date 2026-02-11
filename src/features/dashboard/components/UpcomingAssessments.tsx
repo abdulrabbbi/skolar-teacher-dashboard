@@ -39,7 +39,7 @@ export default function UpcomingAssessments({
         <Button
           variant="ghost"
           size="sm"
-          className="px-0 text-green-600 transition-all duration-200 hover:text-green-700 hover:translate-x-1"
+          className="px-0 text-green-600 transition-all duration-200 hover:text-green-700 hover:translate-x-1 hover:-translate-y-0.5"
         >
           View all
         </Button>
@@ -50,6 +50,7 @@ export default function UpcomingAssessments({
           <Card
             key={assessment.id}
             className="
+              group
               space-y-4 p-5
               transition-all duration-300 ease-in-out
               hover:-translate-y-1 hover:shadow-xl
@@ -72,7 +73,7 @@ export default function UpcomingAssessments({
 
             <div className="space-y-1 text-xs text-slate-500">
               <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
+                <Calendar className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
                 <span>
                   <strong>Due:</strong> {assessment.date}
                 </span>

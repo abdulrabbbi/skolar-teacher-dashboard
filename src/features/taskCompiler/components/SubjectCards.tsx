@@ -76,15 +76,17 @@ export default function SubjectCards({
             }}
             className={`
               ${bgClasses[subject.color]}
+              group
               flex items-center justify-between gap-4
               rounded-xl border p-5
               cursor-pointer
               transition hover:shadow-md
+              transition-all duration-300 hover:-translate-y-1 hover:shadow-lg
             `}
           >
             <div className="flex items-center gap-4">
               <div
-                className={`h-11 w-11 rounded-xl flex items-center justify-center ${iconBgClasses[subject.color]}`}
+                className={`h-11 w-11 rounded-xl flex items-center justify-center ${iconBgClasses[subject.color]} transition-transform duration-200 group-hover:scale-110`}
               >
                 {iconMap[subject.icon]}
               </div>
@@ -100,7 +102,7 @@ export default function SubjectCards({
               </div>
             </div>
 
-            <ChevronRight className="h-5 w-5 text-slate-600" />
+            <ChevronRight className="h-5 w-5 text-slate-600 transition-transform duration-200 group-hover:scale-110" />
           </div>
         ))}
       </div>

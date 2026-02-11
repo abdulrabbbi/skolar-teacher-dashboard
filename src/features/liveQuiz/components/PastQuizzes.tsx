@@ -31,7 +31,7 @@ export default function PastQuizzes({ quizzes }: PastQuizzesProps) {
   return (
     <section className="pt-20">
       {/* MAIN CARD */}
-      <Card className="p-4">
+      <Card className="p-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         {/* SMALL HEADING */}
         <div className="mb-4 flex items-center justify-between">
           <div>
@@ -53,7 +53,7 @@ export default function PastQuizzes({ quizzes }: PastQuizzesProps) {
           {quizzes.map((quiz) => (
             <div
               key={quiz.id}
-              className="flex flex-col gap-3 py-4 xl:flex-row xl:items-center xl:justify-between"
+              className="flex flex-col gap-3 py-4 xl:flex-row xl:items-center xl:justify-between transition-all duration-200 hover:bg-slate-50"
             >
               {/* LEFT */}
               <div className="space-y-1">
@@ -100,7 +100,7 @@ export default function PastQuizzes({ quizzes }: PastQuizzesProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-1 transition-all duration-200 hover:-translate-y-0.5"
                 >
                   <Eye className="h-4 w-4" />
                   View
@@ -109,7 +109,7 @@ export default function PastQuizzes({ quizzes }: PastQuizzesProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-1 transition-all duration-200 hover:-translate-y-0.5"
                 >
                   <Copy className="h-4 w-4" />
                   Duplicate
@@ -118,7 +118,7 @@ export default function PastQuizzes({ quizzes }: PastQuizzesProps) {
                 <Button
                   variant="success"
                   size="sm"
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-1 transition-all duration-200 hover:-translate-y-0.5"
                 >
                   <Play className="h-4 w-4" />
                   Relaunch
@@ -130,7 +130,7 @@ export default function PastQuizzes({ quizzes }: PastQuizzesProps) {
 
         {/* FOOTER */}
         <div className="pt-4 text-center">
-          <button className="rounded-md border border-slate-200 px-4 py-2 text-xs text-slate-600 hover:bg-slate-50">
+          <button className="rounded-md border border-slate-200 px-4 py-2 text-xs text-slate-600 hover:bg-slate-50 transition-all duration-200 hover:-translate-y-0.5">
             Load More Quizzes
           </button>
         </div>

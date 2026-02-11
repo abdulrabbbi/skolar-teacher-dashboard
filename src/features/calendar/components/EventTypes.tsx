@@ -22,7 +22,7 @@ export default function EventTypes({ types }: EventTypesProps) {
   return (
     <section>
       {/* ONE MODEL (CARD) */}
-      <Card className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm space-y-4">
+      <Card className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm space-y-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
 
         {/* Heading INSIDE the card */}
         <h2 className="text-base font-semibold text-slate-900">
@@ -34,7 +34,7 @@ export default function EventTypes({ types }: EventTypesProps) {
           {eventTypes.map((type) => (
             <label
               key={type.id}
-              className="flex items-center justify-between cursor-pointer"
+              className="flex items-center justify-between cursor-pointer transition-all duration-200 hover:bg-slate-50"
             >
               {/* Text only */}
               <span className="text-sm text-slate-700">

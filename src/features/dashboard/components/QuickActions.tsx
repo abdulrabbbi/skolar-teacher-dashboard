@@ -42,6 +42,7 @@ export default function QuickActions({ actions }: QuickActionsProps) {
               rounded-xl border border-slate-200 p-4
               transition-all duration-300 ease-in-out
               hover:-translate-y-1 hover:shadow-xl
+              hover:shadow-lg
             "
           >
             <div

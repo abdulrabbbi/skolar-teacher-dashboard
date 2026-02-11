@@ -7,7 +7,7 @@ export type ParticipationCardProps = {
 
 export default function ParticipationCard({ percent }: ParticipationCardProps) {
   return (
-    <Card className="p-4 space-y-3">
+    <Card className="p-4 space-y-3 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
       <div className="flex items-center justify-between">
         <p className="text-sm font-semibold text-slate-900">
           Live Participation

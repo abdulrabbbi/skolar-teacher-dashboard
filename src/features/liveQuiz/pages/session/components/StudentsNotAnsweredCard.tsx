@@ -10,7 +10,7 @@ export default function StudentsNotAnsweredCard({
   students,
 }: StudentsNotAnsweredCardProps) {
   return (
-    <Card className="p-4 space-y-3">
+    <Card className="p-4 space-y-3 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
       <h3 className="text-sm font-semibold text-slate-900">
         Students Not Yet Answered
       </h3>
@@ -19,7 +19,7 @@ export default function StudentsNotAnsweredCard({
         {students.map((student) => (
           <div
             key={student.id}
-            className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2"
+            className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 transition-all duration-200 hover:bg-slate-50"
           >
             <span className="text-sm text-slate-700">{student.name}</span>
             {student.needsSupport ? (

@@ -95,10 +95,13 @@ export default function AreaOfStudyList({
                       }
                     }}
                     className="
+                      group
                       flex items-center justify-between gap-4
                       p-4
                       transition
                       hover:border-slate-300 hover:shadow-sm
+                      transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl
+                      transition-all duration-200 hover:bg-slate-50 hover:shadow-sm
                     "
                   >
                     <div className="space-y-1">
@@ -114,7 +117,7 @@ export default function AreaOfStudyList({
                       </p>
                     </div>
 
-                    <ChevronRight className="h-5 w-5 text-slate-400" />
+                    <ChevronRight className="h-5 w-5 text-slate-400 transition-transform duration-200 group-hover:scale-110" />
                   </Card>
                 ))}
             </div>

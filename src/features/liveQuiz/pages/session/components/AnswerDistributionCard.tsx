@@ -11,7 +11,7 @@ export default function AnswerDistributionCard({
   items,
 }: AnswerDistributionCardProps) {
   return (
-    <Card className="p-4 space-y-4">
+    <Card className="p-4 space-y-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
       <h3 className="text-sm font-semibold text-slate-900">
         Answer Distribution
       </h3>

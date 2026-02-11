@@ -16,7 +16,7 @@ export default function MonthGrid({
   const typeMap = new Map(eventTypes.map((type) => [type.id, type]));
 
   return (
-    <Card className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+    <Card className="overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
 
       {/* 🔹 HEADER */}
       <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 pt-0">
@@ -25,10 +25,10 @@ export default function MonthGrid({
         </h2>
 
         <div className="flex gap-2">
-          <button className="rounded-md border border-slate-200 px-2 py-1 text-2xl hover:bg-slate-100">
+          <button className="rounded-md border border-slate-200 px-2 py-1 text-2xl hover:bg-slate-100 transition-all duration-200 hover:-translate-y-0.5">
             ‹
           </button>
-          <button className="rounded-md border border-slate-200 px-2 py-1 text-2xl hover:bg-slate-100">
+          <button className="rounded-md border border-slate-200 px-2 py-1 text-2xl hover:bg-slate-100 transition-all duration-200 hover:-translate-y-0.5">
             ›
           </button>
         </div>
@@ -51,7 +51,7 @@ export default function MonthGrid({
           return (
             <div
               key={day}
-              className="min-h-27.5 border-b border-r border-slate-200 rounded-xl px-2 py-2 last:border-r-0"
+              className="min-h-27.5 border-b border-r border-slate-200 rounded-xl px-2 py-2 last:border-r-0 transition-all duration-200 hover:bg-slate-50"
             >
               <div className="text-xs font-semibold text-slate-500">
                 {day}
@@ -65,7 +65,7 @@ export default function MonthGrid({
                   return (
                     <span
                       key={event.id}
-                      className={`block w-full rounded-md px-1 py-0.5 text-center text-[10px] font-medium ${type.badgeClass}`}
+                      className={`block w-full rounded-md px-1 py-0.5 text-center text-[10px] font-medium transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${type.badgeClass}`}
                     >
                       {type.label}
                     </span>

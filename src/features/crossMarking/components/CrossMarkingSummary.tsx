@@ -29,7 +29,7 @@ export default function CrossMarkingSummary({
       {/* =====================
           SKOLAR PERFORMANCE
       ===================== */}
-      <Card className="space-y-3">
+      <Card className="space-y-3 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <h3 className="text-sm font-semibold text-slate-900">
           SKOLAR Performance
         </h3>
@@ -61,7 +61,7 @@ export default function CrossMarkingSummary({
       {/* =====================
           MARKING PROGRESS
       ===================== */}
-      <Card className="space-y-3">
+      <Card className="space-y-3 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <h3 className="text-sm font-semibold text-slate-900">
           Marking Progress
         </h3>
@@ -93,7 +93,7 @@ export default function CrossMarkingSummary({
       {/* =====================
           AGREEMENT METRICS
       ===================== */}
-      <Card className="space-y-3">
+      <Card className="space-y-3 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <h3 className="text-sm font-semibold text-slate-900">
           Agreement Metrics
         </h3>

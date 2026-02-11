@@ -1,4 +1,3 @@
-
 import Card from '../../../shared/components/ui/Card';
 import ProgressBar from '../../../shared/components/ui/ProgressBar';
 import type { CommandWordItem } from '../data/analytics.mock';
@@ -20,11 +19,15 @@ export default function CommandWordAnalysis({
 }: CommandWordAnalysisProps) {
   return (
     <section>
-      {/* OUTER MODULE */}
-      <Card className="space-y-6 p-4 sm:p-6">
-        {/* HEADER INSIDE CARD */}
+      <Card
+        className="
+          space-y-6 p-4 sm:p-6
+          transition-all duration-300 ease-in-out
+          hover:-translate-y-1 hover:shadow-xl
+        "
+      >
         <div>
-          <h3 className="text-lg font-semibold text-slate-900">
+          <h3 className="text-base font-semibold text-slate-900">
             Command Word Analysis
           </h3>
           <p className="text-sm text-slate-500">
@@ -32,12 +35,15 @@ export default function CommandWordAnalysis({
           </p>
         </div>
 
-        {/* ITEMS GRID */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
             <div
               key={item.id}
-              className="rounded-xl border border-slate-200 bg-white p-4 space-y-3"
+              className="
+                rounded-xl border border-slate-200 bg-white p-4 space-y-3
+                transition-all duration-300 ease-in-out
+                hover:-translate-y-1 hover:shadow-lg
+              "
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -70,7 +76,6 @@ export default function CommandWordAnalysis({
           ))}
         </div>
 
-        {/* INSIGHT CALLOUT */}
         <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
           {insight}
         </div>

@@ -6,7 +6,7 @@ import { taskHistoryItems } from '../data/taskHistory.mock';
 export default function TaskHistoryPage() {
   return (
     <section className="space-y-6">
-      <Card className="p-4 sm:p-5">
+      <Card className="p-4 sm:p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-lg font-semibold text-slate-900">
@@ -43,7 +43,7 @@ export default function TaskHistoryPage() {
         <Button
           variant="outline"
           size="sm"
-          className="px-6 border-slate-200 text-slate-700 hover:bg-slate-50"
+          className="px-6 border-slate-200 text-slate-700 hover:bg-slate-50 transition-all duration-200 hover:-translate-y-0.5"
         >
           Load More Tasks
         </Button>

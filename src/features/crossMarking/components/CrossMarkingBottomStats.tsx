@@ -25,7 +25,7 @@ export default function CrossMarkingBottomStats({ data }: Props) {
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
       
       {/* SKOLAR PERFORMANCE */}
-      <Card className="space-y-3">
+      <Card className="space-y-3 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <div className="text-sm font-semibold text-slate-900">
           SKOLAR Performance
         </div>
@@ -47,7 +47,7 @@ export default function CrossMarkingBottomStats({ data }: Props) {
       </Card>
 
       {/* MARKING PROGRESS */}
-      <Card className="space-y-3">
+      <Card className="space-y-3 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <div className="text-sm font-semibold text-slate-900">
           Marking Progress
         </div>
@@ -69,7 +69,7 @@ export default function CrossMarkingBottomStats({ data }: Props) {
       </Card>
 
       {/* AGREEMENT METRICS */}
-      <Card className="space-y-3">
+      <Card className="space-y-3 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <div className="text-sm font-semibold text-slate-900">
           Agreement Metrics
         </div>

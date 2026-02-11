@@ -25,11 +25,11 @@ export default function QuestionMarkingPanel({
   items,
 }: QuestionMarkingPanelProps) {
   return (
-    <Card className="space-y-6">
+    <Card className="space-y-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl group">
       {/* ================= HEADER ================= */}
       <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl bg-purple-50 p-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-600 text-white">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-600 text-white transition-transform duration-200 group-hover:scale-110">
             <Sparkles className="h-5 w-5" />
           </div>
           <div>
@@ -105,23 +105,39 @@ export default function QuestionMarkingPanel({
               </div>
 
               <div className="flex flex-wrap gap-2">
-                <Button size="sm" variant="outline">
-                  <Eye className="h-4 w-4 mr-1" />
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="transition-all duration-200 hover:-translate-y-0.5 group"
+                >
+                  <Eye className="h-4 w-4 mr-1 transition-transform duration-200 group-hover:scale-110" />
                   View SKOLAR Justification
                 </Button>
 
-                <Button size="sm" variant="outline">
-                  <Plus className="h-4 w-4 mr-1" />
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="transition-all duration-200 hover:-translate-y-0.5 group"
+                >
+                  <Plus className="h-4 w-4 mr-1 transition-transform duration-200 group-hover:scale-110" />
                   Add Solution
                 </Button>
 
-                <Button size="sm" variant="outline">
-                  <Pencil className="h-4 w-4 mr-1" />
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="transition-all duration-200 hover:-translate-y-0.5 group"
+                >
+                  <Pencil className="h-4 w-4 mr-1 transition-transform duration-200 group-hover:scale-110" />
                   Edit
                 </Button>
 
-                <Button size="sm" variant="success">
-                  <Check className="h-4 w-4 mr-1" />
+                <Button
+                  size="sm"
+                  variant="success"
+                  className="transition-all duration-200 hover:-translate-y-0.5 group"
+                >
+                  <Check className="h-4 w-4 mr-1 transition-transform duration-200 group-hover:scale-110" />
                   Confirm
                 </Button>
               </div>

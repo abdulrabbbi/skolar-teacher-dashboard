@@ -8,7 +8,7 @@ type Props = {
 
 export default function StudentResponsePanel({ responses }: Props) {
   return (
-    <Card className="space-y-6">
+    <Card className="space-y-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
       <h3 className="text-base font-semibold text-slate-900">
         Student Response
       </h3>

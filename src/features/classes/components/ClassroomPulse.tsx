@@ -69,7 +69,7 @@ export default function ClassroomPulse({
               type="button"
               onClick={() => onFilterChange(stat.filterKey)}
               aria-pressed={isActive}
-              className="text-left w-full"
+              className="group text-left w-full"
             >
               <StatCard
                 label={stat.label}
@@ -78,7 +78,7 @@ export default function ClassroomPulse({
                 icon={
                   <div
                     className={cn(
-                      "flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl",
+                      "flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl transition-transform duration-200 group-hover:scale-110",
                       iconBgMap[stat.icon]
                     )}
                   >
@@ -90,7 +90,8 @@ export default function ClassroomPulse({
                   "min-h-[96px]", // 👈 keeps all cards equal height
                   isActive
                     ? "border-slate-900/20 bg-slate-900/5 shadow-sm ring-2 ring-slate-900/15"
-                    : "hover:shadow-md"
+                    : "hover:shadow-md",
+                  "group transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg"
                 )}
               />
             </button>

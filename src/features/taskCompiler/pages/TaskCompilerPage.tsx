@@ -42,7 +42,7 @@ export default function TaskCompilerPage() {
   return (
     <div className="space-y-6">
       {/* PAGE HEADER */}
-      <Card className="p-4 sm:p-5">
+      <Card className="p-4 sm:p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <PageHeader title={taskCompilerCopy.pageTitle} />
       </Card>
 
@@ -79,7 +79,7 @@ export default function TaskCompilerPage() {
                 setSelectedSubject(null);
                 setSelectedArea(null);
               }}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 transition-all duration-200 hover:-translate-y-0.5"
             >
               <ArrowLeft className="h-4 w-4" />
               <span>{taskCompilerCopy.backToSubjects}</span>

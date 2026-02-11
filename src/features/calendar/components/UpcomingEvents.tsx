@@ -21,7 +21,7 @@ export default function UpcomingEvents({ events }: UpcomingEventsProps) {
   const upcoming = [...events].slice(0, 4);
 
   return (
-    <Card className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <Card className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
       <h2 className="text-sm font-semibold text-slate-900">
         Upcoming Events
       </h2>
@@ -30,7 +30,7 @@ export default function UpcomingEvents({ events }: UpcomingEventsProps) {
         {upcoming.map((event) => (
           <div
             key={event.id}
-            className="rounded-xl border border-slate-200 bg-white p-3"
+            className="rounded-xl border border-slate-200 bg-white p-3 transition-all duration-200 hover:bg-slate-50 hover:shadow-md hover:-translate-y-0.5"
           >
             <div className="flex items-start justify-between gap-3">
               {/* Left */}

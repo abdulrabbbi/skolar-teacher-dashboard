@@ -35,7 +35,7 @@ export default function SubmissionsTable({
 }: SubmissionsTableProps) {
   return (
     <section className="space-y-4">
-      <Card className="p-0">
+      <Card className="p-0 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         {/* 🔹 HEADER */}
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-4">
           <div>
@@ -51,15 +51,17 @@ export default function SubmissionsTable({
           <button
             type="button"
             className="
+              group
               inline-flex items-center gap-2
               rounded-md border border-slate-200
               bg-white px-3 py-1.5
               text-sm text-slate-700
+              transition-all duration-200 hover:-translate-y-0.5
               hover:bg-slate-50
             "
           >
             All Status
-            <ChevronDown className="h-4 w-4 text-slate-500" />
+            <ChevronDown className="h-4 w-4 text-slate-500 transition-transform duration-200 group-hover:scale-110" />
           </button>
         </div>
 
@@ -89,7 +91,7 @@ export default function SubmissionsTable({
                     onSelect(row);
                   }
                 }}
-                className="cursor-pointer border-t border-slate-100 align-middle transition hover:bg-slate-50"
+                className="cursor-pointer border-t border-slate-100 align-middle transition hover:bg-slate-50 transition-colors duration-200"
               >
                 <td className="px-4 py-4 text-sm text-slate-500">
                   {row.index}
@@ -134,17 +136,17 @@ export default function SubmissionsTable({
                   {row.action === 'Mark' ? (
                     <Button
                       size="sm"
-                      className="flex items-center gap-2 bg-emerald-600 text-white hover:bg-emerald-700"
+                      className="flex items-center gap-2 bg-emerald-600 text-white hover:bg-emerald-700 transition-all duration-200 hover:-translate-y-0.5 group"
                     >
-                      <CheckSquare className="h-4 w-4" />
+                      <CheckSquare className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
                       Mark
                     </Button>
                   ) : (
                     <Button
                       size="sm"
-                      className="flex items-center gap-2 bg-emerald-600 text-white hover:bg-emerald-700"
+                      className="flex items-center gap-2 bg-emerald-600 text-white hover:bg-emerald-700 transition-all duration-200 hover:-translate-y-0.5 group"
                     >
-                      <Eye className="h-4 w-4" />
+                      <Eye className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
                       Review
                     </Button>
                   )}

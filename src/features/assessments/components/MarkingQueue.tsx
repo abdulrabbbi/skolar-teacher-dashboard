@@ -25,7 +25,7 @@ export default function MarkingQueue({ items }: MarkingQueueProps) {
         {/* FILTER (UI ONLY) */}
         <button
           type="button"
-          className="inline-flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50"
+          className="inline-flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-600 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50"
         >
           All Topics
           <ChevronRight className="h-4 w-4 rotate-90" />
@@ -33,7 +33,7 @@ export default function MarkingQueue({ items }: MarkingQueueProps) {
       </div>
 
       {/* LIST */}
-      <Card className="space-y-3">
+      <Card className="space-y-3 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         {items.map((item) => (
           <div
             key={item.id}
@@ -44,6 +44,7 @@ export default function MarkingQueue({ items }: MarkingQueueProps) {
               px-4 py-3
               transition
               hover:bg-slate-50
+              hover:shadow-lg
             "
           >
             {/* LEFT */}
@@ -69,7 +70,7 @@ export default function MarkingQueue({ items }: MarkingQueueProps) {
                 <p className="text-xs text-slate-500">Submissions</p>
               </div>
 
-              <ChevronRight className="h-4 w-4 text-slate-400 transition group-hover:text-slate-600" />
+              <ChevronRight className="h-4 w-4 text-slate-400 transition group-hover:text-slate-600 transition-transform duration-200 group-hover:scale-110" />
             </div>
           </div>
         ))}

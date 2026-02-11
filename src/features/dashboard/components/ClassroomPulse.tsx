@@ -11,7 +11,7 @@ export type ClassroomPulseProps = {
    Icon + Background Map
 ======================= */
 
-const iconBase = "h-5 w-5";
+const iconBase = "h-5 w-5 transition-transform duration-200 group-hover:scale-110";
 
 const iconMap: Record<PulseStat["icon"], JSX.Element> = {
   students: <Users className={iconBase} />,
@@ -50,15 +50,16 @@ export default function ClassroomPulse({ stats }: ClassroomPulseProps) {
             subtitle={stat.subtitle}
             icon={
               <div
-                className={`flex h-10 w-10 items-center justify-center rounded-xl ${iconBgMap[stat.icon]}`}
+                className={`group flex h-10 w-10 items-center justify-center rounded-xl ${iconBgMap[stat.icon]}`}
               >
                 {iconMap[stat.icon]}
               </div>
             }
             className="
+              group
               transition-all duration-300 ease-in-out
               hover:-translate-y-1
-              hover:shadow-xl
+              hover:shadow-lg
             "
           />
         ))}

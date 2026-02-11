@@ -20,7 +20,7 @@ export default function SessionStatusBar({
   studentsAnswered,
 }: SessionStatusBarProps) {
   return (
-    <Card className="p-4 sm:p-5">
+    <Card className="p-4 sm:p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-6 text-sm text-slate-700">
           <div className="flex items-center gap-2">
@@ -48,18 +48,26 @@ export default function SessionStatusBar({
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline" size="sm" className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2 transition-all duration-200 hover:-translate-y-0.5"
+          >
             <Pause className="h-4 w-4" />
             Pause
           </Button>
-          <Button variant="success" size="sm" className="flex items-center gap-2">
+          <Button
+            variant="success"
+            size="sm"
+            className="flex items-center gap-2 transition-all duration-200 hover:-translate-y-0.5"
+          >
             <ArrowRight className="h-4 w-4" />
             Next Question
           </Button>
           <Button
             variant="outline"
             size="sm"
-            className="flex items-center gap-2 border-rose-600 bg-rose-600 text-white hover:bg-rose-700"
+            className="flex items-center gap-2 border-rose-600 bg-rose-600 text-white hover:bg-rose-700 transition-all duration-200 hover:-translate-y-0.5"
           >
             <XCircle className="h-4 w-4" />
             End Quiz

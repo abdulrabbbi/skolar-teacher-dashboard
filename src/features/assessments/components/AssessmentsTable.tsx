@@ -31,7 +31,7 @@ const typeVariant: Record<string, BadgeVariant> = {
 export default function AssessmentsTable({ rows }: AssessmentsTableProps) {
   return (
     <section>
-      <Card className="p-0">
+      <Card className="p-0 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         {/* HEADER INSIDE CARD */}
         <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
           <h2 className="text-lg font-semibold text-slate-900">
@@ -39,10 +39,10 @@ export default function AssessmentsTable({ rows }: AssessmentsTableProps) {
           </h2>
 
           <div className="flex flex-wrap items-center gap-2">
-            <button className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50">
+            <button className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-600 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50">
               All Status
             </button>
-            <button className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50">
+            <button className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-600 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50">
               All Classes
             </button>
           </div>
@@ -110,14 +110,14 @@ export default function AssessmentsTable({ rows }: AssessmentsTableProps) {
                 {/* ACTIONS */}
                 <td className="px-4 py-4">
                   <div className="flex items-center gap-2">
-                    <button className="rounded-md border border-slate-200 p-2 hover:bg-slate-50">
-                      <Eye className="h-4 w-4 text-slate-600" />
+                    <button className="rounded-md border border-slate-200 p-2 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50 group">
+                      <Eye className="h-4 w-4 text-slate-600 transition-transform duration-200 group-hover:scale-110" />
                     </button>
-                    <button className="rounded-md border border-slate-200 p-2 hover:bg-slate-50">
-                      <Pencil className="h-4 w-4 text-slate-600" />
+                    <button className="rounded-md border border-slate-200 p-2 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50 group">
+                      <Pencil className="h-4 w-4 text-slate-600 transition-transform duration-200 group-hover:scale-110" />
                     </button>
-                    <button className="rounded-md border border-slate-200 p-2 hover:bg-slate-50">
-                      <MoreVertical className="h-4 w-4 text-slate-600" />
+                    <button className="rounded-md border border-slate-200 p-2 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50 group">
+                      <MoreVertical className="h-4 w-4 text-slate-600 transition-transform duration-200 group-hover:scale-110" />
                     </button>
                   </div>
                 </td>

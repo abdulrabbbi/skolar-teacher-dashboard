@@ -14,10 +14,18 @@ export type TaskCompilerStatsProps = {
 };
 
 const iconMap: Record<TaskCompilerStat['icon'], JSX.Element> = {
-  pending: <Clock className="h-5 w-5" />,
-  moderation: <AlertTriangle className="h-5 w-5" />,
-  agreement: <BadgeCheck className="h-5 w-5" />,
-  confidence: <Sparkles className="h-5 w-5" />,
+  pending: (
+    <Clock className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
+  ),
+  moderation: (
+    <AlertTriangle className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
+  ),
+  agreement: (
+    <BadgeCheck className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
+  ),
+  confidence: (
+    <Sparkles className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
+  ),
 };
 
 export default function TaskCompilerStats({ stats }: TaskCompilerStatsProps) {
@@ -33,9 +41,10 @@ export default function TaskCompilerStats({ stats }: TaskCompilerStatsProps) {
             icon={iconMap[stat.icon]}
             color={stat.color}
             className="
+              group
               transition-all duration-300 ease-in-out
               hover:-translate-y-1
-              hover:shadow-xl
+              hover:shadow-lg
             "
           />
         ))}

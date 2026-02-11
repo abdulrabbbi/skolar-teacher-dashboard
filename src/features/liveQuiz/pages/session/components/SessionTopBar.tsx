@@ -12,7 +12,7 @@ export default function SessionTopBar({ onBack }: SessionTopBarProps) {
         variant="outline"
         size="sm"
         onClick={onBack}
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 transition-all duration-200 hover:-translate-y-0.5"
       >
         <ArrowLeft className="h-4 w-4" />
         Back

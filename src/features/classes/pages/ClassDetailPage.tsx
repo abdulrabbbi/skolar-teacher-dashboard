@@ -51,19 +51,27 @@ export default function ClassDetailPage() {
       <div className="flex items-center justify-between">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900"
+          className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-all duration-200 hover:-translate-y-0.5"
         >
           <ArrowLeft className="h-4 w-4" />
           Back
         </button>
 
         <div className="flex items-center gap-2">
-          <Button size="sm" variant="primary">
+          <Button
+            size="sm"
+            variant="primary"
+            className="transition-all duration-200 hover:-translate-y-0.5"
+          >
             <Plus className="h-4 w-4 mr-1" />
             Add Student
           </Button>
 
-          <Button size="sm" variant="outline">
+          <Button
+            size="sm"
+            variant="outline"
+            className="transition-all duration-200 hover:-translate-y-0.5"
+          >
             <Download className="h-4 w-4 mr-1" />
             Export
           </Button>

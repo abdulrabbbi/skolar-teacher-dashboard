@@ -30,14 +30,14 @@ export default function TaskCompilerActions({
             key={action.id}
             type="button"
             onClick={() => onTabChange(action.id as TaskCompilerTab)}
-            className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-slate-200 ${
+            className={`group inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all duration-200 hover:-translate-y-0.5 ${
               isActive
                 ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
                 : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
             }`}
             aria-pressed={isActive}
           >
-            <Icon className="h-4 w-4 text-slate-500" />
+            <Icon className="h-4 w-4 text-slate-500 transition-transform duration-200 group-hover:scale-110" />
             {action.label}
           </button>
         );

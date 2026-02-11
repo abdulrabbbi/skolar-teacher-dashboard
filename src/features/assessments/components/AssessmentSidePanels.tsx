@@ -28,7 +28,7 @@ export default function AssessmentSidePanels({
       {/* =====================
           THIS WEEK'S DEADLINES
       ===================== */}
-      <Card className="space-y-4">
+      <Card className="space-y-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <h3 className="text-sm font-semibold text-slate-900">
           This Week&apos;s Deadlines
         </h3>
@@ -49,7 +49,7 @@ export default function AssessmentSidePanels({
       {/* =====================
           RECENT ACTIVITY
       ===================== */}
-      <Card className="space-y-4">
+      <Card className="space-y-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <h3 className="text-sm font-semibold text-slate-900">
           Recent Activity
         </h3>
@@ -72,7 +72,7 @@ export default function AssessmentSidePanels({
       {/* =====================
           ASSESSMENT TYPES
       ===================== */}
-      <Card className="space-y-4">
+      <Card className="space-y-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <h3 className="text-sm font-semibold text-slate-900">
           Assessment Types
         </h3>
