@@ -16,6 +16,7 @@ export default function ModerationAlert({
   return (
     <Card
       className="
+        group
         flex flex-col gap-4
         rounded-xl
         border border-yellow-300
@@ -24,6 +25,7 @@ export default function ModerationAlert({
         sm:flex-row
         sm:items-center
         sm:justify-between
+        transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl
       "
     >
       {/* LEFT SIDE */}
@@ -35,6 +37,7 @@ export default function ModerationAlert({
             rounded-lg
             bg-yellow-200
             text-yellow-700
+            transition-transform duration-200 group-hover:scale-110
           "
         >
           <AlertTriangle className="h-5 w-5" />
@@ -61,6 +64,7 @@ export default function ModerationAlert({
           text-yellow-900
           hover:bg-yellow-500
           sm:w-auto
+          transition-all duration-200 hover:-translate-y-0.5
         "
       >
         {alert.buttonLabel}

@@ -38,7 +38,7 @@ const accuracyVariant = (accuracy: number) => {
 
 export default function ClassWeakPointsCard() {
   return (
-    <Card className="space-y-4 p-5">
+    <Card className="space-y-4 p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
       <div className="space-y-1">
         <h3 className="text-sm font-semibold text-slate-900">
           Class Weak Points
@@ -52,7 +52,7 @@ export default function ClassWeakPointsCard() {
         {weakPoints.map((item) => (
           <div
             key={item.id}
-            className="rounded-lg border border-slate-200 bg-white p-3"
+            className="rounded-lg border border-slate-200 bg-white p-3 transition-all duration-200 hover:bg-slate-50 hover:shadow-sm"
           >
             <div className="flex items-center justify-between gap-2">
               <p className="text-sm font-semibold text-slate-900">
@@ -69,7 +69,11 @@ export default function ClassWeakPointsCard() {
         ))}
       </div>
 
-      <Button variant="success" fullWidth>
+      <Button
+        variant="success"
+        fullWidth
+        className="transition-all duration-200 hover:-translate-y-0.5"
+      >
         Generate Targeted Practice
       </Button>
     </Card>

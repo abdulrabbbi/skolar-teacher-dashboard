@@ -9,7 +9,7 @@ export type FeedbackPanelProps = {
 
 export default function FeedbackPanel({ placeholder }: FeedbackPanelProps) {
   return (
-    <Card className="space-y-4">
+    <Card className="space-y-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
       <div>
         <h3 className="text-base font-semibold text-slate-900">Feedback</h3>
         <p className="text-sm text-slate-500">
@@ -20,8 +20,18 @@ export default function FeedbackPanel({ placeholder }: FeedbackPanelProps) {
       <TextArea label="Feedback" placeholder={placeholder} />
 
       <div className="flex flex-wrap justify-end gap-2">
-        <Button variant="secondary">Save Draft</Button>
-        <Button variant="success">Submit Mark</Button>
+        <Button
+          variant="secondary"
+          className="transition-all duration-200 hover:-translate-y-0.5"
+        >
+          Save Draft
+        </Button>
+        <Button
+          variant="success"
+          className="transition-all duration-200 hover:-translate-y-0.5"
+        >
+          Submit Mark
+        </Button>
       </div>
     </Card>
   );

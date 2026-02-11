@@ -22,7 +22,7 @@ export default function TaskSettingsCard({
   onIncludeMarkingGuideChange,
 }: TaskSettingsCardProps) {
   return (
-    <Card className="space-y-4 p-4">
+    <Card className="space-y-4 p-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
       <h3 className="text-sm font-semibold text-slate-900">Task Settings</h3>
 
       <div>
@@ -52,7 +52,7 @@ export default function TaskSettingsCard({
               key={level}
               type="button"
               onClick={() => onDifficultyChange(level)}
-              className={`rounded-md border px-3 py-2 text-sm transition ${
+              className={`rounded-md border px-3 py-2 text-sm transition transition-all duration-200 hover:-translate-y-0.5 ${
                 difficulty === level
                   ? 'border-emerald-600 bg-emerald-600 text-white'
                   : 'border-slate-200 text-slate-700 hover:bg-slate-50'

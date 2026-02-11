@@ -44,7 +44,7 @@ export default function LaunchQuizModal({
       />
 
       {/* MODAL */}
-      <Card className="relative z-10 w-full max-w-xl max-h-[90vh] p-6 flex flex-col">
+      <Card className="relative z-10 w-full max-w-xl max-h-[90vh] p-6 flex flex-col transition-all duration-200">
         {/* HEADER */}
         <div className="flex items-start justify-between">
           <div>
@@ -118,6 +118,7 @@ export default function LaunchQuizModal({
                   key={option.id}
                   size="sm"
                   variant={option.selected ? 'success' : 'outline'}
+                  className="transition-all duration-200 hover:-translate-y-0.5"
                 >
                   {option.label}
                 </Button>
@@ -133,7 +134,7 @@ export default function LaunchQuizModal({
           />
 
           {/* SUMMARY */}
-          <Card className="flex gap-3 border border-emerald-200 bg-emerald-50 p-4 shadow-none">
+          <Card className="flex gap-3 border border-emerald-200 bg-emerald-50 p-4 shadow-none transition-all duration-200">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white">
               <Sparkles className="h-4 w-4" />
             </div>
@@ -175,10 +176,17 @@ export default function LaunchQuizModal({
 
         {/* FOOTER */}
         <div className="flex justify-end gap-2 pt-2">
-          <Button variant="secondary" onClick={onClose}>
+          <Button
+            variant="secondary"
+            onClick={onClose}
+            className="transition-all duration-200 hover:-translate-y-0.5"
+          >
             Cancel
           </Button>
-          <Button variant="success">
+          <Button
+            variant="success"
+            className="transition-all duration-200 hover:-translate-y-0.5"
+          >
             Start Live Quiz
           </Button>
         </div>

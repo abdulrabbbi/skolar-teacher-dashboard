@@ -15,29 +15,36 @@ export default function TopicPerformanceTable({
   rows,
 }: TopicPerformanceTableProps) {
   return (
-    <section className="space-y-4 ">
-      {/* SINGLE MODEL */}
-      <Card className="space-y-6 p-4 sm:p-6">
-        {/* HEADER INSIDE CARD */}
+    <section className="space-y-4">
+      <Card
+        className="
+          space-y-6 p-4 sm:p-6
+          transition-all duration-300 ease-in-out
+          hover:-translate-y-1 hover:shadow-xl
+        "
+      >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text-base font-semibold text-slate-900 ">
+            <h3 className="text-base font-semibold text-slate-900">
               Topic Performance
             </h3>
-            <p className="text-sm text-slate-500 ">
+            <p className="text-sm text-slate-500">
               Detailed breakdown by curriculum topic
             </p>
           </div>
 
           <Button
             size="sm"
-            className="bg-emerald-600 text-white hover:bg-emerald-700"
+            className="
+              bg-emerald-600 text-white
+              transition-all duration-200
+              hover:bg-emerald-700 hover:shadow-md hover:-translate-y-0.5
+            "
           >
             Generate Targeted Practice
           </Button>
         </div>
 
-        {/* TABLE (RESPONSIVE) */}
         <div className="overflow-x-auto">
           <Table
             headers={[
@@ -55,28 +62,30 @@ export default function TopicPerformanceTable({
               const isTrendPositive = row.trend >= 0;
 
               return (
-                <tr key={row.id} className="align-middle">
-                  {/* TOPIC */}
+                <tr
+                  key={row.id}
+                  className="
+                    align-middle
+                    transition-colors duration-200
+                    hover:bg-slate-50
+                  "
+                >
                   <td className="px-4 py-4 text-sm font-semibold text-slate-900">
                     {row.topic}
                   </td>
 
-                  {/* ATTEMPTS */}
                   <td className="px-4 py-4 text-sm text-slate-700">
                     {row.attempts}
                   </td>
 
-                  {/* CLASS AVG */}
                   <td className="px-4 py-4 text-sm text-slate-700">
                     {row.classAvg}%
                   </td>
 
-                  {/* STATE AVG */}
                   <td className="px-4 py-4 text-sm text-slate-700">
                     {row.stateAvg}%
                   </td>
 
-                  {/* VS STATE */}
                   <td
                     className={`px-4 py-4 text-sm font-medium ${
                       isVsPositive
@@ -87,7 +96,6 @@ export default function TopicPerformanceTable({
                     {formatDelta(row.vsState)}
                   </td>
 
-                  {/* TREND */}
                   <td className="px-4 py-4 text-sm">
                     <span
                       className={`inline-flex items-center gap-1 font-medium ${
@@ -105,12 +113,15 @@ export default function TopicPerformanceTable({
                     </span>
                   </td>
 
-                  {/* ACTION */}
                   <td className="px-4 py-4">
                     <Button
                       size="sm"
                       variant="outline"
-                      className="flex items-center gap-2 whitespace-nowrap "
+                      className="
+                        flex items-center gap-2 whitespace-nowrap
+                        transition-all duration-200
+                        hover:shadow-md hover:-translate-y-0.5
+                      "
                     >
                       <FileText className="h-4 w-4" />
                       Create Practice

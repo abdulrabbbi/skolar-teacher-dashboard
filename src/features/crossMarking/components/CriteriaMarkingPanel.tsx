@@ -29,7 +29,7 @@ export default function CriteriaMarkingPanel({
       </div>
 
       {/* CRITERIA LIST */}
-      <Card className="space-y-4">
+      <Card className="space-y-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         {criteria.map((item) => (
           <div
             key={item.id}
@@ -64,17 +64,21 @@ export default function CriteriaMarkingPanel({
 
               {/* LINKS & BUTTONS */}
               <div className="flex flex-wrap items-center gap-2 ml-auto">
-                <button className="text-xs font-medium text-purple-600 hover:underline">
+                <button className="text-xs font-medium text-purple-600 transition-all duration-200 hover:-translate-y-0.5 hover:underline">
                   Skolar justification
                 </button>
 
-                <Button size="sm" variant="outline">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="transition-all duration-200 hover:-translate-y-0.5"
+                >
                   Edit
                 </Button>
 
                 <Button
                   size="sm"
-                  className="bg-emerald-600 text-white hover:bg-emerald-700"
+                  className="bg-emerald-600 text-white hover:bg-emerald-700 transition-all duration-200 hover:-translate-y-0.5"
                 >
                   Confirm
                 </Button>

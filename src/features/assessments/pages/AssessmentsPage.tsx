@@ -25,7 +25,7 @@ export default function AssessmentsPage() {
 
   return (
     <div className="space-y-6">
-      <Card className="p-4 sm:p-5">
+      <Card className="p-4 sm:p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <PageHeader
           title="Assessments"
           actions={
@@ -33,6 +33,7 @@ export default function AssessmentsPage() {
               variant="success"
               size="sm"
               onClick={() => setIsCreateModalOpen(true)}
+              className="transition-all duration-200 hover:-translate-y-0.5"
             >
               + Create Assessment
             </Button>

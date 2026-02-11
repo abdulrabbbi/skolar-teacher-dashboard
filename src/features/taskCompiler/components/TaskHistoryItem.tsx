@@ -31,10 +31,11 @@ export default function TaskHistoryItem({ item }: TaskHistoryItemProps) {
   return (
     <Card
       className="
+        group
         flex flex-col gap-4 p-4
         sm:flex-row sm:items-center sm:justify-between
-        transition-all duration-300 ease-in-out
-        hover:shadow-lg hover:-translate-y-1
+        transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl
+        transition-all duration-200 hover:bg-slate-50 hover:shadow-sm
       "
     >
       {/* LEFT CONTENT */}
@@ -64,7 +65,7 @@ export default function TaskHistoryItem({ item }: TaskHistoryItemProps) {
         <Button
           size="sm"
           variant="outline"
-          className="transition-all duration-200 hover:scale-105"
+          className="transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
         >
           <Eye className="h-4 w-4" />
           View
@@ -73,7 +74,7 @@ export default function TaskHistoryItem({ item }: TaskHistoryItemProps) {
         <Button
           size="sm"
           variant="outline"
-          className="transition-all duration-200 hover:scale-105"
+          className="transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
         >
           <Copy className="h-4 w-4" />
           Duplicate
@@ -82,7 +83,7 @@ export default function TaskHistoryItem({ item }: TaskHistoryItemProps) {
         <Button
           size="sm"
           variant="outline"
-          className="transition-all duration-200 hover:scale-105"
+          className="transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
         >
           <Download className="h-4 w-4" />
           Download

@@ -71,7 +71,7 @@ export default function AreaOfStudyDetail({
         variant="outline"
         size="sm"
         onClick={onBack}
-        className="flex w-fit items-center gap-2"
+        className="flex w-fit items-center gap-2 transition-all duration-200 hover:-translate-y-0.5"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Areas
@@ -133,7 +133,7 @@ export default function AreaOfStudyDetail({
             variant="success"
             fullWidth
             disabled={totalSelections === 0}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 transition-all duration-200 hover:-translate-y-0.5"
             onClick={() => {
               console.log('Generate Quick Content clicked');
               onGenerateQuickContent();

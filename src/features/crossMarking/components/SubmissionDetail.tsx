@@ -22,21 +22,21 @@ export default function SubmissionDetail({
   return (
     <div className="space-y-6">
       {/* TOP BAR */}
-      <Card className="p-3 sm:p-4">
+      <Card className="p-3 sm:p-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <div className="flex items-center justify-between gap-3">
           <button
             type="button"
             onClick={onBack}
-            className="text-sm font-medium text-slate-600 hover:text-slate-900"
+            className="text-sm font-medium text-slate-600 transition-all duration-200 hover:-translate-y-0.5 hover:text-slate-900"
           >
             {'<- Back'}
           </button>
 
           <div className="flex items-center gap-2">
-            <button className="rounded-lg border px-3 py-1.5 text-sm hover:bg-slate-50">
+            <button className="rounded-lg border px-3 py-1.5 text-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50">
               + Add Student
             </button>
-            <button className="rounded-lg border px-3 py-1.5 text-sm hover:bg-slate-50">
+            <button className="rounded-lg border px-3 py-1.5 text-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50">
               Export
             </button>
           </div>
@@ -44,7 +44,7 @@ export default function SubmissionDetail({
       </Card>
 
       {/* SUBMISSION HEADER */}
-      <Card className="p-4 sm:p-5">
+      <Card className="p-4 sm:p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-lg sm:text-xl font-semibold text-slate-900">
@@ -58,7 +58,7 @@ export default function SubmissionDetail({
             <button
               type="button"
               onClick={() => setBlindMode(!blindMode)}
-              className={`relative inline-flex h-5 w-9 items-center rounded-full transition ${
+              className={`relative inline-flex h-5 w-9 items-center rounded-full transition transition-all duration-200 hover:-translate-y-0.5 ${
                 blindMode ? 'bg-emerald-600' : 'bg-slate-300'
               }`}
             >

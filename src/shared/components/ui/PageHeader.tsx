@@ -21,6 +21,7 @@ export default function PageHeader({
         className
       )}
     >
+      {/* LEFT SIDE */}
       <div className="space-y-1">
         {/* TITLE */}
         <h1
@@ -31,6 +32,7 @@ export default function PageHeader({
             font-semibold
             text-slate-900
             leading-tight
+            transition-colors duration-200
           "
         >
           {title}
@@ -43,6 +45,7 @@ export default function PageHeader({
               text-sm
               sm:text-base
               text-slate-500
+              transition-colors duration-200
             "
           >
             {subtitle}
@@ -50,8 +53,14 @@ export default function PageHeader({
         )}
       </div>
 
+      {/* RIGHT SIDE ACTIONS */}
       {actions && (
-        <div className="flex flex-wrap items-center gap-3">
+        <div
+          className="
+            flex flex-wrap items-center gap-3
+            transition-all duration-200
+          "
+        >
           {actions}
         </div>
       )}

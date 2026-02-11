@@ -9,10 +9,18 @@ export type LiveQuizStatsProps = {
 };
 
 const iconMap: Record<LiveQuizStat['icon'], JSX.Element> = {
-  quizzes: <ClipboardList className="h-5 w-5" />,
-  participation: <Users className="h-5 w-5" />,
-  score: <BarChart3 className="h-5 w-5" />,
-  questions: <Activity className="h-5 w-5" />,
+  quizzes: (
+    <ClipboardList className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
+  ),
+  participation: (
+    <Users className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
+  ),
+  score: (
+    <BarChart3 className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
+  ),
+  questions: (
+    <Activity className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
+  ),
 };
 
 const colorMap: Record<LiveQuizStat['icon'], 'blue' | 'green' | 'purple' | 'orange'> = {
@@ -34,6 +42,7 @@ export default function LiveQuizStats({ stats }: LiveQuizStatsProps) {
             value={stat.value}
             icon={iconMap[stat.icon]}
             color={colorMap[stat.icon]}
+            className="group transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg"
           />
         ))}
       </div>

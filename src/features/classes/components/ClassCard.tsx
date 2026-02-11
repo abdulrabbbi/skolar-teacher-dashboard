@@ -21,6 +21,7 @@ export default function ClassCard({ classItem }: ClassCardProps) {
         group cursor-pointer space-y-4 p-4 sm:p-5
         transition
         hover:shadow-md hover:border-slate-300
+        transition-all duration-300 hover:-translate-y-1 hover:shadow-lg
       "
     >
       {/* TOP */}
@@ -31,7 +32,7 @@ export default function ClassCard({ classItem }: ClassCardProps) {
           </h3>
 
           <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
-            <Users className="h-4 w-4 shrink-0" />
+            <Users className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
             <span>{classItem.students} students</span>
           </div>
         </div>

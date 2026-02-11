@@ -9,10 +9,18 @@ export type AssessmentStatsProps = {
 };
 
 const iconMap: Record<AssessmentStat['icon'], JSX.Element> = {
-  marking: <ClipboardCheck className="h-5 w-5" />,
-  active: <ClipboardList className="h-5 w-5" />,
-  week: <Timer className="h-5 w-5" />,
-  average: <LineChart className="h-5 w-5" />,
+  marking: (
+    <ClipboardCheck className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
+  ),
+  active: (
+    <ClipboardList className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
+  ),
+  week: (
+    <Timer className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
+  ),
+  average: (
+    <LineChart className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
+  ),
 };
 
 export default function AssessmentStats({ stats }: AssessmentStatsProps) {
@@ -27,6 +35,7 @@ export default function AssessmentStats({ stats }: AssessmentStatsProps) {
             subtitle={stat.subtitle}
             icon={iconMap[stat.icon]}
             color={stat.color}
+            className="transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl group"
           />
         ))}
       </div>

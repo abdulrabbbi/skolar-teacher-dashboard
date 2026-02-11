@@ -23,6 +23,7 @@ export default function ClassesOverview({ classes }: ClassesOverviewProps) {
               group cursor-pointer space-y-4 p-5
               transition-all duration-300 ease-in-out
               hover:-translate-y-1 hover:shadow-xl
+              hover:shadow-lg
             "
           >
             {/* TOP ROW */}
@@ -34,7 +35,7 @@ export default function ClassesOverview({ classes }: ClassesOverviewProps) {
 
                 {/* STUDENTS ROW */}
                 <div className="flex items-center gap-1.5 text-sm text-slate-500">
-                  <Users className="h-4 w-4 transition group-hover:text-slate-700" />
+                  <Users className="h-4 w-4 transition-transform duration-200 group-hover:scale-110 group-hover:text-slate-700" />
                   <span>{item.total} students</span>
                 </div>
               </div>
@@ -44,6 +45,7 @@ export default function ClassesOverview({ classes }: ClassesOverviewProps) {
                 className="
                   h-4 w-4 text-slate-400
                   transition-all duration-200
+                  group-hover:scale-110
                   group-hover:translate-x-1
                   group-hover:text-slate-600
                 "

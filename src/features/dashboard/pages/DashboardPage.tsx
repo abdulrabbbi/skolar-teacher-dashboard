@@ -1,4 +1,5 @@
 import PageHeader from "../../../shared/components/ui/PageHeader";
+import Card from "../../../shared/components/ui/Card";
 import AlertsInsights from "../components/AlertsInsights";
 import ClassroomPulse from "../components/ClassroomPulse";
 import ClassesOverview from "../components/ClassesOverview";
@@ -18,9 +19,9 @@ import {
 
 function DashboardSection({ children }: { children: React.ReactNode }) {
   return (
-    <section className="rounded-2xl bg-white px-4 py-3 md:px-6 md:py-4 border border-slate-200 ">
+    <Card className="p-5 space-y-4">
       {children}
-    </section>
+    </Card>
   );
 }
 

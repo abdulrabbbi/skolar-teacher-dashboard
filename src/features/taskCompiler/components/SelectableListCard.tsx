@@ -21,7 +21,7 @@ export default function SelectableListCard({
   onToggle,
 }: SelectableListCardProps) {
   return (
-    <Card className="space-y-3 p-4">
+    <Card className="space-y-3 p-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
       <div className="space-y-1">
         <h3 className="text-sm font-semibold text-slate-900">{title}</h3>
         <p className="text-xs text-slate-500">{subtitle}</p>
@@ -31,7 +31,7 @@ export default function SelectableListCard({
         {items.map((item) => (
           <label
             key={item.id}
-            className="flex items-start gap-2 text-sm text-slate-700"
+            className="flex items-start gap-2 text-sm text-slate-700 group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
           >
             <input
               type="checkbox"

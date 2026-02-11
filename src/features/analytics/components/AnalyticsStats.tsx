@@ -1,6 +1,4 @@
-
 import StatCard from '../../../shared/components/ui/StatCard';
-
 import type { AnalyticsStat } from '../data/analytics.mock';
 
 export type AnalyticsStatsProps = {
@@ -10,8 +8,6 @@ export type AnalyticsStatsProps = {
 export default function AnalyticsStats({ stats }: AnalyticsStatsProps) {
   return (
     <section className="space-y-4">
-     
-
       <div
         className="
           grid grid-cols-1
@@ -26,7 +22,10 @@ export default function AnalyticsStats({ stats }: AnalyticsStatsProps) {
             label={stat.label}
             value={stat.value}
             subtitle={stat.subtitle}
-            /* ❌ icon intentionally removed to match real UI */
+            className="
+              transition-all duration-300 ease-in-out
+              hover:-translate-y-1 hover:shadow-xl
+            "
           />
         ))}
       </div>

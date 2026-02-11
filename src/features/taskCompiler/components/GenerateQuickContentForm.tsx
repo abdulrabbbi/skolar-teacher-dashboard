@@ -26,6 +26,7 @@ export default function GenerateQuickContentForm({
         space-y-5 p-5
         transition-all duration-300 ease-in-out
         hover:shadow-lg
+        hover:-translate-y-1 hover:shadow-xl
       "
     >
       {/* HEADER */}
@@ -102,7 +103,7 @@ export default function GenerateQuickContentForm({
                 className={`
                   rounded-full border px-4 py-1.5 text-xs font-semibold
                   transition-all duration-200 ease-in-out
-                  hover:scale-105
+                  hover:scale-105 hover:-translate-y-0.5
                   ${
                     difficulty === level
                       ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm'

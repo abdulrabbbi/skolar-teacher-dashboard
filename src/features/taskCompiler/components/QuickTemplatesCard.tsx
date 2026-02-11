@@ -48,7 +48,7 @@ const templates: TemplateItem[] = [
 
 export default function QuickTemplatesCard() {
   return (
-    <Card className="space-y-4 p-5">
+    <Card className="space-y-4 p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
       <div className="space-y-1">
         <h3 className="text-sm font-semibold text-slate-900">
           Quick Templates
@@ -62,9 +62,9 @@ export default function QuickTemplatesCard() {
             <button
               key={template.id}
               type="button"
-              className="flex w-full items-start gap-3 rounded-lg border border-slate-200 bg-white p-3 text-left transition hover:border-emerald-200 hover:bg-emerald-50"
+              className="group flex w-full items-start gap-3 rounded-lg border border-slate-200 bg-white p-3 text-left transition hover:border-emerald-200 hover:bg-emerald-50 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 transition-transform duration-200 group-hover:scale-110">
                 <Icon className="h-4 w-4" />
               </div>
               <div className="space-y-1">

@@ -1,4 +1,3 @@
-
 import { ChevronDown, Download } from "lucide-react";
 
 import Card from "../../../shared/components/ui/Card";
@@ -21,29 +20,46 @@ import {
 export default function AnalyticsPage() {
   return (
     <div className="space-y-6">
-
-      {/* ✅ HEADER CARD (THIS WAS MISSING BEFORE) */}
-      <Card className="p-4 sm:p-5">
+      {/* HEADER CARD */}
+      <Card
+        className="
+          p-4 sm:p-5
+          transition-all duration-300 ease-in-out
+          hover:shadow-lg
+        "
+      >
         <PageHeader
           title="Analytics"
           subtitle="Deep insights into student performance"
           actions={
-            <>
-              <Button variant="outline" size="sm">
+            <div className="flex flex-wrap items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-1 transition-all duration-200 hover:-translate-y-0.5"
+              >
                 All Classes
                 <ChevronDown className="h-4 w-4" />
               </Button>
 
-              <Button variant="outline" size="sm">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-1 transition-all duration-200 hover:-translate-y-0.5"
+              >
                 This Month
                 <ChevronDown className="h-4 w-4" />
               </Button>
 
-              <Button variant="outline" size="sm">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-2 transition-all duration-200 hover:-translate-y-0.5"
+              >
                 <Download className="h-4 w-4" />
                 Export
               </Button>
-            </>
+            </div>
           }
         />
       </Card>

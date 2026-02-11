@@ -34,7 +34,7 @@ export default function QuickLaunchTemplates({
   return (
     <section>
       {/* ONE MAIN CARD */}
-      <Card className="p-4 h-full flex flex-col">
+      <Card className="p-4 h-full flex flex-col transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         {/* SMALL HEADING */}
         <h3 className="text-sm font-semibold text-slate-900 mb-3">
           Quick Launch Templates
@@ -48,12 +48,12 @@ export default function QuickLaunchTemplates({
             return (
               <button
                 key={template.id}
-                className="w-full flex items-center justify-between gap-4 rounded-lg p-3 text-left transition hover:bg-slate-50"
+                className="group w-full flex items-center justify-between gap-4 rounded-lg p-3 text-left transition hover:bg-slate-50 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
               >
                 {/* LEFT */}
                 <div className="flex items-center gap-3">
                   <div
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${config.bg}`}
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${config.bg} transition-transform duration-200 group-hover:scale-110`}
                   >
                     {config.icon}
                   </div>
@@ -78,7 +78,7 @@ export default function QuickLaunchTemplates({
                 </div>
 
                 {/* RIGHT */}
-                <ChevronRight className="h-4 w-4 text-slate-400 shrink-0" />
+                <ChevronRight className="h-4 w-4 text-slate-400 shrink-0 transition-transform duration-200 group-hover:scale-110" />
               </button>
             );
           })}

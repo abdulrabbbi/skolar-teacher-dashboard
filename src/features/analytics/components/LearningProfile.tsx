@@ -1,4 +1,3 @@
-
 import Card from '../../../shared/components/ui/Card';
 import ProgressBar from '../../../shared/components/ui/ProgressBar';
 import type { LearningProfileItem } from '../data/analytics.mock';
@@ -17,11 +16,16 @@ const getVariant = (score: number) => {
 export default function LearningProfile({ profiles }: LearningProfileProps) {
   return (
     <section>
-      <Card className="space-y-2 p-4 sm:p-5">
-        {/* HEADER INSIDE MODULE */}
+      <Card
+        className="
+          space-y-4 p-4 sm:p-5
+          transition-all duration-300 ease-in-out
+          hover:-translate-y-1 hover:shadow-xl
+        "
+      >
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text- font-semibold text-slate-900">
+            <h3 className="text-base font-semibold text-slate-900">
               Learning Profile
             </h3>
             <p className="text-sm text-slate-500">
@@ -29,7 +33,6 @@ export default function LearningProfile({ profiles }: LearningProfileProps) {
             </p>
           </div>
 
-          {/* ALL TOPICS BUTTON */}
           <button
             type="button"
             className="
@@ -37,7 +40,8 @@ export default function LearningProfile({ profiles }: LearningProfileProps) {
               rounded-md border border-slate-200
               bg-white px-3 py-1.5
               text-sm text-slate-700
-              hover:bg-slate-50
+              transition-all duration-200
+              hover:bg-slate-50 hover:shadow-sm
             "
           >
             All Topics
@@ -45,12 +49,10 @@ export default function LearningProfile({ profiles }: LearningProfileProps) {
           </button>
         </div>
 
-        {/* DESCRIPTION */}
         <p className="text-sm text-slate-500">
           Visualise your strengths across your subjects
         </p>
 
-        {/* FULL WIDTH BARS */}
         <div className="space-y-4">
           {profiles.map((profile) => (
             <div key={profile.id} className="space-y-2">
@@ -71,7 +73,6 @@ export default function LearningProfile({ profiles }: LearningProfileProps) {
           ))}
         </div>
 
-        {/* FOOT NOTE */}
         <p className="text-xs text-slate-400">
           Edit subjects (Coming soon)
         </p>

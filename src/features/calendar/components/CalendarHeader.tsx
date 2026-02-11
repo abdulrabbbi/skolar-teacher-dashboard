@@ -32,6 +32,7 @@ export default function CalendarHeader({
               size="sm"
               variant={viewMode === 'weekly' ? 'secondary' : 'ghost'}
               onClick={() => onViewChange('weekly')}
+              className="transition-all duration-200 hover:-translate-y-0.5"
             >
               Weekly
             </Button>
@@ -39,23 +40,36 @@ export default function CalendarHeader({
               size="sm"
               variant={viewMode === 'monthly' ? 'secondary' : 'ghost'}
               onClick={() => onViewChange('monthly')}
+              className="transition-all duration-200 hover:-translate-y-0.5"
             >
               Monthly
             </Button>
           </div>
 
           {/* NAV BUTTONS */}
-          <Button size="sm" variant="outline">
-            <ChevronLeft className="h-4 w-4" />
+          <Button
+            size="sm"
+            variant="outline"
+            className="group transition-all duration-200 hover:-translate-y-0.5"
+          >
+            <ChevronLeft className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
           </Button>
 
-          <Button size="sm" variant="outline">
-            <CalendarDays className="h-4 w-4" />
+          <Button
+            size="sm"
+            variant="outline"
+            className="group transition-all duration-200 hover:-translate-y-0.5"
+          >
+            <CalendarDays className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
             <span className="hidden sm:inline">Today</span>
           </Button>
 
-          <Button size="sm" variant="outline">
-            <ChevronRight className="h-4 w-4" />
+          <Button
+            size="sm"
+            variant="outline"
+            className="group transition-all duration-200 hover:-translate-y-0.5"
+          >
+            <ChevronRight className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
           </Button>
 
           {/* ADD EVENT (PRIMARY) */}
@@ -67,9 +81,10 @@ export default function CalendarHeader({
               hover:bg-emerald-700
               focus:ring-2 focus:ring-emerald-500
               flex items-center gap-1
+              group transition-all duration-200 hover:-translate-y-0.5
             "
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
             <span className="hidden sm:inline">Add Event</span>
           </Button>
         </div>
