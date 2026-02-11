@@ -1,0 +1,75 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Card from '../../../shared/components/ui/Card';
+import Button from '../../../shared/components/ui/Button';
+import PageHeader from '../../../shared/components/ui/PageHeader';
+import LiveQuizStats from '../components/LiveQuizStats';
+import RecentQuizzes from '../components/RecentQuizzes';
+import QuickLaunchTemplates from '../components/QuickLaunchTemplates';
+import PastQuizzes from '../components/PastQuizzes';
+import LaunchQuizModal from '../components/LaunchQuizModal';
+import {
+  classOptions,
+  difficultyOptions,
+  liveQuizStats,
+  pastQuizzes,
+  questionCountOptions,
+  quickLaunchTemplates,
+  quizSummary,
+  recentQuizzes,
+  reasoningToggle,
+  timerOptions,
+  topicOptions,
+} from '../data/liveQuiz.mock';
+
+export default function LiveQuizPage() {
+  const [isLaunchModalOpen, setIsLaunchModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleRelaunchQuiz = (quizId: string) => {
+    navigate(`/teacher/live-quiz/session/${quizId}`);
+  };
+
+  return (
+    <div className="space-y-6">
+      <Card className="p-4 sm:p-5">
+        <PageHeader
+          title="Live Quiz"
+          actions={
+            <Button
+              variant="success"
+              size="sm"
+              onClick={() => setIsLaunchModalOpen(true)}
+            >
+              Launch New Quiz
+            </Button>
+          }
+        />
+      </Card>
+
+      <LiveQuizStats stats={liveQuizStats} />
+
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_360px] xl:auto-rows-[420px]">
+        <RecentQuizzes
+          quizzes={recentQuizzes}
+          onRelaunch={handleRelaunchQuiz}
+        />
+        <QuickLaunchTemplates templates={quickLaunchTemplates} />
+      </div>
+
+      <PastQuizzes quizzes={pastQuizzes} />
+
+      <LaunchQuizModal
+        isOpen={isLaunchModalOpen}
+        onClose={() => setIsLaunchModalOpen(false)}
+        classOptions={classOptions}
+        topicOptions={topicOptions}
+        questionOptions={questionCountOptions}
+        timerOptions={timerOptions}
+        difficultyOptions={difficultyOptions}
+        reasoningToggle={reasoningToggle}
+        summary={quizSummary}
+      />
+    </div>
+  );
+}
