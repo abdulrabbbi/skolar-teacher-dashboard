@@ -15,7 +15,7 @@ export function TargetAtarPage() {
 
         <div className="flex flex-col items-center text-center">
           <div className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-white shadow-sm">
-            <Target className="h-5 w-5 text-indigo-600" />
+            <Target className="h-5 w-5 text-green-600" />
           </div>
           <div className="mt-3 text-lg font-semibold text-slate-900">Set Your Target</div>
           <div className="mt-1 text-xs text-slate-500">
@@ -48,7 +48,7 @@ export function TargetAtarPage() {
         <button
           type="button"
           onClick={() => navigate("/auth/setup/preferences")}
-          className="mt-4 h-10 w-full rounded-xl bg-indigo-600 text-xs font-semibold text-white shadow-sm hover:bg-indigo-700"
+          className="mt-4 h-10 w-full rounded-xl bg-green-600 text-xs font-semibold text-white shadow-sm hover:bg-green-700"
         >
           Continue
         </button>

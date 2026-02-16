@@ -24,44 +24,44 @@ export function SmokeBackground({ variant = "auth" }: Props) {
         }}
       />
 
-      {/* Cloud 1 (big purple) */}
+      {/* Cloud 1 */}
       <div
         className="skolar-cloud skolar-cloud-1 absolute top-[8%] h-[520px] w-[820px] blur-[140px] mix-blend-multiply"
         style={{
           opacity: cloudOpacity,
           background:
-            "radial-gradient(circle at 35% 45%, rgba(139,92,246,0.95), rgba(139,92,246,0) 70%)",
+            "radial-gradient(circle at 35% 45%, rgba(34,197,94,0.95), rgba(34,197,94,0) 70%)",
         }}
       />
 
-      {/* Cloud 2 (indigo) */}
+      {/* Cloud 2 */}
       <div
         className="skolar-cloud skolar-cloud-2 absolute top-[30%] h-[560px] w-[900px] blur-[160px] mix-blend-multiply"
         style={{
           opacity: cloudOpacity * 0.95,
           background:
-            "radial-gradient(circle at 40% 45%, rgba(99,102,241,0.95), rgba(99,102,241,0) 72%)",
+            "radial-gradient(circle at 40% 45%, rgba(16,185,129,0.95), rgba(16,185,129,0) 72%)",
         }}
       />
 
-      {/* Cloud 3 (violet tint) */}
+      {/* Cloud 3 */}
       <div
         className="skolar-cloud skolar-cloud-3 absolute top-[55%] h-[520px] w-[860px] blur-[150px] mix-blend-multiply"
         style={{
           opacity: cloudOpacity * 0.9,
           background:
-            "radial-gradient(circle at 45% 40%, rgba(168,85,247,0.90), rgba(168,85,247,0) 72%)",
+            "radial-gradient(circle at 45% 40%, rgba(132,204,22,0.90), rgba(132,204,22,0) 72%)",
         }}
       />
 
-      {/* optional green (setup only) */}
+      {/* optional extra green (setup only) */}
       {showGreen && (
         <div
           className="skolar-cloud skolar-cloud-4 absolute top-[22%] h-[540px] w-[880px] blur-[150px] mix-blend-multiply"
           style={{
             opacity: 0.22,
             background:
-              "radial-gradient(circle at 45% 40%, rgba(16,185,129,0.95), rgba(16,185,129,0) 72%)",
+              "radial-gradient(circle at 45% 40%, rgba(74,222,128,0.95), rgba(74,222,128,0) 72%)",
           }}
         />
       )}

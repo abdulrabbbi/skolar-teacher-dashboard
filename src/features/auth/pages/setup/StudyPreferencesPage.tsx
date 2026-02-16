@@ -29,7 +29,7 @@ export function StudyPreferencesPage() {
 
         <div className="flex flex-col items-center text-center">
           <div className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-white shadow-sm">
-            <Clock className="h-5 w-5 text-indigo-600" />
+            <Clock className="h-5 w-5 text-green-600" />
           </div>
           <div className="mt-3 text-lg font-semibold text-slate-900">Study Preferences</div>
           <div className="mt-1 text-xs text-slate-500">
@@ -69,7 +69,7 @@ export function StudyPreferencesPage() {
                   onClick={() => toggleDay(d)}
                   className={cn(
                     "h-9 rounded-xl border px-3 text-xs font-semibold transition",
-                    on ? "border-indigo-600 bg-indigo-600 text-white" : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50",
+                    on ? "border-green-600 bg-green-600 text-white" : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50",
                   )}
                 >
                   {d}
@@ -82,7 +82,7 @@ export function StudyPreferencesPage() {
         <button
           type="button"
           onClick={onComplete}
-          className="mt-4 h-10 w-full rounded-xl bg-indigo-600 text-xs font-semibold text-white shadow-sm hover:bg-indigo-700"
+          className="mt-4 h-10 w-full rounded-xl bg-green-600 text-xs font-semibold text-white shadow-sm hover:bg-green-700"
         >
           Complete Setup
         </button>

@@ -15,6 +15,17 @@ export interface TeacherRouteItem {
 const buildTeacherRoute = (slug: string) => `${TEACHER_ROUTE_PREFIX}/${slug}`;
 
 export const ROUTES = {
+  splash: "/",
+  onboarding: "/onboarding",
+  authAccountType: "/auth/account-type",
+  authWelcome: "/auth/welcome",
+  authLogin: "/auth/login",
+  authSignup: "/auth/signup",
+  authVerifyEmail: "/auth/verify-email",
+  authSetupEducation: "/auth/setup/education",
+  authSetupSubjects: "/auth/setup/subjects",
+  authSetupTarget: "/auth/setup/target-atar",
+  authSetupPreferences: "/auth/setup/preferences",
   dashboard: buildTeacherRoute('dashboard'),
   classes: buildTeacherRoute('classes'),
   analytics: buildTeacherRoute('analytics'),

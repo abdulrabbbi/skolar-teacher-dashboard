@@ -30,7 +30,7 @@ export default function SignupPage() {
             <div className="mb-1 text-[11px] font-medium text-slate-500">Full Name</div>
             <input
               placeholder="John Doe"
-              className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-sm outline-none focus:border-indigo-400"
+              className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-sm outline-none focus:border-green-400"
             />
           </div>
 
@@ -38,7 +38,7 @@ export default function SignupPage() {
             <div className="mb-1 text-[11px] font-medium text-slate-500">Email Address</div>
             <input
               placeholder="john.doe@example.com"
-              className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-sm outline-none focus:border-indigo-400"
+              className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-sm outline-none focus:border-green-400"
             />
           </div>
 
@@ -47,19 +47,19 @@ export default function SignupPage() {
             <input
               type="password"
               placeholder="At least 8 characters"
-              className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-sm outline-none focus:border-indigo-400"
+              className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-sm outline-none focus:border-green-400"
             />
           </div>
 
           <label className="flex items-start gap-2 text-xs text-slate-600">
-            <input type="checkbox" className="mt-1 h-4 w-4 rounded border-slate-300 accent-indigo-600" />
+            <input type="checkbox" className="mt-1 h-4 w-4 rounded border-slate-300 accent-green-600" />
             <span>I agree to Terms of Service & Privacy Policy</span>
           </label>
 
           <button
             type="button"
             onClick={onCreate}
-            className="h-10 w-full rounded-xl bg-indigo-600 text-xs font-semibold text-white shadow-sm hover:bg-indigo-700"
+            className="h-10 w-full rounded-xl bg-green-600 text-xs font-semibold text-white shadow-sm hover:bg-green-700"
           >
             Create Account
           </button>
@@ -69,7 +69,7 @@ export default function SignupPage() {
             <button
               type="button"
               onClick={() => navigate("/auth/login")}
-              className="font-semibold text-indigo-600 hover:text-indigo-700"
+              className="font-semibold text-green-600 hover:text-green-700"
             >
               Login
             </button>

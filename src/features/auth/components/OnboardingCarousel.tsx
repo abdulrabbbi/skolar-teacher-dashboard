@@ -23,8 +23,8 @@ export function OnboardingCarousel({ slides, index }: Props) {
   const Icon = iconMap[slide.icon];
 
   return (
-    <div className="rounded-2xl border border-indigo-100 bg-indigo-50/40 px-6 py-10 text-center">
-      <div className="mx-auto grid h-10 w-10 place-items-center rounded-full border border-indigo-100 bg-white text-indigo-700 shadow-sm">
+    <div className="rounded-2xl border border-green-100 bg-green-50/40 px-6 py-10 text-center">
+      <div className="mx-auto grid h-10 w-10 place-items-center rounded-full border border-green-100 bg-white text-green-700 shadow-sm">
         <Icon className="h-5 w-5" />
       </div>
 
@@ -42,7 +42,7 @@ export function OnboardingCarousel({ slides, index }: Props) {
             key={i}
             className={cn(
               "h-1.5 rounded-full transition-all",
-              i === index ? "w-6 bg-indigo-600" : "w-3 bg-slate-300/80",
+              i === index ? "w-6 bg-green-600" : "w-3 bg-slate-300/80",
             )}
           />
         ))}

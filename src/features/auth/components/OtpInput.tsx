@@ -56,7 +56,7 @@ export function OtpInput({ value, length = 6, onChange }: Props) {
             }}
             className={cn(
               "h-10 w-10 rounded-xl border border-slate-200 bg-white text-center text-sm font-semibold text-slate-900 shadow-sm",
-              "focus:border-indigo-400 focus:outline-none",
+              "focus:border-green-400 focus:outline-none",
             )}
             inputMode="numeric"
             maxLength={1}

@@ -28,7 +28,7 @@ export function StepperHeader({ step, total, onBack }: Props) {
 
       <div className="mt-2 h-1.5 w-full rounded-full bg-slate-200">
         <div
-          className="h-1.5 rounded-full bg-indigo-600 transition-all"
+          className="h-1.5 rounded-full bg-green-600 transition-all"
           style={{ width: `${pct}%` }}
         />
       </div>

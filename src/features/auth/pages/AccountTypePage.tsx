@@ -30,21 +30,21 @@ export function AccountTypePage() {
           <AccountTypeCard
             title="Student"
             desc="Access practice questions, study tools, and track your ATAR journey"
-            color="indigo"
+            color="green"
             selected={selected === "student"}
             onClick={() => setSelected("student")}
           />
           <AccountTypeCard
             title="Teacher"
             desc="Monitor class progress, create assessments, and support student learning"
-            color="emerald"
+            color="green"
             selected={selected === "teacher"}
             onClick={() => setSelected("teacher")}
           />
           <AccountTypeCard
             title="Administrator"
             desc="Manage schools, users, curriculum frameworks, and platform settings"
-            color="sky"
+            color="green"
             selected={selected === "admin"}
             onClick={() => setSelected("admin")}
           />
@@ -55,7 +55,7 @@ export function AccountTypePage() {
             type="button"
             onClick={onContinue}
             disabled={!canContinue}
-            className="h-10 w-[220px] rounded-xl bg-indigo-600 text-xs font-semibold text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className="h-10 w-[220px] rounded-xl bg-green-600 text-xs font-semibold text-white shadow-sm hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             Continue
           </button>

@@ -70,8 +70,8 @@ export default function AppTopbar({ onMenuClick }: AppTopbarProps) {
         {/* LOGO */}
   
      <img
-           src="src/assets/images/image (29) 1.png
-           " 
+           src="assets\images\logo.png"
+           
            alt="Skolar logo"
            className="h-7 w-7 object-contain"
            />

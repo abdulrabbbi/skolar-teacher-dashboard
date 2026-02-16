@@ -42,7 +42,7 @@ export default function LoginPage() {
           <div>
             <div className="mb-1 flex justify-between text-[11px] font-medium text-slate-500">
               <span>Password</span>
-              <button className="text-indigo-600 hover:text-indigo-700">
+              <button className="text-green-600 hover:text-green-700">
                 Forgot Password?
               </button>
             </div>
@@ -56,7 +56,7 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={onLogin}
-            className="h-10 w-full rounded-xl bg-indigo-600 text-xs font-semibold text-white hover:bg-indigo-700"
+            className="h-10 w-full rounded-xl bg-green-600 text-xs font-semibold text-white hover:bg-green-700"
           >
             Login
           </button>
@@ -65,7 +65,7 @@ export default function LoginPage() {
             Don’t have an account?{" "}
             <button
               onClick={() => navigate("/auth/signup")}
-              className="font-semibold text-indigo-600 hover:text-indigo-700"
+              className="font-semibold text-green-600 hover:text-green-700"
             >
               Create Account
             </button>

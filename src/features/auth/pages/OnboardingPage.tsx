@@ -17,9 +17,9 @@ export function OnboardingPage() {
       <AuthCard
         className="
           w-full
-          bg-indigo-50/35
+          bg-green-50/35
           backdrop-blur-sm
-          border border-indigo-100/70
+          border border-green-100/70
           shadow-sm
         "
       >
@@ -49,7 +49,7 @@ export function OnboardingPage() {
             onClick={() =>
               isLast ? navigate("/auth/account-type") : setIndex((p) => p + 1)
             }
-            className="h-11 w-full rounded-xl bg-indigo-600 text-xs font-semibold text-white shadow-sm hover:bg-indigo-700"
+            className="h-11 w-full rounded-xl bg-green-600 text-xs font-semibold text-white shadow-sm hover:bg--700"
           >
             {isLast ? "Get Started" : "Next"}
           </button>

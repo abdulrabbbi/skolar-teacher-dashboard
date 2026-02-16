@@ -14,7 +14,7 @@ export function EducationDetailsPage() {
 
         <div className="flex flex-col items-center text-center">
           <div className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-white shadow-sm">
-            <GraduationCap className="h-5 w-5 text-indigo-600" />
+            <GraduationCap className="h-5 w-5 text-green-600" />
           </div>
           <div className="mt-3 text-lg font-semibold text-slate-900">Education Details</div>
           <div className="mt-1 text-xs text-slate-500">
@@ -26,7 +26,7 @@ export function EducationDetailsPage() {
           <div>
             <div className="mb-1 text-[11px] font-medium text-slate-500">State / Territory</div>
             <div className="relative">
-              <select className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-9 text-sm text-slate-700 shadow-sm outline-none focus:border-indigo-400">
+              <select className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-9 text-sm text-slate-700 shadow-sm outline-none focus:border-green-400">
                 <option value="">Select your state</option>
                 {STATES.map((s) => (
                   <option key={s} value={s}>{s}</option>
@@ -39,7 +39,7 @@ export function EducationDetailsPage() {
           <div>
             <div className="mb-1 text-[11px] font-medium text-slate-500">School</div>
             <div className="relative">
-              <select className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-9 text-sm text-slate-700 shadow-sm outline-none focus:border-indigo-400">
+              <select className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-9 text-sm text-slate-700 shadow-sm outline-none focus:border-green-400">
                 <option value="">Select your school</option>
                 <option>Example High School</option>
                 <option>Lorem Ipsum College</option>
@@ -51,7 +51,7 @@ export function EducationDetailsPage() {
           <div>
             <div className="mb-1 text-[11px] font-medium text-slate-500">Year Level</div>
             <div className="relative">
-              <select className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-9 text-sm text-slate-700 shadow-sm outline-none focus:border-indigo-400">
+              <select className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-9 text-sm text-slate-700 shadow-sm outline-none focus:border-green-400">
                 <option value="">Select your year level</option>
                 {YEAR_LEVELS.map((y) => (
                   <option key={y} value={y}>{y}</option>
@@ -64,7 +64,7 @@ export function EducationDetailsPage() {
           <button
             type="button"
             onClick={() => navigate("/auth/setup/subjects")}
-            className="mt-2 h-10 w-full rounded-xl bg-indigo-600 text-xs font-semibold text-white shadow-sm hover:bg-indigo-700"
+            className="mt-2 h-10 w-full rounded-xl bg-green-600 text-xs font-semibold text-white shadow-sm hover:bg-green-700"
           >
             Continue
           </button>

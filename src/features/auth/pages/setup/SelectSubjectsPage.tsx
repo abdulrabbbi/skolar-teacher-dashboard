@@ -28,7 +28,7 @@ export function SelectSubjectsPage() {
 
         <div className="flex flex-col items-center text-center">
           <div className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-white shadow-sm">
-            <BookOpen className="h-5 w-5 text-indigo-600" />
+            <BookOpen className="h-5 w-5 text-green-600" />
           </div>
           <div className="mt-3 text-lg font-semibold text-slate-900">Select Your Subjects</div>
           <div className="mt-1 text-xs text-slate-500">
@@ -60,14 +60,14 @@ export function SelectSubjectsPage() {
                       onClick={() => toggle(s)}
                       className={cn(
                         "flex w-full items-center justify-between px-3 py-2 text-sm",
-                        isOn ? "bg-indigo-50 text-indigo-700" : "text-slate-700 hover:bg-slate-50",
+                        isOn ? "bg-green-50 text-green-700" : "text-slate-700 hover:bg-slate-50",
                       )}
                     >
                       <span className="truncate">{s}</span>
                       <span
                         className={cn(
                           "grid h-5 w-5 place-items-center rounded-md border",
-                          isOn ? "border-indigo-600 bg-indigo-600 text-white" : "border-slate-200 bg-white text-transparent",
+                          isOn ? "border-green-600 bg-green-600 text-white" : "border-slate-200 bg-white text-transparent",
                         )}
                       >
                         <Check className="h-4 w-4" />
@@ -82,7 +82,7 @@ export function SelectSubjectsPage() {
           <button
             type="button"
             onClick={() => navigate("/auth/setup/target")}
-            className="mt-2 h-10 w-full rounded-xl bg-indigo-600 text-xs font-semibold text-white shadow-sm hover:bg-indigo-700"
+            className="mt-2 h-10 w-full rounded-xl bg-green-600 text-xs font-semibold text-white shadow-sm hover:bg-green-700"
           >
             Continue
           </button>

@@ -26,7 +26,7 @@ export function WelcomePage() {
           <button
             type="button"
             onClick={() => navigate("/auth/login")}
-            className="h-10 w-full rounded-xl bg-indigo-600 text-xs font-semibold text-white shadow-sm hover:bg-indigo-700"
+            className="h-10 w-full rounded-xl bg-green-600 text-xs font-semibold text-white shadow-sm hover:bg-green-700"
           >
             Login
           </button>
