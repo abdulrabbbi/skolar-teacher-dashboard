@@ -1,4 +1,4 @@
-import logoSrc from "../../../assets/images/Side Menu (1).png";
+import logoSrc from "../../../assets/images/big.png";
 
 type Props = {
   size?: number;

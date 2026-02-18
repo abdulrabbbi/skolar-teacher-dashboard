@@ -11,8 +11,8 @@ import {
 import { cn } from '../../../shared/lib/cn';
 
 export default function GamesPage() {
-  const skolarCrocUrl = new URL(
-    '../../../assets/image (28) 1.svg',
+  const scaryPng = new URL(
+    '../../../assets/images/scary.png',
     import.meta.url,
   ).toString();
 
@@ -20,7 +20,7 @@ export default function GamesPage() {
     <div className="h-full w-full">
       <div className="relative overflow-hidden rounded-[28px] border border-slate-200 bg-white">
         {/* Gradient Background */}
-        <div className="relative min-h-[520px] rounded-[28px] bg-gradient-to-br from-[#1F63FF] via-[#2A56F6] to-[#5A33F3] p-6 md:p-10">
+        <div className="relative min-h-[520px] rounded-[28px] bg-gradient-to-br from-[#4cdc33] via-[#017517] to-[#035c07] p-6 md:p-10">
           
           {/* Glow */}
           <div className="pointer-events-none absolute inset-0 opacity-35">
@@ -111,20 +111,10 @@ export default function GamesPage() {
             {/* RIGHT CONTENT */}
             <div className="relative mx-auto w-full max-w-[520px]">
               
-              {/* Floating cards */}
-              <div className="absolute right-2 top-2 hidden sm:flex items-center gap-2 rounded-2xl border border-white/20 bg-white/15 px-3 py-2 text-white backdrop-blur">
-                <Trophy className="h-4 w-4" />
-                <span className="text-xs">Rank 2450</span>
-              </div>
-
-              <div className="absolute left-2 top-[55%] hidden sm:flex items-center gap-2 rounded-2xl border border-white/20 bg-white/15 px-3 py-2 text-white backdrop-blur">
-                <Zap className="h-4 w-4" />
-                <span className="text-xs">Streak +900</span>
-              </div>
-
+          
               {/* Mascot */}
               <img
-                src={skolarCrocUrl}
+                src={scaryPng}
                 alt="SKOLAR mascot"
                 className="mx-auto w-[340px] scale-[1.18] select-none drop-shadow-[0_28px_65px_rgba(0,0,0,0.28)] sm:w-[420px] sm:scale-[1.25] md:w-[520px] md:scale-[1.32]"
                 draggable={false}
@@ -138,3 +128,4 @@ export default function GamesPage() {
     </div>
   );
 }
+ 
