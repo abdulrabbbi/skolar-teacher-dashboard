@@ -144,3 +144,33 @@ export const keySkills: SkillItem[] = [
     areaId: "methods-unit-4-aos-2",
   },
 ];
+
+
+
+export function getAreaDetailContent(_areaId?: string | null) {
+  // Fallback: show the same content for any area (matches your Figma screenshot)
+  return {
+    outcomes: [
+      { id: "o1", label: "Define and explain key concepts related to circular functions" },
+      { id: "o2", label: "Apply transformations to circular functions" },
+      { id: "o3", label: "Model periodic phenomena using circular functions" },
+      { id: "o4", label: "Solve circular equations and interpret solutions" },
+    ],
+    keyKnowledge: [
+      { id: "k1", label: "Radian measure and its relationship with degree measure" },
+      { id: "k2", label: "The unit circle and exact values" },
+      { id: "k3", label: "Sine, cosine and tangent functions and their graphs" },
+      { id: "k4", label: "Transformations: translations, dilations and reflections" },
+      { id: "k5", label: "Solution of equations involving circular functions" },
+      { id: "k6", label: "Modelling periodic phenomena" },
+    ],
+    keySkills: [
+      { id: "s1", label: "Convert between degrees and radians" },
+      { id: "s2", label: "Determine exact values using the unit circle" },
+      { id: "s3", label: "Sketch graphs of circular functions with transformations" },
+      { id: "s4", label: "Solve equations using algebraic and graphical methods" },
+      { id: "s5", label: "Apply circular functions to model real-world phenomena" },
+      { id: "s6", label: "Interpret solutions in context" },
+    ],
+  };
+}

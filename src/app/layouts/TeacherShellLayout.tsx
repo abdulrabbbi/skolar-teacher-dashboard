@@ -55,7 +55,7 @@ export default function TeacherShellLayout() {
 
           {/* MAIN CONTENT (ONLY SCROLLER) */}
           <main className="min-w-0 flex-1">
-            <div className="h-full overflow-hidden rounded-2xl">
+            <div className="h-full overflow-hidden">
               {/* ✅ apply dotted bg here too so it shows on ALL teacher routes while scrolling */}
               <div
                 ref={scrollRef}

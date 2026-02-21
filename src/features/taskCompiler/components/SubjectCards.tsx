@@ -1,19 +1,18 @@
-
 /* eslint-disable no-shadow-restricted-names */
-
 import { ChevronRight } from "lucide-react";
-
-import Badge from "../../../shared/components/ui/Badge";
-import type { SubjectCard, SubjectCardColor } from "../data/taskCompiler.mock";
-import { taskCompilerCopy } from "../data/taskCompiler.mock";
+import { cn } from "../../../shared/lib/cn";
 import SubjectIcon from "./SubjectIcon";
+import type { SubjectCard, SubjectCardColor } from "../data/taskCompiler.mock";
 
-const bgClasses: Record<SubjectCardColor, string> = {
-  blue: "bg-blue-50 border-blue-300",
-  green: "bg-emerald-50 border-emerald-300",
-  purple: "bg-purple-50 border-purple-300",
-  orange: "bg-orange-50 border-orange-300",
-  pink: "bg-pink-50 border-pink-300",
+const tone: Record<
+  SubjectCardColor,
+  string
+> = {
+  blue: "bg-blue-50/70 border-blue-200",
+  green: "bg-emerald-50/70 border-emerald-200",
+  purple: "bg-purple-50/70 border-purple-200",
+  orange: "bg-orange-50/70 border-orange-200",
+  pink: "bg-pink-50/70 border-pink-200",
 };
 
 export default function SubjectCards({
@@ -24,56 +23,39 @@ export default function SubjectCards({
   onSelect: (subject: SubjectCard) => void;
 }) {
   return (
-    <section className="space-y-2">
-      <div className="space-y-1">
-        <h2 className="text-base font-semibold text-slate-900">
-          {taskCompilerCopy.subjectSelectionTitle}
-        </h2>
-        <p className="text-sm text-slate-500">
-          {taskCompilerCopy.subjectSelectionSubtitle}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {subjects.map((subject) => (
-          <div
-            key={subject.id}
-            role="button"
-            tabIndex={0}
-            onClick={() => onSelect(subject)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                onSelect(subject);
-              }
-            }}
-            className={`
-              ${bgClasses[subject.color]}
-              group
-              flex items-center justify-between gap-4
-              rounded-xl border p-5
-              cursor-pointer
-              transition-all duration-300 hover:-translate-y-1 hover:shadow-lg
-            `}
-          >
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      {subjects.map((s) => (
+        <button
+          key={s.id}
+          type="button"
+          onClick={() => onSelect(s)}
+          className={cn(
+            "w-full text-left",
+            "rounded-2xl border p-5",
+            "transition hover:shadow-sm",
+            "focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-200",
+            tone[s.color],
+          )}
+        >
+          <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <SubjectIcon icon={subject.icon} color={subject.color} size={44} />
+              {/* Figma icon tile */}
+              <SubjectIcon icon={s.icon} color={s.color} size={44} />
 
-              <div>
-                <p className="text-sm font-semibold text-slate-900">
-                  {subject.title}
+              <div className="min-w-0">
+                <p className="truncate text-base font-semibold text-slate-900">
+                  {s.title}
                 </p>
-                <Badge variant="neutral">
-                  {taskCompilerCopy.unitsLabel}: {subject.unitsCompleted} /{" "}
-                  {subject.unitsTotal}
-                </Badge>
+                <p className="mt-1 text-sm text-slate-500">
+                  Units {s.unitsCompleted}/{s.unitsTotal}
+                </p>
               </div>
             </div>
 
-            <ChevronRight className="h-5 w-5 text-slate-600 transition-transform duration-200 group-hover:scale-110" />
+            <ChevronRight className="h-5 w-5 shrink-0 text-slate-400" />
           </div>
-        ))}
-      </div>
-    </section>
+        </button>
+      ))}
+    </div>
   );
 }

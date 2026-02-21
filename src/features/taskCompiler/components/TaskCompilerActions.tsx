@@ -1,45 +1,36 @@
-import { Layers, Zap, History } from 'lucide-react';
+import { NavLink } from "react-router-dom";
+import { History, Layers, Zap } from "lucide-react";
+import { cn } from "../../../shared/lib/cn";
 
-export type TaskCompilerTab =
-  | 'by-subject'
-  | 'quick-content'
-  | 'history';
+const tabs = [
+  { to: "by-subject", label: "By Subject & Study Design", icon: Layers, end: false },
+  { to: "quick-content", label: "Generate Quick Content", icon: Zap, end: false },
+  { to: "history", label: "Task History", icon: History, end: false },
+] as const;
 
-const actions = [
-  { id: 'by-subject', label: 'By Subject & Study Design', icon: Layers },
-  { id: 'quick-content', label: 'Generate Quick Content', icon: Zap },
-  { id: 'history', label: 'Task History', icon: History },
-];
-
-export type TaskCompilerActionsProps = {
-  activeTab: TaskCompilerTab;
-  onTabChange: (tab: TaskCompilerTab) => void;
-};
-
-export default function TaskCompilerActions({
-  activeTab,
-  onTabChange,
-}: TaskCompilerActionsProps) {
+export default function TaskCompilerActions() {
   return (
-    <div className="flex flex-wrap gap-2">
-      {actions.map((action) => {
-        const Icon = action.icon;
-        const isActive = activeTab === action.id;
+    <div className="inline-flex w-fit items-center gap-1 rounded-full border border-slate-200 bg-slate-100/80 p-1">
+      {tabs.map((t) => {
+        const Icon = t.icon;
         return (
-          <button
-            key={action.id}
-            type="button"
-            onClick={() => onTabChange(action.id as TaskCompilerTab)}
-            className={`group inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all duration-200 hover:-translate-y-0.5 ${
-              isActive
-                ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
-                : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
-            }`}
-            aria-pressed={isActive}
+          <NavLink
+            key={t.to}
+            to={t.to}
+            end={t.end}
+            className={({ isActive }) =>
+              cn(
+                "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium transition",
+                "focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-200",
+                isActive
+                  ? "bg-white text-slate-900 shadow-sm"
+                  : "text-slate-700 hover:bg-white/60",
+              )
+            }
           >
-            <Icon className="h-4 w-4 text-slate-500 transition-transform duration-200 group-hover:scale-110" />
-            {action.label}
-          </button>
+            <Icon className="h-4 w-4 text-slate-700" />
+            {t.label}
+          </NavLink>
         );
       })}
     </div>

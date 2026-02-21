@@ -1,28 +1,18 @@
-import type { ReactNode } from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+﻿import type { ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
 
-export type ProtectedRouteProps = {
-  isAuthenticated?: boolean;
-  isLoading?: boolean;
-  redirectTo?: string;
-  children?: ReactNode;
+type ProtectedRouteProps = {
+  children: ReactNode;
 };
 
-export default function ProtectedRoute({
-  isAuthenticated = true,
-  isLoading = false,
-  redirectTo = "/auth/login",
-  children,
-}: ProtectedRouteProps) {
-  const location = useLocation();
+function isAuthed(): boolean {
+  return localStorage.getItem('skolar_auth') === '1';
+}
 
-  if (isLoading) {
-    return children ? <>{children}</> : <Outlet />;
+export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+  if (!isAuthed()) {
+    return <Navigate to="/" replace />;
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to={redirectTo} replace state={{ from: location }} />;
-  }
-
-  return children ? <>{children}</> : <Outlet />;
+  return <>{children}</>;
 }

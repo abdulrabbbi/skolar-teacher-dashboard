@@ -1,27 +1,19 @@
-
-
-import { Link } from 'react-router-dom';
-import {
-  Bell,
-  ChevronLeft,
-  Sparkles,
-  Trophy,
-  Zap,
-} from 'lucide-react';
-import { cn } from '../../../shared/lib/cn';
+import { Link } from "react-router-dom";
+import { Bell, ChevronLeft, Sparkles, Trophy, Zap } from "lucide-react";
+import { cn } from "../../../shared/lib/cn";
 
 export default function GamesPage() {
   const scaryPng = new URL(
-    '../../../assets/images/scary.png',
+    "../../../assets/images/scary.png",
     import.meta.url,
   ).toString();
 
   return (
-    <div className="h-full w-full">
-      <div className="relative overflow-hidden rounded-[28px] border border-slate-200 bg-white">
+    // ✅ Full page responsive wrapper + 90vh height
+    <div className="w-full min-h-[90vh]">
+      <div className="relative min-h-[90vh] overflow-hidden rounded-[28px] border border-slate-200 bg-white">
         {/* Gradient Background */}
-        <div className="relative min-h-[520px] rounded-[28px] bg-gradient-to-br from-[#4cdc33] via-[#017517] to-[#035c07] p-6 md:p-10">
-          
+        <div className="relative flex min-h-[90vh] flex-col rounded-[28px] bg-gradient-to-br from-[#4cdc33] via-[#017517] to-[#035c07] p-6 md:p-10">
           {/* Glow */}
           <div className="pointer-events-none absolute inset-0 opacity-35">
             <div className="absolute -left-24 top-10 h-[320px] w-[320px] rounded-full bg-white blur-[90px]" />
@@ -40,8 +32,7 @@ export default function GamesPage() {
           </div>
 
           {/* Main Layout */}
-          <div className="relative z-10 mt-6 grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-            
+          <div className="relative z-10 mt-6 grid flex-1 items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             {/* LEFT CONTENT */}
             <div className="max-w-[720px]">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/15 px-3 py-1 text-xs font-semibold text-white">
@@ -56,8 +47,8 @@ export default function GamesPage() {
               </h1>
 
               <p className="mt-4 max-w-[560px] text-sm leading-6 text-white/85 sm:text-base">
-                Master your subjects with SKOLAR-level learning.
-                Teacher-led live games focused on real classroom needs.
+                Master your subjects with SKOLAR-level learning. Teacher-led live
+                games focused on real classroom needs.
               </p>
 
               {/* Chips */}
@@ -76,9 +67,9 @@ export default function GamesPage() {
               {/* Points */}
               <ul className="mt-6 space-y-2 text-sm text-white/85">
                 {[
-                  'Curriculum-aligned classroom games',
-                  'Real-time progress & performance tracking',
-                  'Learning that feels like playing',
+                  "Curriculum-aligned classroom games",
+                  "Real-time progress & performance tracking",
+                  "Learning that feels like playing",
                 ].map((item) => (
                   <li key={item} className="flex gap-2">
                     <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-white/80" />
@@ -91,11 +82,11 @@ export default function GamesPage() {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <button
                   className={cn(
-                    'inline-flex items-center justify-center gap-2',
-                    'rounded-xl bg-[#FF9D00] px-5 py-3',
-                    'text-sm font-semibold text-white',
-                    'shadow-[0_10px_30px_rgba(0,0,0,0.18)]',
-                    'hover:brightness-95 active:brightness-90',
+                    "inline-flex items-center justify-center gap-2",
+                    "rounded-xl bg-[#FF9D00] px-5 py-3",
+                    "text-sm font-semibold text-white",
+                    "shadow-[0_10px_30px_rgba(0,0,0,0.18)]",
+                    "hover:brightness-95 active:brightness-90",
                   )}
                 >
                   <Bell className="h-4 w-4" />
@@ -110,8 +101,6 @@ export default function GamesPage() {
 
             {/* RIGHT CONTENT */}
             <div className="relative mx-auto w-full max-w-[520px]">
-              
-          
               {/* Mascot */}
               <img
                 src={scaryPng}
@@ -128,4 +117,3 @@ export default function GamesPage() {
     </div>
   );
 }
- 
