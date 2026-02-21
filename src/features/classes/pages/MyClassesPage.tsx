@@ -10,7 +10,9 @@ export default function MyClassesPage() {
     <div className="space-y-6">
       
       {/* HEADER CARD (SAME STYLE AS ANALYTICS) */}
-      <Card className="p-4 sm:p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
+      <Card className="  p-4 sm:p-5
+          transition-all duration-300 ease-in-out
+          hover:shadow-lg">
         <PageHeader
           title="My Classes"
           subtitle="Manage your classes and monitor student progress"

@@ -11,7 +11,7 @@ export default function TaskCompilerPage() {
     <div className="space-y-4">
       {/* Header card (matches Figma top bar) */}
       <div className="rounded-2xl border border-slate-200 bg-white px-5 py-4">
-        <PageHeader
+        <PageHeader 
           title={taskCompilerCopy.pageTitle}
           subtitle="AI-powered worksheet and assessment generator"
         />

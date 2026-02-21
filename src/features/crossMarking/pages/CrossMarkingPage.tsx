@@ -35,8 +35,9 @@ export default function CrossMarkingPage() {
             rounded-2xl border border-slate-200 bg-white h-24
             px-4 py-4
             shadow-sm
-            transition-all duration-300 ease-in-out
-            hover:-translate-y-1 hover:shadow-xl
+             p-4 sm:p-5
+          transition-all duration-300 ease-in-out
+          hover:shadow-lg
           "
         >
           <div className="flex items-center justify-between gap-4">

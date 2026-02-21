@@ -108,7 +108,9 @@ export default function LiveQuizPage() {
 
   return (
     <div className="space-y-6">
-      <Card className="p-4 sm:p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
+      <Card className="  p-4 sm:p-5
+          transition-all duration-300 ease-in-out
+          hover:shadow-lg">
         <PageHeader
           title="Live Quiz"
           subtitle="Launch real-time quizzes, track participation, and review results"

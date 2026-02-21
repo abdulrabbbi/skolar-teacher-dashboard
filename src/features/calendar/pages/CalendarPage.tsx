@@ -29,7 +29,9 @@ export default function CalendarPage() {
 
   return (
     <div className="space-y-4">
-      <Card className="p-4 sm:p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
+      <Card className="  p-4 sm:p-5
+          transition-all duration-300 ease-in-out
+          hover:shadow-lg">
         <CalendarHeader
           monthLabel={calendarMonth}
           viewMode={viewMode}

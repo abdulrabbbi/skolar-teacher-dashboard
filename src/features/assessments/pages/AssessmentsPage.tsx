@@ -25,7 +25,9 @@ export default function AssessmentsPage() {
 
   return (
     <div className="space-y-6">
-      <Card className="p-4 sm:p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
+      <Card className="  p-4 sm:p-5
+          transition-all duration-300 ease-in-out
+          hover:shadow-lg">
         <PageHeader
           title="Assessments"
           subtitle="Create and manage SACs, exams, and practice tests"
