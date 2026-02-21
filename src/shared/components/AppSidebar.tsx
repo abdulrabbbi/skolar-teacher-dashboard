@@ -134,7 +134,9 @@ export default function AppSidebar({ mobileOpen, onClose }: SidebarProps) {
         </div>
 
         {/* NAV */}
-        <nav className="flex-1 overflow-y-auto px-1 py-3 space-y-5">
+        <nav
+          className="flex-1 overflow-y-auto px-1 py-3 space-y-5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        >
           {sidebarSections.map((section) => (
             <div key={section.title}>
               {/* Hide "Main" heading like screenshot */}
