@@ -1,38 +1,48 @@
 
-import { useState } from 'react';
-import PageHeader from '../../../shared/components/ui/PageHeader';
-import NotificationSettings from '../components/NotificationSettings';
-import PreferenceSettings from '../components/PreferenceSettings';
-import ProfileSettings from '../components/ProfileSettings';
-import SettingsSidebar from '../components/SettingsSidebar';
+import { useState } from "react";
+import Card from "../../../shared/components/ui/Card";
+import PageHeader from "../../../shared/components/ui/PageHeader";
+import NotificationSettings from "../components/NotificationSettings";
+import PreferenceSettings from "../components/PreferenceSettings";
+import ProfileSettings from "../components/ProfileSettings";
+import SettingsSidebar from "../components/SettingsSidebar";
 import {
   notificationSettings,
   preferenceSettings,
   profileSettings,
   settingsTabs,
   type SettingsTab,
-} from '../data/settings.mock';
+} from "../data/settings.mock";
 
 export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
+  const [activeTab, setActiveTab] = useState<SettingsTab>("profile");
 
   return (
-    <div className="space-y-8">
-      <PageHeader title="Settings" />
+    <div className="space-y-6">
+      {/* ✅ TOP HEADER CARD (separate like screenshot) */}
+      <Card className="p-4 sm:p-5">
+        <PageHeader
+          title="Settings"
+          subtitle="Manage your account and preferences"
+        />
+      </Card>
+
+      {/* ✅ CONTENT */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
         <SettingsSidebar
           tabs={settingsTabs}
           activeTab={activeTab}
           onTabChange={setActiveTab}
         />
+
         <div>
-          {activeTab === 'profile' ? (
+          {activeTab === "profile" ? (
             <ProfileSettings profile={profileSettings} />
           ) : null}
-          {activeTab === 'notifications' ? (
+          {activeTab === "notifications" ? (
             <NotificationSettings items={notificationSettings} />
           ) : null}
-          {activeTab === 'preferences' ? (
+          {activeTab === "preferences" ? (
             <PreferenceSettings preferences={preferenceSettings} />
           ) : null}
         </div>

@@ -40,15 +40,7 @@ export default function ClassroomPulse({
 }: ClassroomPulseProps) {
   return (
     <section className="space-y-4">
-      {/* HEADER */}
-      <div>
-        <h2 className="text-base sm:text-lg font-semibold text-slate-900">
-          Classroom Pulse
-        </h2>
-        <p className="text-sm text-slate-500">
-          Real-time class health overview
-        </p>
-      </div>
+
 
       {/* CARDS */}
       <div

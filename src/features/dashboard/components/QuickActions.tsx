@@ -33,7 +33,7 @@ export default function QuickActions({ actions }: QuickActionsProps) {
         Quick Actions
       </h2>
 
-      <div className="space-y-3">
+      <div className="space-y-3 h-85">
         {actions.map((action) => (
           <Card
             key={action.id}

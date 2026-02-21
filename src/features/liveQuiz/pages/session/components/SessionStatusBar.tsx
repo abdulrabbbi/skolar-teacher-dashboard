@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { ArrowRight, Clock, Pause, Users, XCircle } from 'lucide-react';
 import Card from '../../../../../shared/components/ui/Card';
 import Button from '../../../../../shared/components/ui/Button';
@@ -14,60 +15,81 @@ export type SessionStatusBarProps = {
   };
 };
 
+function StatBlock({
+  label,
+  value,
+  icon,
+  withDivider,
+}: {
+  label: string;
+  value: string;
+  icon?: ReactNode;
+  withDivider?: boolean;
+}) {
+  return (
+    <div className={withDivider ? 'sm:border-r sm:border-slate-200' : undefined}>
+      <p className="px-2 text-sm text-slate-500 sm:px-6">{label}</p>
+      <div className="mt-1 flex items-center gap-2 px-2 sm:px-6">
+        {icon}
+        <p className="text-sm font-semibold leading-none text-slate-950 sm:text-sm">
+          {value}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function SessionStatusBar({
   progress,
   timeRemaining,
   studentsAnswered,
 }: SessionStatusBarProps) {
   return (
-    <Card className="p-4 sm:p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-6 text-sm text-slate-700">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-slate-900">
-              {progress.current} / {progress.total}
-            </span>
-            <span className="text-slate-500">Question Progress</span>
-          </div>
+    <Card className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:p-5">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="grid flex-1 grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-0">
+          <StatBlock
+            label="Question Progress"
+            value={`${progress.current} / ${progress.total}`}
+            withDivider
+          />
 
-          <div className="flex items-center gap-2 text-emerald-600">
-            <Clock className="h-4 w-4" />
-            <span className="font-semibold text-slate-900">
-              {timeRemaining}
-            </span>
-            <span className="text-slate-500">Time Remaining</span>
-          </div>
+          <StatBlock
+            label="Time Remaining"
+            value={timeRemaining}
+            icon={<Clock className="h-5 w-5 text-emerald-600" />}
+            withDivider
+          />
 
-          <div className="flex items-center gap-2">
-            <Users className="h-4 w-4 text-slate-500" />
-            <span className="font-semibold text-slate-900">
-              {studentsAnswered.answered} / {studentsAnswered.total}
-            </span>
-            <span className="text-slate-500">Students Answered</span>
-          </div>
+          <StatBlock
+            label="Students Answered"
+            value={`${studentsAnswered.answered} / ${studentsAnswered.total}`}
+            icon={<Users className="h-5 w-5 text-emerald-600" />}
+          />
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="ml-auto flex w-full flex-wrap items-center justify-end gap-2 sm:w-auto">
           <Button
-            variant="outline"
+            variant="secondary"
             size="sm"
-            className="flex items-center gap-2 transition-all duration-200 hover:-translate-y-0.5"
+            className="h-10 rounded-xl border border-slate-300 bg-white px-4 text-sm text-slate-900 hover:bg-slate-50"
           >
             <Pause className="h-4 w-4" />
             Pause
           </Button>
+
           <Button
             variant="success"
             size="sm"
-            className="flex items-center gap-2 transition-all duration-200 hover:-translate-y-0.5"
+            className="h-10 rounded-xl bg-emerald-600 px-4 text-sm text-white hover:bg-emerald-700"
           >
             <ArrowRight className="h-4 w-4" />
             Next Question
           </Button>
+
           <Button
-            variant="outline"
             size="sm"
-            className="flex items-center gap-2 border-rose-600 bg-rose-600 text-white hover:bg-rose-700 transition-all duration-200 hover:-translate-y-0.5"
+            className="h-10 rounded-xl bg-rose-600 px-4 text-sm text-white hover:bg-rose-700"
           >
             <XCircle className="h-4 w-4" />
             End Quiz

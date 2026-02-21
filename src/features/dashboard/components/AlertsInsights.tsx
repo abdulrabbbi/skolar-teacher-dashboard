@@ -1,12 +1,5 @@
-import {
-  AlertTriangle,
-  Clock,
-  LifeBuoy,
-  Sparkles,
-  ArrowRight,
-} from "lucide-react";
-import Badge from "../../../shared/components/ui/Badge";
-import Button from "../../../shared/components/ui/Button";
+// import { AlertCircle, ArrowRight, Clock, FileText, Users } from "lucide-react";
+import { AlertCircle, Users, Clock, FileText, ArrowRight } from "lucide-react";
 import type { AlertInsightItem } from "../data/dashboard.mock";
 
 export type AlertsInsightsProps = {
@@ -14,80 +7,69 @@ export type AlertsInsightsProps = {
 };
 
 const toneConfig = {
-  alert: {
-    label: "Alert",
-    badge: "danger",
-    Icon: AlertTriangle,
-  },
-  insight: {
-    label: "Insight",
-    badge: "neutral",
-    Icon: Sparkles,
-  },
-  reminder: {
-    label: "Reminder",
-    badge: "warning",
-    Icon: Clock,
-  },
-  support: {
-    label: "Support",
-    badge: "success",
-    Icon: LifeBuoy,
-  },
+  alert: { Icon: AlertCircle, iconClass: "text-orange-500" },
+  insight: { Icon: Users, iconClass: "text-blue-600" },
+  reminder: { Icon: Clock, iconClass: "text-red-500" },
+  support: { Icon: FileText, iconClass: "text-violet-600" },
 } as const;
 
 export default function AlertsInsights({ alerts }: AlertsInsightsProps) {
   return (
-    <section className="space-y-2">
-      <h2 className="text-base font-semibold text-slate-900">
-        Alerts & Insights
-      </h2>
+    <section className="">
+      <h2 className="text-base font-semibold text-slate-900">Alerts & Insights</h2>
+      <p className="mt-1 text-xs text-slate-500">Actionable signals from your data</p>
 
-      <p className="text-sm text-slate-500">
-        Actionable signals from your data
-      </p>
-
-      <div className="space-y-3">
+      <ul className="mt-5 space-y-4">
         {alerts.map((alert) => {
-          const { badge, label, Icon } = toneConfig[alert.tone];
+          const { Icon, iconClass } = toneConfig[alert.tone];
 
           return (
-            <div
+            <li
               key={alert.id}
-              className="
-                group flex items-start gap-4
-                rounded-xl border border-slate-200 p-4
-                transition-all duration-300 ease-in-out
-                hover:-translate-y-1 hover:shadow-lg
-                transition-all duration-200 hover:shadow-md
-              "
+              className="rounded-xl border border-slate-200 bg-white px-2 py-5"
             >
-              <div className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-transform duration-200 group-hover:scale-110">
-                <Icon className="h-4 w-4" />
-              </div>
+              {/* One row layout like screenshot */}
+              <div className="flex items-center gap-4">
+                {/* icon */}
+                <Icon className={`h-6 w-6 shrink-0 ${iconClass}`} />
 
-              <div className="flex-1 space-y-1">
-                <Badge variant={badge}>{label}</Badge>
-
-                <p className="text-sm text-slate-700">
+                {/* message (single line on desktop, can wrap on mobile) */}
+                <p className="min-w-0 flex-1 text-sm font-semibold text-slate-900 sm:whitespace-nowrap sm:truncate">
                   {alert.message}
                 </p>
 
+                {/* right action (insight only) */}
                 {alert.tone === "insight" && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="px-0 text-green-600 hover:text-green-700 transition-all duration-200 hover:-translate-y-0.5"
+                  <button
+                    type="button"
+                    className="
+                      hidden shrink-0 items-center gap-2
+                      text-sm font-semibold text-emerald-600
+                      hover:text-emerald-700 md:inline-flex
+                    "
                   >
                     Identify Students
-                    <ArrowRight className="h-4 w-4 ml-1" />
-                  </Button>
+                    <ArrowRight className="h-3 w-3" />
+                  </button>
                 )}
               </div>
-            </div>
+
+              {/* mobile action (stays inside card, below) */}
+              {alert.tone === "insight" && (
+                <div className="mt-3 md:hidden">
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2 text-[15px] font-semibold text-emerald-600 hover:text-emerald-700"
+                  >
+                    Identify Students
+                    <ArrowRight className="h-5 w-5" />
+                  </button>
+                </div>
+              )}
+            </li>
           );
         })}
-      </div>
+      </ul>
     </section>
   );
 }

@@ -1,32 +1,35 @@
 // src/features/crossMarking/components/CrossMarkingStats.tsx
 
-import {
-  AlertTriangle,
-  BadgeCheck,
-  Clock,
-  Sparkles,
-} from 'lucide-react';
-import StatCard from '../../../shared/components/ui/StatCard';
-import type { CrossMarkingStat } from '../data/crossMarking.mock';
-import type { JSX } from 'react/jsx-runtime';
+import StatCard from "../../../shared/components/ui/StatCard";
+import type { CrossMarkingStat } from "../data/crossMarking.mock";
+import type { JSX } from "react/jsx-runtime";
+
+// ✅ SVG imports
+import PendingIcon from "../../../assets/images/Container (6).svg";
+import ModerationIcon from "../../../assets/images/Container (7).svg";
+import AgreementIcon from "../../../assets/images/Container (8).svg";
+import ConfidenceIcon from "../../../assets/images/Container (9).svg";
 
 export type CrossMarkingStatsProps = {
   stats: CrossMarkingStat[];
 };
 
-const iconMap: Record<CrossMarkingStat['icon'], JSX.Element> = {
-  pending: (
-    <Clock className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
-  ),
-  moderation: (
-    <AlertTriangle className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
-  ),
-  agreement: (
-    <BadgeCheck className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
-  ),
-  confidence: (
-    <Sparkles className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
-  ),
+function SvgIcon({ src, alt }: { src: string; alt: string }) {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className="h-11 w-11 transition-transform duration-200 group-hover:scale-110"
+      draggable={false}
+    />
+  );
+}
+
+const iconMap: Record<CrossMarkingStat["icon"], JSX.Element> = {
+  pending: <SvgIcon src={PendingIcon} alt="Pending" />,
+  moderation: <SvgIcon src={ModerationIcon} alt="Moderation" />,
+  agreement: <SvgIcon src={AgreementIcon} alt="Agreement" />,
+  confidence: <SvgIcon src={ConfidenceIcon} alt="Confidence" />,
 };
 
 export default function CrossMarkingStats({ stats }: CrossMarkingStatsProps) {

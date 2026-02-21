@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { liveQuizSessions } from '../../data/liveQuizSession.mock';
-import SessionTopBar from './components/SessionTopBar';
 import SessionStatusBar from './components/SessionStatusBar';
 import QuestionCard from './components/QuestionCard';
 import ParticipationCard from './components/ParticipationCard';
@@ -11,7 +10,6 @@ import StudentsNotAnsweredCard from './components/StudentsNotAnsweredCard';
 import QuickActionsCard from './components/QuickActionsCard';
 
 export default function LiveQuizSessionPage() {
-  const navigate = useNavigate();
   const { quizId } = useParams<{ quizId: string }>();
 
   const session = useMemo(() => {
@@ -28,8 +26,6 @@ export default function LiveQuizSessionPage() {
 
   return (
     <section className="space-y-6">
-      <SessionTopBar onBack={() => navigate(-1)} />
-
       <SessionStatusBar
         progress={session.progress}
         timeRemaining={session.timeRemaining}

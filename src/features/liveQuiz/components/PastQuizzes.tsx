@@ -29,7 +29,7 @@ const difficultyVariant: Record<
 
 export default function PastQuizzes({ quizzes }: PastQuizzesProps) {
   return (
-    <section className="pt-20">
+    <section>
       {/* MAIN CARD */}
       <Card className="p-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         {/* SMALL HEADING */}

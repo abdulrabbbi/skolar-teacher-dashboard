@@ -28,7 +28,8 @@ export default function AssessmentsPage() {
       <Card className="p-4 sm:p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
         <PageHeader
           title="Assessments"
-          actions={
+          subtitle="Create and manage SACs, exams, and practice tests"
+          actions={(
             <Button
               variant="success"
               size="sm"
@@ -37,7 +38,7 @@ export default function AssessmentsPage() {
             >
               + Create Assessment
             </Button>
-          }
+          )}
         />
       </Card>
 

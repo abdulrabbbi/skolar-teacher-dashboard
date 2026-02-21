@@ -1,5 +1,5 @@
+
 import ProgressBar from "../../../shared/components/ui/ProgressBar";
-import Card from "../../../shared/components/ui/Card";
 import Badge from "../../../shared/components/ui/Badge";
 import Button from "../../../shared/components/ui/Button";
 import type { TopicPerformanceItem } from "../data/dashboard.mock";
@@ -16,27 +16,20 @@ const getVariant = (percent: number) => {
 
 export default function TopicPerformance({ topics }: TopicPerformanceProps) {
   return (
-    <section className="space-y-2 w-full">
-      <h2 className="text-base font-semibold text-slate-900">
-        Topic Performance
-      </h2>
+    <section className="w-full space-y-6">
+      <div className="space-y-2">
+        <h2 className="text-base font-semibold text-slate-900">
+          Topic Performance
+        </h2>
+        <p className="text-sm text-slate-500">This week's pain points</p>
+      </div>
 
-      <p className="text-sm text-slate-500">
-        This week's pain points
-      </p>
-
-      <Card
-        className="
-          space-y-6 w-full p-5
-          transition-all duration-300 ease-in-out
-          hover:-translate-y-1 hover:shadow-xl
-        "
-      >
+      <div className="space-y-6">
         {topics.map((topic) => (
           <div key={topic.id} className="space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="font-medium text-slate-900">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex min-w-0 flex-wrap items-center gap-2">
+                <span className="truncate text-sm font-semibold text-slate-900 sm:text-[15px]">
                   {topic.topic}
                 </span>
 
@@ -47,7 +40,7 @@ export default function TopicPerformance({ topics }: TopicPerformanceProps) {
                 ))}
               </div>
 
-              <span className="text-slate-500">
+              <span className="shrink-0 text-sm font-medium text-slate-500">
                 {topic.percent}%
               </span>
             </div>
@@ -58,15 +51,11 @@ export default function TopicPerformance({ topics }: TopicPerformanceProps) {
             />
           </div>
         ))}
+      </div>
 
-        <Button
-          variant="success"
-          size="sm"
-          className="w-full transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-        >
-          Generate targeted worksheet for weak topics
-        </Button>
-      </Card>
+      <Button variant="success" size="sm" className="w-full">
+        Generate targeted worksheet for weak topics
+      </Button>
     </section>
   );
 }

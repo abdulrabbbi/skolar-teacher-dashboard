@@ -43,10 +43,10 @@
 
 
 
-// src/shared/components/ui/ProgressBar.tsx
+
 import { cn } from '../../lib/cn';
 
-export type ProgressVariant = 'green' | 'orange' | 'red';
+export type ProgressVariant = 'green' | 'orange' | 'red' | 'black';
 
 export type ProgressBarProps = {
   value: number;
@@ -59,6 +59,7 @@ const variantStyles: Record<ProgressVariant, string> = {
   green: 'bg-emerald-500',
   orange: 'bg-amber-500',
   red: 'bg-rose-500',
+  black: 'bg-slate-900',
 };
 
 const clamp = (value: number, min: number, max: number) =>

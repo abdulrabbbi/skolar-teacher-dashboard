@@ -29,12 +29,12 @@ export default function AnswerDistributionCard({
                 ) : null}
               </div>
               <span>
-                {item.students} students · {item.percent}%
+                {item.students} students ï¿½ {item.percent}%
               </span>
             </div>
             <ProgressBar
               value={item.percent}
-              variant={item.isCorrect ? 'green' : 'orange'}
+              variant={item.isCorrect ? 'green' : 'black'}
             />
           </div>
         ))}

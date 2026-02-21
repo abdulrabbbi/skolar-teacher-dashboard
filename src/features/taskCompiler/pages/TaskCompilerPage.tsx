@@ -1,19 +1,19 @@
-import { useMemo, useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { useMemo, useState } from "react";
+import { ArrowLeft } from "lucide-react";
 
-import Card from '../../../shared/components/ui/Card';
-import Button from '../../../shared/components/ui/Button';
-import PageHeader from '../../../shared/components/ui/PageHeader';
+import Card from "../../../shared/components/ui/Card";
+import Button from "../../../shared/components/ui/Button";
+import PageHeader from "../../../shared/components/ui/PageHeader";
 
-import SubjectCards from '../components/SubjectCards';
-import AreaOfStudyList from '../components/AreaOfStudyList';
-import AreaOfStudyDetail from '../pages/AreaOfStudyDetail';
-import TaskCompilerStats from '../components/TaskCompilerStats';
+import SubjectCards from "../components/SubjectCards";
+import AreaOfStudyList from "../components/AreaOfStudyList";
+import AreaOfStudyDetail from "../pages/AreaOfStudyDetail";
+import TaskCompilerStats from "../components/TaskCompilerStats";
 import TaskCompilerActions, {
   type TaskCompilerTab,
-} from '../components/TaskCompilerActions';
-import GenerateQuickContentPage from './GenerateQuickContentPage';
-import TaskHistoryPage from './TaskHistoryPage';
+} from "../components/TaskCompilerActions";
+import GenerateQuickContentPage from "./GenerateQuickContentPage";
+import TaskHistoryPage from "./TaskHistoryPage";
 
 import {
   areaOfStudyItems,
@@ -23,16 +23,12 @@ import {
   taskCompilerStats,
   type SubjectCard,
   type AreaOfStudyItem,
-} from '../data/taskCompiler.mock';
+} from "../data/taskCompiler.mock";
 
 export default function TaskCompilerPage() {
-  const [selectedSubject, setSelectedSubject] =
-    useState<SubjectCard | null>(null);
-
-  const [selectedArea, setSelectedArea] =
-    useState<AreaOfStudyItem | null>(null);
-
-  const [activeTab, setActiveTab] = useState<TaskCompilerTab>('by-subject');
+  const [selectedSubject, setSelectedSubject] = useState<SubjectCard | null>(null);
+  const [selectedArea, setSelectedArea] = useState<AreaOfStudyItem | null>(null);
+  const [activeTab, setActiveTab] = useState<TaskCompilerTab>("by-subject");
 
   const areas = useMemo(() => {
     if (!selectedSubject) return [];
@@ -41,36 +37,32 @@ export default function TaskCompilerPage() {
 
   return (
     <div className="space-y-6">
-      {/* PAGE HEADER */}
+      {/* PAGE HEADER (Title + Subtitle like screenshot) */}
       <Card className="p-4 sm:p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
-        <PageHeader title={taskCompilerCopy.pageTitle} />
+        <PageHeader
+          title={taskCompilerCopy.pageTitle}
+          subtitle="AI-powered worksheet and assessment generator"
+        />
       </Card>
 
       {/* TOP STATS */}
       <TaskCompilerStats stats={taskCompilerStats} />
 
-      {/* ✅ ACTION BUTTONS — CORRECT POSITION */}
+      {/* ACTION BUTTONS */}
       <TaskCompilerActions
         activeTab={activeTab}
-        onTabChange={(tab) => {
-          console.log(`Tab selected: ${tab}`);
-          setActiveTab(tab);
-        }}
+        onTabChange={(tab) => setActiveTab(tab)}
       />
 
-      {activeTab === 'by-subject' ? (
+      {activeTab === "by-subject" ? (
         selectedSubject && selectedArea ? (
           <AreaOfStudyDetail
             subject={selectedSubject}
             area={selectedArea}
             onBack={() => setSelectedArea(null)}
-            onGenerateQuickContent={() => {
-              console.log('Tab selected: quick-content');
-              setActiveTab('quick-content');
-            }}
+            onGenerateQuickContent={() => setActiveTab("quick-content")}
           />
         ) : selectedSubject ? (
-          /* LEVEL 2: AREA LIST */
           <div className="space-y-4">
             <Button
               variant="outline"
@@ -92,19 +84,10 @@ export default function TaskCompilerPage() {
             />
           </div>
         ) : (
-          /* LEVEL 1: SUBJECTS */
-          <SubjectCards
-            subjects={subjectCards}
-            onSelect={setSelectedSubject}
-          />
+          <SubjectCards subjects={subjectCards} onSelect={setSelectedSubject} />
         )
-      ) : activeTab === 'quick-content' ? (
-        <GenerateQuickContentPage
-          onBack={() => {
-            console.log('Tab selected: by-subject');
-            setActiveTab('by-subject');
-          }}
-        />
+      ) : activeTab === "quick-content" ? (
+        <GenerateQuickContentPage onBack={() => setActiveTab("by-subject")} />
       ) : (
         <TaskHistoryPage />
       )}

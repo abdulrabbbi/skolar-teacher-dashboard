@@ -1,19 +1,24 @@
-import { ArrowDownRight, ArrowUpRight, FileText } from 'lucide-react';
-import Card from '../../../shared/components/ui/Card';
-import Table from '../../../shared/components/ui/Table';
-import Button from '../../../shared/components/ui/Button';
-import type { TopicPerformanceRow } from '../data/analytics.mock';
+
+import { ArrowDownRight, ArrowUpRight, FileText } from "lucide-react";
+import Card from "../../../shared/components/ui/Card";
+import Table from "../../../shared/components/ui/Table";
+import Button from "../../../shared/components/ui/Button";
+import type { TopicPerformanceRow } from "../data/analytics.mock";
 
 export type TopicPerformanceTableProps = {
   rows: TopicPerformanceRow[];
 };
 
-const formatDelta = (value: number) =>
-  `${value > 0 ? '+' : ''}${value}%`;
+const formatDelta = (value: number) => `${value > 0 ? "+" : ""}${value}%`;
 
-export default function TopicPerformanceTable({
-  rows,
-}: TopicPerformanceTableProps) {
+// ✅ matches screenshot colors (green / orange / red)
+const classAvgColor = (value: number) => {
+  if (value >= 75) return "text-emerald-600";
+  if (value >= 60) return "text-orange-600";
+  return "text-rose-600";
+};
+
+export default function TopicPerformanceTable({ rows }: TopicPerformanceTableProps) {
   return (
     <section className="space-y-4">
       <Card
@@ -48,13 +53,13 @@ export default function TopicPerformanceTable({
         <div className="overflow-x-auto">
           <Table
             headers={[
-              'Topic',
-              'Attempts',
-              'Class Avg',
-              'State Avg',
-              'Vs State',
-              'Trend',
-              'Action',
+              "Topic",
+              "Attempts",
+              "Class Avg",
+              "State Avg",
+              "Vs State",
+              "Trend",
+              "Action",
             ]}
           >
             {rows.map((row) => {
@@ -78,7 +83,12 @@ export default function TopicPerformanceTable({
                     {row.attempts}
                   </td>
 
-                  <td className="px-4 py-4 text-sm text-slate-700">
+                  {/* ✅ CLASS AVG colored like screenshot */}
+                  <td
+                    className={`px-4 py-4 text-sm font-semibold ${classAvgColor(
+                      row.classAvg,
+                    )}`}
+                  >
                     {row.classAvg}%
                   </td>
 
@@ -88,9 +98,7 @@ export default function TopicPerformanceTable({
 
                   <td
                     className={`px-4 py-4 text-sm font-medium ${
-                      isVsPositive
-                        ? 'text-emerald-600'
-                        : 'text-rose-600'
+                      isVsPositive ? "text-emerald-600" : "text-rose-600"
                     }`}
                   >
                     {formatDelta(row.vsState)}
@@ -99,9 +107,7 @@ export default function TopicPerformanceTable({
                   <td className="px-4 py-4 text-sm">
                     <span
                       className={`inline-flex items-center gap-1 font-medium ${
-                        isTrendPositive
-                          ? 'text-emerald-600'
-                          : 'text-rose-600'
+                        isTrendPositive ? "text-emerald-600" : "text-rose-600"
                       }`}
                     >
                       {isTrendPositive ? (

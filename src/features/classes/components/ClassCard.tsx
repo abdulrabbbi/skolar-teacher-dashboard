@@ -1,17 +1,17 @@
 
-import { ChevronRight, Users } from 'lucide-react';
-import Card from '../../../shared/components/ui/Card';
-import ProgressBar from '../../../shared/components/ui/ProgressBar';
-import type { ClassSummary } from '../data/classes.mock';
+import { ChevronRight, Users } from "lucide-react";
+import Card from "../../../shared/components/ui/Card";
+import ProgressBar from "../../../shared/components/ui/ProgressBar";
+import type { ClassSummary } from "../data/classes.mock";
 
 export type ClassCardProps = {
   classItem: ClassSummary;
 };
 
 const getProgressVariant = (score: number) => {
-  if (score >= 75) return 'green' as const;
-  if (score >= 60) return 'orange' as const;
-  return 'red' as const;
+  if (score >= 75) return "green" as const;
+  if (score >= 60) return "orange" as const;
+  return "red" as const;
 };
 
 export default function ClassCard({ classItem }: ClassCardProps) {
@@ -19,25 +19,23 @@ export default function ClassCard({ classItem }: ClassCardProps) {
     <Card
       className="
         group cursor-pointer space-y-4 p-4 sm:p-5
-        transition
-        hover:shadow-md hover:border-slate-300
+        hover:border-slate-300
         transition-all duration-300 hover:-translate-y-1 hover:shadow-lg
       "
     >
       {/* TOP */}
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h3 className="truncate text-sm sm:text-base font-semibold text-slate-900">
+          <h3 className="truncate text-base sm:text-lg font-semibold text-slate-900">
             {classItem.title}
           </h3>
 
-          <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
-            <Users className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+          <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
+            <Users className="h-4 w-4 shrink-0" />
             <span>{classItem.students} students</span>
           </div>
         </div>
 
-        {/* ARROW */}
         <ChevronRight
           className="
             h-5 w-5 shrink-0 text-slate-400
@@ -48,21 +46,19 @@ export default function ClassCard({ classItem }: ClassCardProps) {
         />
       </div>
 
-      {/* SUBJECT */}
-      <div>
-        <p className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-400">
-          Subject
-        </p>
-        <p className="mt-1 text-sm text-slate-700 truncate">
+      {/* SUBJECT (match image: Subject: ..... value right) */}
+      <div className="flex items-center justify-between gap-4">
+        <span className="text-sm text-slate-500">Subject:</span>
+        <span className="min-w-0 truncate text-sm font-medium text-slate-700 text-right">
           {classItem.subject}
-        </p>
+        </span>
       </div>
 
       {/* PROGRESS */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between text-xs text-slate-500">
+        <div className="flex items-center justify-between text-sm text-slate-500">
           <span>Avg Score</span>
-          <span className="font-medium">{classItem.avgScore}%</span>
+          <span className="font-medium text-slate-700">{classItem.avgScore}%</span>
         </div>
 
         <ProgressBar

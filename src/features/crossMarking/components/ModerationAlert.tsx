@@ -1,4 +1,4 @@
-// src/features/crossMarking/components/ModerationAlert.tsx
+
 import { AlertTriangle } from 'lucide-react';
 import Button from '../../../shared/components/ui/Button';
 import Card from '../../../shared/components/ui/Card';

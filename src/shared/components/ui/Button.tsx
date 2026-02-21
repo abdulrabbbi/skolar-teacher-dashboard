@@ -23,7 +23,7 @@ const baseStyles =
 const variantStyles: Record<ButtonVariant, string> = {
   primary: 'bg-green-600 text-white hover:bg-green-700',
 
-  secondary: 'bg-green-600 text-white hover:bg-green-700',
+  secondary: 'bg-white-300 text-black hover:bg-white-700 border border-slate-300',
 
   outline:
     'border border-slate-500 bg-red text-slate-700 hover:bg-slate-80',
@@ -32,7 +32,7 @@ const variantStyles: Record<ButtonVariant, string> = {
 
   // ✅ GREEN BUTTON (WHAT YOU WANT)
   success:
-    'bg-emerald-600 text-white hover:bg-emerald-700 focus-visible:ring-emerald-500',
+    'bg-green-600 text-white hover:bg-green-700 focus-visible:ring-green-500',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {

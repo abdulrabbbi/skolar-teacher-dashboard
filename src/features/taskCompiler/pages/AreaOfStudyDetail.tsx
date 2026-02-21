@@ -1,19 +1,14 @@
-import { useMemo, useState, type Dispatch, type SetStateAction } from 'react';
-import { ArrowLeft, FileText } from 'lucide-react';
 
-import Button from '../../../shared/components/ui/Button';
+import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
+import { ArrowLeft, FileText } from "lucide-react";
 
-import type { SubjectCard, AreaOfStudyItem } from '../data/taskCompiler.mock';
-import {
-  outcomes,
-  keyKnowledge,
-  keySkills,
-} from '../data/areaOfStudyDetail.mock';
-import SelectableListCard from '../components/SelectableListCard';
-import ContentSummaryCard from '../components/ContentSummaryCard';
-import TaskSettingsCard, {
-  type DifficultyLevel,
-} from '../components/TaskSettingsCard';
+import Button from "../../../shared/components/ui/Button";
+
+import type { SubjectCard, AreaOfStudyItem } from "../data/taskCompiler.mock";
+import { outcomes, keyKnowledge, keySkills } from "../data/areaOfStudyDetail.mock";
+import SelectableListCard from "../components/SelectableListCard";
+import ContentSummaryCard from "../components/ContentSummaryCard";
+import TaskSettingsCard, { type DifficultyLevel } from "../components/TaskSettingsCard";
 
 export type AreaOfStudyDetailProps = {
   subject: SubjectCard;
@@ -31,36 +26,32 @@ export default function AreaOfStudyDetail({
   const [selectedOutcomes, setSelectedOutcomes] = useState<string[]>([]);
   const [selectedKnowledge, setSelectedKnowledge] = useState<string[]>([]);
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
-  const [difficulty, setDifficulty] = useState<DifficultyLevel>('Mixed');
-  const [duration, setDuration] = useState('45 minutes');
+  const [difficulty, setDifficulty] = useState<DifficultyLevel>("Mixed");
+  const [duration, setDuration] = useState("45 minutes");
   const [includeMarkingGuide, setIncludeMarkingGuide] = useState(false);
 
   const areaOutcomes = useMemo(
-    () => outcomes.filter((item) => item.areaId === area.id),
-    [area.id]
+    () => outcomes.filter((item: { areaId: string }) => item.areaId === area.id),
+    [area.id],
   );
 
   const areaKnowledge = useMemo(
-    () => keyKnowledge.filter((item) => item.areaId === area.id),
-    [area.id]
+    () => keyKnowledge.filter((item: { areaId: string }) => item.areaId === area.id),
+    [area.id],
   );
 
   const areaSkills = useMemo(
-    () => keySkills.filter((item) => item.areaId === area.id),
-    [area.id]
+    () => keySkills.filter((item: { areaId: string }) => item.areaId === area.id),
+    [area.id],
   );
 
   const totalSelections =
-    selectedOutcomes.length +
-    selectedKnowledge.length +
-    selectedSkills.length;
+    selectedOutcomes.length + selectedKnowledge.length + selectedSkills.length;
 
   const toggleSelection = (setSelected: Dispatch<SetStateAction<string[]>>) => {
     return (id: string) => {
       setSelected((prev) =>
-        prev.includes(id)
-          ? prev.filter((itemId) => itemId !== id)
-          : [...prev, id]
+        prev.includes(id) ? prev.filter((itemId) => itemId !== id) : [...prev, id],
       );
     };
   };
@@ -74,17 +65,25 @@ export default function AreaOfStudyDetail({
         className="flex w-fit items-center gap-2 transition-all duration-200 hover:-translate-y-0.5"
       >
         <ArrowLeft className="h-4 w-4" />
-        Back to Areas
+        Back to Subjects
       </Button>
 
-      <div className="space-y-1">
-        <h2 className="text-xl font-semibold text-slate-900">
-          {area.title}
-        </h2>
-        <p className="text-sm text-slate-500">
-          {subject.title} - {area.unit}
-        </p>
+      {/* ✅ Title row with icon (matches screenshot) */}
+      <div className="flex items-start gap-3">
+        <div className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-blue-600 shadow-sm">
+          <FileText className="h-5 w-5 text-white" />
+        </div>
+
+        <div className="min-w-0 space-y-1">
+          <h2 className="text-xl font-semibold text-slate-900">{area.title}</h2>
+          <p className="text-sm text-slate-500">
+            {subject.title} • {area.unit}
+          </p>
+        </div>
       </div>
+
+      {/* ✅ Helper line like image */}
+      <p className="text-sm text-slate-500">Select the content you want to assess</p>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div className="space-y-6 xl:col-span-2">
@@ -135,7 +134,7 @@ export default function AreaOfStudyDetail({
             disabled={totalSelections === 0}
             className="flex items-center gap-2 transition-all duration-200 hover:-translate-y-0.5"
             onClick={() => {
-              console.log('Generate Quick Content clicked');
+              console.log("Generate Quick Content clicked");
               onGenerateQuickContent();
             }}
           >

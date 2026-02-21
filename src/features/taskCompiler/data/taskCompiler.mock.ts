@@ -1,7 +1,3 @@
-// ==============================
-// TYPES
-// ==============================
-
 export type TaskCompilerStat = {
   id: string;
   label: string;
@@ -31,10 +27,6 @@ export type AreaOfStudyItem = {
   description: string;
 };
 
-// ==============================
-// COPY
-// ==============================
-
 export const taskCompilerCopy = {
   pageTitle: 'Task Compiler',
   subjectSelectionTitle: 'Select Your subject',
@@ -43,10 +35,6 @@ export const taskCompilerCopy = {
   backToSubjects: 'Back to Subjects',
   unitsLabel: 'Units',
 };
-
-// ==============================
-// TOP STATS
-// ==============================
 
 export const taskCompilerStats: TaskCompilerStat[] = [
   {
@@ -82,10 +70,6 @@ export const taskCompilerStats: TaskCompilerStat[] = [
     color: 'purple',
   },
 ];
-
-// ==============================
-// SUBJECTS
-// ==============================
 
 export const subjectCards: SubjectCard[] = [
   {
@@ -129,10 +113,6 @@ export const subjectCards: SubjectCard[] = [
     icon: 'pen',
   },
 ];
-
-// ==============================
-// AREAS OF STUDY
-// ==============================
 
 export const areaOfStudyItems: AreaOfStudyItem[] = [
   {

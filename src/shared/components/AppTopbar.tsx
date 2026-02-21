@@ -1,10 +1,12 @@
 
-
 import { Bell, Calendar, Menu } from "lucide-react";
 import type { ReactNode } from "react";
+// ✅ correct import (from src/assets/...)
+import logo from "../../assets/images/logo.png";
 
 export type AppTopbarProps = {
   onMenuClick?: () => void;
+  onLogoClick?: () => void; // optional if you want it clickable
 };
 
 type IconButtonProps = {
@@ -18,6 +20,7 @@ function IconButton({ label, children }: IconButtonProps) {
       type="button"
       aria-label={label}
       className="
+        group
         inline-flex h-9 w-9 items-center justify-center
         rounded-xl
         bg-green-100 text-green-700
@@ -34,7 +37,7 @@ function IconButton({ label, children }: IconButtonProps) {
   );
 }
 
-export default function AppTopbar({ onMenuClick }: AppTopbarProps) {
+export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) {
   return (
     <header
       className="
@@ -67,19 +70,29 @@ export default function AppTopbar({ onMenuClick }: AppTopbarProps) {
           </button>
         )}
 
-        {/* LOGO */}
-  
-     <img
-           src="assets\images\logo.png"
-           
-           alt="Skolar logo"
-           className="h-7 w-7 object-contain"
-           />
+        {/* LOGO + BRAND */}
+        <button
+          type="button"
+          onClick={onLogoClick}
+          className="
+            flex items-center gap-2
+            rounded-xl
+            px-1 py-1
+            hover:bg-slate-50
+            transition
+          "
+        >
+          <img
+            src={logo}
+            alt="Skolar logo"
+            className="h-9 w-9 shrink-0 object-contain"
+            draggable={false}
+          />
           <span className="text-lg font-semibold tracking-wide text-slate-900">
             SKOLAR
           </span>
-        </div>
-      
+        </button>
+      </div>
 
       {/* RIGHT */}
       <div className="flex items-center gap-3">

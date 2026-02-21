@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react';
-import { cn } from '../../lib/cn';
+
+import type { ReactNode } from "react";
+import { cn } from "../../lib/cn";
 
 export type PageHeaderProps = {
   title: string;
@@ -17,7 +18,7 @@ export default function PageHeader({
   return (
     <div
       className={cn(
-        'flex flex-col gap-4 md:flex-row md:items-center md:justify-between',
+        "flex flex-col gap-4 md:flex-row md:items-center md:justify-between h-13",
         className
       )}
     >
@@ -42,9 +43,10 @@ export default function PageHeader({
         {subtitle && (
           <p
             className="
-              text-sm
-              sm:text-base
+              text-xs
+              sm:text-sm
               text-slate-500
+              leading-snug
               transition-colors duration-200
             "
           >
@@ -55,12 +57,7 @@ export default function PageHeader({
 
       {/* RIGHT SIDE ACTIONS */}
       {actions && (
-        <div
-          className="
-            flex flex-wrap items-center gap-3
-            transition-all duration-200
-          "
-        >
+        <div className="flex flex-wrap items-center gap-3 transition-all duration-200">
           {actions}
         </div>
       )}
