@@ -28,7 +28,10 @@ export default function ResourceCard({
   onDownload,
 }: ResourceCardProps) {
   return (
-    <Card className="rounded-2xl border-slate-200 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+    <Card
+      hover={false}
+      className="rounded-2xl border border-slate-200 bg-white p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+    >
       <div className="space-y-4">
         <div className="space-y-2">
           <h3 className="text-base font-semibold text-slate-900">{resource.title}</h3>
@@ -55,11 +58,11 @@ export default function ResourceCard({
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
           <Button
             variant="outline"
             size="sm"
-            className="flex-1 border-slate-200 text-slate-700"
+            className="w-full border-slate-200 text-slate-700 hover:bg-slate-50"
             onClick={() => onView?.(resource)}
           >
             <Eye className="h-4 w-4" />
@@ -68,7 +71,7 @@ export default function ResourceCard({
           <Button
             variant="outline"
             size="sm"
-            className="flex-1 border-slate-200 text-slate-700"
+            className="w-full border-slate-200 text-slate-700 hover:bg-slate-50"
             onClick={() => onDuplicate?.(resource)}
           >
             <Copy className="h-4 w-4" />
@@ -77,7 +80,7 @@ export default function ResourceCard({
           <Button
             variant="outline"
             size="sm"
-            className="flex-1 border-slate-200 text-slate-700"
+            className="w-full border-slate-200 text-slate-700 hover:bg-slate-50"
             onClick={() => onDownload?.(resource)}
           >
             <Download className="h-4 w-4" />

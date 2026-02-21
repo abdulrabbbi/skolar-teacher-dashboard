@@ -18,14 +18,17 @@ export default function ContentLibraryGrid({
 }: ContentLibraryGridProps) {
   if (!resources.length) {
     return (
-      <Card className="rounded-2xl border-slate-200 p-6 text-center text-sm text-slate-500">
+      <Card
+        hover={false}
+        className="rounded-2xl border-slate-200/60 p-6 text-center text-sm text-slate-500"
+      >
         No resources match your filters yet.
       </Card>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 xl:gap-6">
       {resources.map((resource) => (
         <ResourceCard
           key={resource.id}

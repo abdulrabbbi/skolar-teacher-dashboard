@@ -39,19 +39,25 @@ export default function ContentLibraryPage() {
   }, [filters]);
 
   return (
-    <section className="space-y-6">
-      <Card className="rounded-2xl border-slate-200 p-4 sm:p-5">
+    <div className="space-y-6">
+      <Card
+        hover={false}
+        className="rounded-2xl border-slate-200/60 p-5 sm:p-6"
+      >
         <PageHeader
           title="Content Library"
           subtitle="Browse worksheets, quizzes and resources shared across subjects"
         />
       </Card>
 
-      <Card className="rounded-2xl border-slate-200 p-4 sm:p-5">
+      <Card
+        hover={false}
+        className="rounded-2xl border-slate-200/60 p-5 sm:p-6"
+      >
         <ContentLibraryFilters filters={filters} onFiltersChange={setFilters} />
       </Card>
 
-      <div className="flex items-center justify-between px-1 text-sm text-slate-500">
+      <div className="px-1 text-xs text-slate-500 sm:text-sm">
         <p>
           Showing {visibleResources.length} of {filteredResources.length} resources
         </p>
@@ -60,17 +66,17 @@ export default function ContentLibraryPage() {
       <ContentLibraryGrid resources={visibleResources} />
 
       {canLoadMore ? (
-        <div className="flex justify-center pt-2">
+        <div className="flex justify-center pt-1">
           <Button
             variant="outline"
             size="sm"
-            className="px-6 border-slate-200 text-slate-700 hover:bg-slate-50"
+            className="px-6 border-slate-200 text-slate-700 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50"
             onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}
           >
             Load More Resources
           </Button>
         </div>
       ) : null}
-    </section>
+    </div>
   );
 }
