@@ -133,7 +133,7 @@ export default function CreateAssessmentModal({
         onClick={onClose}
       />
 
-      <Card className="relative z-10 w-full max-w-md rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-xl">
+      <Card className="relative z-10 w-full max-w-md rounded-2xl border border-slate-200 bg-white p-4 sm:p-5shadow-sm">
         {/* HEADER */}
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">

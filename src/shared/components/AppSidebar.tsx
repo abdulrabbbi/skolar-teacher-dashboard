@@ -61,7 +61,7 @@ const inactive =
   "text-slate-600 hover:bg-green-100 hover:text-green-700 hover:shadow-sm hover:scale-[1.02]";
 
 const active =
-  "bg-green-500 text-white shadow-md shadow-green-200";
+  "bg-green-500 text-whiteshadow-sm shadow-green-200";
 
 /* ========================================== */
 

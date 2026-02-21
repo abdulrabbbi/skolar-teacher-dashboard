@@ -112,7 +112,7 @@ export default function AddEventModal({ isOpen, onClose }: AddEventModalProps) {
           relative z-10 w-full max-w-md
           rounded-2xl border border-slate-200 bg-white
           p-4 sm:p-5
-          shadow-xl
+         shadow-sm
         "
       >
         {/* HEADER */}

@@ -48,7 +48,7 @@ export default function ComingSoonHero() {
 
         <div className="order-2 flex flex-1 items-center justify-center lg:justify-end">
           <div className="relative h-56 w-56 sm:h-64 sm:w-64">
-            <div className="absolute inset-4 rounded-full bg-green-500 shadow-2xl" />
+            <div className="absolute inset-4 rounded-full bg-green-500shadow-sm" />
             <div className="absolute left-1/2 top-10 h-7 w-7 -translate-x-8 rounded-full bg-white" />
             <div className="absolute left-1/2 top-10 h-7 w-7 translate-x-1 rounded-full bg-white" />
             <div className="absolute left-1/2 top-12 h-2.5 w-2.5 -translate-x-6 rounded-full bg-green-700" />
@@ -57,10 +57,10 @@ export default function ComingSoonHero() {
             <div className="absolute -bottom-6 left-20 h-12 w-12 rounded-full bg-green-400/70" />
             <div className="absolute -bottom-4 right-12 h-9 w-9 rounded-full bg-green-400/70" />
 
-            <div className="absolute -left-6 top-8 rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white shadow-lg">
+            <div className="absolute -left-6 top-8 rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-whiteshadow-sm">
               ? Streak +900
             </div>
-            <div className="absolute -right-4 bottom-10 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-900 shadow-lg">
+            <div className="absolute -right-4 bottom-10 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-900shadow-sm">
               ?? Rank 2450
             </div>
             <div className="absolute right-6 top-6 flex h-10 w-10 items-center justify-center rounded-full bg-white/20">

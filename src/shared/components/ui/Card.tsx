@@ -13,7 +13,7 @@ export function Card({ className, hover = true, ...props }: CardProps) {
       className={cn(
         'rounded-xl border border-slate-200 bg-white p-4 shadow-sm',
         hover &&
-          'transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:border-slate-300',
+          'transition-all duration-300 ease-out  hover:border-slate-300',
         className,
       )}
       {...props}
