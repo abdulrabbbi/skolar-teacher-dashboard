@@ -48,9 +48,16 @@ export default function WeeklyEventCard({
   const { subject, main } = splitTitle(event);
 
   return (
-    <div className="w-full rounded-2xl border border-slate-200 bg-white px-1 py-2 shadow-sm">
-      <div className="flex items-start ">
-        {/* Checkbox */}
+    <div
+      className="
+        w-full rounded-2xl
+        border border-slate-200/70
+        bg-slate-50
+        px-1 py-2
+        shadow-sm
+      "
+    >
+      <div className="flex items-start">
         <button
           type="button"
           onClick={() => onToggle?.(event.id)}
@@ -58,7 +65,7 @@ export default function WeeklyEventCard({
             "mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-lg border transition",
             checked
               ? "border-slate-900 bg-slate-900"
-              : "border-slate-300 bg-white hover:bg-slate-50",
+              : "border-slate-300 bg-white hover:bg-slate-50"
           )}
           aria-label="Toggle event"
         >
@@ -67,17 +74,16 @@ export default function WeeklyEventCard({
           ) : null}
         </button>
 
-        {/* Content */}
         <div className="min-w-0 flex-1 w-full">
-          {/* Dot + Subject (centered, single-line, ellipsis) */}
           <div className="flex items-center justify-center gap-2 w-full min-w-0">
-            <span className={cn("h-2 w-2 shrink-0 rounded-full", dotMap[event.type])} />
+            <span
+              className={cn("h-2 w-2 shrink-0 rounded-full", dotMap[event.type])}
+            />
             <span className="min-w-0 max-w-full truncate text-[11px] font-medium text-slate-500 text-center">
               {subject || "Subject"}
             </span>
           </div>
 
-          {/* Main Title (centered, 2 lines max, ellipsis) */}
           <p
             className="
               mt-1 w-full text-center text-[13px] font-semibold leading-5 text-slate-900
@@ -91,7 +97,6 @@ export default function WeeklyEventCard({
             {main}
           </p>
 
-          {/* Duration (centered) */}
           <div className="mt-2 flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
             <Clock className="h-3.5 w-3.5 text-slate-400" />
             <span className="truncate">{event.duration}</span>

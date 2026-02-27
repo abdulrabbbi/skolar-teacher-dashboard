@@ -1,5 +1,5 @@
 import Card from "../../../shared/components/ui/Card";
-import ProgressBar from "../../../shared/components/ui/ProgressBar"; // kept (same library as you asked)
+import ProgressBar from "../../../shared/components/ui/ProgressBar"; 
 import type { LearningProfileItem } from "../data/analytics.mock";
 import { ChevronDown } from "lucide-react";
 
@@ -11,7 +11,6 @@ export default function LearningProfile({ profiles }: LearningProfileProps) {
   return (
     <section>
       <Card className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-        {/* Header */}
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <h3 className="text-lg font-semibold text-slate-900">
@@ -35,7 +34,6 @@ export default function LearningProfile({ profiles }: LearningProfileProps) {
           Visualise your strengths across your subjects
         </p>
 
-        {/* Rows */}
         <div className="mt-6 space-y-5">
           {profiles.map((p) => {
             const score = Math.max(0, Math.min(100, Math.round(p.score)));
@@ -45,23 +43,18 @@ export default function LearningProfile({ profiles }: LearningProfileProps) {
                 key={p.id}
                 className="grid grid-cols-1 gap-2 sm:grid-cols-[140px_1fr] sm:items-center"
               >
-                {/* Label */}
                 <p className="text-sm font-medium text-slate-900">{p.label}</p>
 
-                {/* Bar (exact like screenshot) */}
                 <div className="w-full">
-                  {/* keep ProgressBar usage (hidden) */}
                   <div className="sr-only">
                     <ProgressBar value={score} variant="green" />
                   </div>
 
-                  {/* visual bar */}
                   <div className="relative h-7 w-full overflow-hidden rounded-full bg-slate-200">
                     <div
                       className="h-full rounded-full bg-green-500"
                       style={{ width: `${score}%` }}
                     />
-                    {/* value inside the green fill */}
                     <div className="pointer-events-none absolute inset-0 flex items-center">
                       <div className="h-full" style={{ width: `${score}%` }}>
                         <div className="flex h-full items-center justify-end pr-4">

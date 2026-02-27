@@ -118,7 +118,7 @@ export default function GenerateQuickContentForm({
         </div>
       </div>
 
-      {/* ADVANCED OPTIONS */}
+      ADVANCED OPTIONS
       <div className="space-y-3 border-t border-slate-200 pt-4">
         <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">
           Advanced Options
@@ -143,12 +143,16 @@ export default function GenerateQuickContentForm({
             key={label}
             className="flex items-center gap-2 text-sm text-slate-700 transition hover:text-slate-900"
           >
-            <input
-              type="checkbox"
-              className="h-4 w-4 rounded border-slate-300 text-emerald-600 transition focus:ring-emerald-500"
-              checked={value}
-              onChange={(event) => setter(event.target.checked)}
-            />
+          <input
+  type="checkbox"
+  className="
+    h-4 w-4 rounded border-slate-300
+    accent-black
+    focus:ring-0 focus:ring-transparent focus:outline-none
+  "
+  checked={value}
+  onChange={(event) => setter(event.target.checked)}
+/>
             {label}
           </label>
         ))}

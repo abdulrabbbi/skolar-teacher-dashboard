@@ -18,21 +18,35 @@ import {
 } from "../data/dashboard.mock";
 
 function DashboardSection({ children }: { children: React.ReactNode }) {
-  return (
-    <Card className="p-5 space-y-4">
-      {children}
-    </Card>
-  );
+  return <Card className="space-y-4 p-5">{children}</Card>;
 }
 
 export default function DashboardPage() {
   return (
-    <div className="space-y-5 ">
+    <div className="space-y-5">
       <DashboardSection>
-        <PageHeader
-          title={dashboardGreeting.title}
-          subtitle={dashboardGreeting.subtitle}
-        />
+        <div
+          className="
+            [&_h1]:text-[40px]
+            [&_h1]:font-extrabold
+            [&_h1]:leading-[1.05]
+            [&_h1]:tracking-tight
+            [&_h1]:text-slate-900
+
+            sm:[&_h1]:text-[45px]
+            md:[&_h1]:text-[52px]
+
+            [&_p]:mt-2
+            [&_p]:text-sm
+            [&_p]:text-slate-500
+            sm:[&_p]:text-base
+          "
+        >
+          <PageHeader
+            title={dashboardGreeting.title}
+            subtitle={dashboardGreeting.subtitle}
+          />
+        </div>
       </DashboardSection>
 
       <DashboardSection>

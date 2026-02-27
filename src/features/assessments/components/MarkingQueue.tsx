@@ -11,7 +11,6 @@ export default function MarkingQueue({ items }: MarkingQueueProps) {
 
   return (
     <section className="space-y-4">
-      {/* HEADER */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold text-slate-900">
@@ -22,10 +21,9 @@ export default function MarkingQueue({ items }: MarkingQueueProps) {
           </p>
         </div>
 
-        {/* FILTER (UI ONLY) */}
         <button
           type="button"
-          className="inline-flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-600 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50"
+          className="inline-flex items-center gap-2 rounded-md  bg-gray-200 px-3 py-1.5 text-sm text-slate-600 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-100"
         >
           All Topics
           <ChevronRight className="h-4 w-4 rotate-90" />

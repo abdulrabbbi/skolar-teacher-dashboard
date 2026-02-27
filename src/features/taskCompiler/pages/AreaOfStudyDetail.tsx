@@ -125,7 +125,7 @@ function TaskSettingsCard({
             <select
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl bg-gray-100 px-3 py-2 text-sm text-black"
             >
               <option value="15 minutes">15 minutes</option>
               <option value="30 minutes">30 minutes</option>

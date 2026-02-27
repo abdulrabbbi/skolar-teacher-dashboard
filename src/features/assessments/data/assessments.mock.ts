@@ -189,24 +189,14 @@ export const deadlinesThisWeek: DeadlineItem[] = [
 
 export const recentActivity: ActivityItem[] = [
   {
-    id: 'activity-1',
-    value: '18',
-    label: 'new submissions',
+    id: 'activity-submissions',
+    value: '18 new submissions',
+    label: 'Weekly Quiz: Integration',
   },
   {
-    id: 'activity-2',
-    value: 'Weekly Quiz',
-    label: 'Integration',
-  },
-  {
-    id: 'activity-3',
-    value: '8',
-    label: 'marked',
-  },
-  {
-    id: 'activity-4',
-    value: 'SAC 2',
-    label: 'Calculus',
+    id: 'activity-marked',
+    value: '8 marked',
+    label: 'SAC 2: Calculus',
   },
 ];
 

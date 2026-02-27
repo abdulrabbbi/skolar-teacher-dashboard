@@ -164,3 +164,114 @@ body {
     animation: none !important;
   }
 }
+
+@layer utilities {
+  .quiz-summary-card {
+    /* overrides Card's bg-white/border/shadow utilities */
+    background-color: rgb(209 250 229 / 0.6) !important; /* emerald-100/60 */
+    border-color: #a7f3d0 !important; /* emerald-200 */
+    box-shadow: none !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-radius: 1rem !important; /* rounded-2xl */
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem;
+    transition: all 200ms;
+  }
+
+  .quiz-summary-icon {
+    background-color: #059669 !important; /* emerald-600 */
+    color: white !important;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .quiz-summary-title {
+    color: #064e3b !important; /* emerald-900 */
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .quiz-summary-label {
+    color: #047857 !important; /* emerald-700 */
+    font-size: 0.75rem;
+  }
+
+  .quiz-summary-value {
+    color: #064e3b !important; /* emerald-900 */
+    font-weight: 600;
+  }
+}
+
+
+
+@layer utilities {
+  /* Misconception Alerts main card */
+  .misconception-card {
+    background-color: rgb(255 251 235 / 0.6) !important; /* amber-50/60 */
+    border-color: #fde68a !important; /* amber-200 */
+  }
+
+  /* title color like figma */
+  .misconception-title {
+    color: #d97706 !important; /* orange/amber */
+  }
+
+  /* inner alert row panel */
+  .misconception-alert {
+    background-color: #ffffff !important;
+    border-color: #fde68a !important; /* amber-200 */
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 1rem; /* rounded-2xl */
+  }
+
+  /* percentage pill */
+  .misconception-pill {
+    background-color: #fef3c7 !important; /* amber-100 */
+    color: #b45309 !important; /* amber-700 */
+    border-radius: 0.75rem; /* rounded-xl */
+  }
+
+  /* orange CTA button like figma */
+  .misconception-cta {
+    background-color: #d97706 !important; /* orange */
+  }
+  .misconception-cta:hover {
+    background-color: #c2410c !important;
+  }
+}
+
+
+@layer utilities {
+  /* Students Not Yet Answered rows */
+  .sna-row {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #e5e7eb; /* slate-200 */
+    background: #ffffff;
+    border-radius: 0.75rem; /* rounded-xl-ish */
+  }
+
+  .sna-row--support {
+    background: #fef2f2 !important; /* red-50 */
+    border-color: #fca5a5 !important; /* red-300 */
+  }
+
+  /* Needs support pill */
+  .sna-badge {
+    background: #fee2e2 !important; /* red-100 */
+    color: #b91c1c !important; /* red-700 */
+    border-radius: 9999px !important;
+    padding: 0.25rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    line-height: 1rem !important;
+    border: 0 !important;
+  }
+}
