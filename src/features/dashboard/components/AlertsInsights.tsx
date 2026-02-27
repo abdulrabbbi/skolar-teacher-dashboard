@@ -5,40 +5,34 @@ import type { AlertInsightItem } from "../data/dashboard.mock";
 export type AlertsInsightsProps = {
   alerts: AlertInsightItem[];
 };
-
 const toneConfig = {
   alert: { Icon: AlertCircle, iconClass: "text-orange-500" },
   insight: { Icon: Users, iconClass: "text-blue-600" },
   reminder: { Icon: Clock, iconClass: "text-red-500" },
   support: { Icon: FileText, iconClass: "text-violet-600" },
 } as const;
-
 export default function AlertsInsights({ alerts }: AlertsInsightsProps) {
   return (
     <section className="">
-      <h2 className="text-base font-semibold text-slate-900">Alerts & Insights</h2>
-      <p className="mt-1 text-xs text-slate-500">Actionable signals from your data</p>
-
+      <h2 className="text-base font-semibold text-slate-900">
+        Alerts & Insights
+      </h2>
+      <p className="mt-1 text-xs text-slate-500">
+        Actionable signals from your data
+      </p>
       <ul className="mt-5 space-y-4">
         {alerts.map((alert) => {
           const { Icon, iconClass } = toneConfig[alert.tone];
-
           return (
             <li
               key={alert.id}
               className="rounded-xl border border-slate-200 bg-white px-2 py-5"
             >
-              {/* One row layout like screenshot */}
               <div className="flex items-center gap-4">
-                {/* icon */}
                 <Icon className={`h-6 w-6 shrink-0 ${iconClass}`} />
-
-                {/* message (single line on desktop, can wrap on mobile) */}
                 <p className="min-w-0 flex-1 text-sm font-semibold text-slate-900 sm:whitespace-nowrap sm:truncate">
                   {alert.message}
                 </p>
-
-                {/* right action (insight only) */}
                 {alert.tone === "insight" && (
                   <button
                     type="button"
@@ -54,7 +48,6 @@ export default function AlertsInsights({ alerts }: AlertsInsightsProps) {
                 )}
               </div>
 
-              {/* mobile action (stays inside card, below) */}
               {alert.tone === "insight" && (
                 <div className="mt-3 md:hidden">
                   <button

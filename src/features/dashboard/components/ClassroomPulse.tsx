@@ -15,7 +15,6 @@ const iconBase =
 const iconMap: Record<PulseStat["icon"], JSX.Element> = {
   students: <Users className={iconBase} />,
 
-  // ✅ only onTrack bigger
   onTrack: (
     <img
       src={OnTrackIcon}
@@ -38,23 +37,34 @@ const iconBgMap: Record<PulseStat["icon"], string> = {
 
 export default function ClassroomPulse({ stats }: ClassroomPulseProps) {
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-      {stats.map((stat) => (
-        <StatCard
-          key={stat.id}
-          label={stat.label}
-          value={stat.value}
-          subtitle={stat.subtitle}
-          icon={
-            <div
-              className={`group flex h-10 w-10 items-center justify-center rounded-xl ${iconBgMap[stat.icon]}`}
-            >
-              {iconMap[stat.icon]}
-            </div>
-          }
-          className="group transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg"
-        />
-      ))}
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-base font-extrabold text-slate-900 sm:text-lg">
+          Classroom Pulse
+        </h2>
+        <p className="mt-1 text-xs text-slate-500 sm:text-sm">
+          Real-time class health overview
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {stats.map((stat) => (
+          <StatCard
+            key={stat.id}
+            label={stat.label}
+            value={stat.value}
+            subtitle={stat.subtitle}
+            icon={
+              <div
+                className={`group flex h-10 w-10 items-center justify-center rounded-xl ${iconBgMap[stat.icon]}`}
+              >
+                {iconMap[stat.icon]}
+              </div>
+            }
+            className="group transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg"
+          />
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,4 +1,3 @@
-
 import { ArrowDownRight, ArrowUpRight, FileText } from "lucide-react";
 import Card from "../../../shared/components/ui/Card";
 import Table from "../../../shared/components/ui/Table";
@@ -11,7 +10,6 @@ export type TopicPerformanceTableProps = {
 
 const formatDelta = (value: number) => `${value > 0 ? "+" : ""}${value}%`;
 
-// ✅ matches screenshot colors (green / orange / red)
 const classAvgColor = (value: number) => {
   if (value >= 75) return "text-emerald-600";
   if (value >= 60) return "text-orange-600";
@@ -49,8 +47,23 @@ export default function TopicPerformanceTable({ rows }: TopicPerformanceTablePro
             Generate Targeted Practice
           </Button>
         </div>
-
-        <div className="overflow-x-auto">
+        <div
+          className="
+            overflow-x-auto
+            rounded-xl
+            border border-slate-200/60
+            [&_thead_th]:px-4
+            [&_thead_th]:py-3
+            [&_thead_th]:text-left
+            [&_thead_th]:text-xs
+            sm:[&_thead_th]:text-sm
+            [&_thead_th]:font-medium
+            [&_thead_th]:text-black font-semibold
+            [&_thead_th]:whitespace-nowrap
+            [&_tbody_tr]:border-t
+            [&_tbody_tr]:border-slate-100
+          "
+        >
           <Table
             headers={[
               "Topic",
@@ -83,10 +96,9 @@ export default function TopicPerformanceTable({ rows }: TopicPerformanceTablePro
                     {row.attempts}
                   </td>
 
-                  {/* ✅ CLASS AVG colored like screenshot */}
                   <td
                     className={`px-4 py-4 text-sm font-semibold ${classAvgColor(
-                      row.classAvg,
+                      row.classAvg
                     )}`}
                   >
                     {row.classAvg}%

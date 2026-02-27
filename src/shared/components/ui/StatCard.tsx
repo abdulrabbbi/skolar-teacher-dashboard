@@ -10,10 +10,6 @@ export type StatCardProps = HTMLAttributes<HTMLDivElement> & {
   color?: 'red' | 'green' | 'orange' | 'purple' | 'blue';
 };
 
-/* ==========================
-   ICON COLOR SYSTEM
-========================== */
-
 function getIconColor(color?: StatCardProps['color']) {
   switch (color) {
     case 'red':
@@ -27,7 +23,7 @@ function getIconColor(color?: StatCardProps['color']) {
     case 'blue':
       return 'bg-blue-600 text-white';
     default:
-      return ''; // ✅ VERY IMPORTANT: no background if color not provided
+      return ''; 
   }
 }
 
@@ -48,7 +44,6 @@ export default function StatCard({
       )}
       {...props}
     >
-      {/* LEFT CONTENT */}
       <div className="flex flex-col justify-between">
         <p className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500">
           {label}
@@ -63,7 +58,6 @@ export default function StatCard({
         </p>
       </div>
 
-      {/* ICON */}
       {icon && (
         <div
           className={cn(
