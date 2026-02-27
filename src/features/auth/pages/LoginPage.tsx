@@ -12,7 +12,6 @@ export default function LoginPage() {
 
   return (
     <div className="w-full max-w-md">
-      {/* Back pill like screenshot */}
       <button
         type="button"
         onClick={() => navigate("/")}
