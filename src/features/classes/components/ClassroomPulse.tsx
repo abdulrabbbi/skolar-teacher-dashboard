@@ -1,95 +1,109 @@
-import type { LucideIcon } from "lucide-react";
-import { AlertTriangle, Target, UserCheck, Users } from "lucide-react";
-import StatCard from "../../../shared/components/ui/StatCard";
+import type { JSX } from "react/jsx-runtime";
+import { AlertTriangle, Target, Users } from "lucide-react";
+import OnTrackIcon from "../../../assets/images/Container (14).svg";
 import { cn } from "../../../shared/lib/cn";
-import type { ClassroomPulseStat, StudentFilter } from "../data/students.mock";
+import type {
+  ClassroomPulseStat,
+  StudentFilter,
+} from "../data/students.mock";
 
 export type ClassroomPulseProps = {
   stats: ClassroomPulseStat[];
-  activeFilter: StudentFilter;
-  onFilterChange: (filter: StudentFilter) => void;
+  activeFilter?: StudentFilter;
+  onFilterChange?: (f: StudentFilter) => void;
 };
 
-/* =======================
-   ICON MAP
-   ======================= */
-const iconMap: Record<ClassroomPulseStat["icon"], LucideIcon> = {
-  students: Users,
-  onTrack: UserCheck,
-  atRisk: AlertTriangle,
-  accuracy: Target,
+const iconMap: Record<ClassroomPulseStat["icon"], JSX.Element> = {
+  students: <Users className="h-5 w-5" />,
+
+  onTrack: (
+    <img
+      src={OnTrackIcon}
+      alt="On Track"
+      className="h-11 w-11"
+      draggable={false}
+    />
+  ),
+
+  atRisk: <AlertTriangle className="h-5 w-5" />,
+  accuracy: <Target className="h-5 w-5" />,
 };
 
-/* =======================
-   ICON BACKGROUND COLORS
-   ======================= */
 const iconBgMap: Record<ClassroomPulseStat["icon"], string> = {
-  students: "bg-blue-500 text-white",
-  onTrack: "bg-green-500 text-white",
+  students: "bg-blue-600 text-white",
+  onTrack: "bg-emerald-600 text-white",
   atRisk: "bg-orange-500 text-white",
-  accuracy: "bg-purple-500 text-white",
+  accuracy: "bg-purple-600 text-white",
 };
 
-const cardBase =
-  "transition-shadow transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2";
+function statToFilter(stat: ClassroomPulseStat): StudentFilter | null {
+  if (stat.icon === "onTrack") return "onTrack";
+  if (stat.icon === "atRisk") return "atRisk";
+  if (stat.icon === "accuracy") return "accuracy";
+  return "all";
+}
 
 export default function ClassroomPulse({
   stats,
-  activeFilter,
+  activeFilter = "all",
   onFilterChange,
 }: ClassroomPulseProps) {
   return (
-    <section className="space-y-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {stats.map((stat) => {
+        const filter = statToFilter(stat);
+        const isActive = filter && activeFilter === filter;
 
+        return (
+          <button
+            key={stat.id}
+            type="button"
+            onClick={() => (filter ? onFilterChange?.(filter) : undefined)}
+            className={cn(
+              `
+              w-full text-left
+              rounded-2xl border border-slate-200 bg-white
+              p-5
+              shadow-sm
+              transition-all duration-200
+              hover:-translate-y-0.5 hover:shadow-md hover:border-slate-300
+              `,
+              // ✅ fixed height like figma
+              "min-h-[132px]",
+              isActive && ""
+            )}
+          >
+            <div className="flex items-start justify-between gap-4">
+              {/* LEFT */}
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-slate-500">
+                  {stat.label}
+                </p>
 
-      {/* CARDS */}
-      <div
-        className="
-          grid grid-cols-1
-          gap-4
-          sm:grid-cols-2
-          xl:grid-cols-4
-        "
-      >
-        {stats.map((stat) => {
-          const Icon = iconMap[stat.icon];
-          const isActive = stat.filterKey === activeFilter;
+                <p className="mt-2 text-[34px] font-extrabold leading-none text-slate-900">
+                  {stat.value}
+                </p>
 
-          return (
-            <button
-              key={stat.id}
-              type="button"
-              onClick={() => onFilterChange(stat.filterKey)}
-              aria-pressed={isActive}
-              className="group text-left w-full"
-            >
-              <StatCard
-                label={stat.label}
-                value={stat.value}
-                subtitle={stat.subtitle}
-                icon={
-                  <div
-                    className={cn(
-                      "flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl transition-transform duration-200 group-hover:scale-110",
-                      iconBgMap[stat.icon]
-                    )}
-                  >
-                    <Icon className="h-5 w-5" />
-                  </div>
-                }
-                className={cn(
-                  cardBase,
-                  "min-h-[96px]", // 👈 keeps all cards equal height
-                  isActive
-                    ? "border-slate-900/20 bg-slate-900/5 shadow-sm ring-2 ring-slate-900/15"
-                    : "hover:shadow-md",
-                  "group transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg"
+                {stat.subtitle ? (
+                  <p className="mt-4 text-sm text-slate-500">{stat.subtitle}</p>
+                ) : (
+                  <div className="mt-4 h-5" />
                 )}
-              />
-            </button>
-          );
-        })}
-      </div>
-    </section>
+              </div>
+
+              {/* RIGHT ICON */}
+              <div
+                className={cn(
+                  "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl",
+                  iconBgMap[stat.icon]
+                )}
+              >
+                {iconMap[stat.icon]}
+              </div>
+            </div>
+          </button>
+        );
+      })}
+    </div>
   );
 }

@@ -1,12 +1,10 @@
-
 import { Bell, Calendar, Menu } from "lucide-react";
 import type { ReactNode } from "react";
-// ✅ correct import (from src/assets/...)
 import logo from "../../assets/images/logo.png";
 
 export type AppTopbarProps = {
   onMenuClick?: () => void;
-  onLogoClick?: () => void; // optional if you want it clickable
+  onLogoClick?: () => void;
 };
 
 type IconButtonProps = {
@@ -23,11 +21,11 @@ function IconButton({ label, children }: IconButtonProps) {
         group
         inline-flex h-9 w-9 items-center justify-center
         rounded-xl
-        bg-green-100 text-green-700
+        bg-emerald-100 text-emerald-700
         transition-all duration-200 ease-out
-        hover:bg-green-200 hover:scale-105
+        hover:bg-emerald-200 hover:scale-105
         active:scale-95
-        focus:outline-none focus:ring-2 focus:ring-green-300
+        focus:outline-none focus:ring-2 focus:ring-emerald-300
       "
     >
       <span className="transition-transform duration-200 group-hover:rotate-6">
@@ -49,7 +47,6 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
         shadow-sm
       "
     >
-      {/* LEFT */}
       <div className="flex items-center gap-3">
         {onMenuClick && (
           <button
@@ -61,7 +58,7 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
               rounded-lg border border-slate-200
               text-slate-600
               transition-all duration-200
-              hover:bg-green-100 hover:text-green-700
+              hover:bg-emerald-100 hover:text-emerald-700
               active:scale-95
               md:hidden
             "
@@ -70,7 +67,6 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
           </button>
         )}
 
-        {/* LOGO + BRAND */}
         <button
           type="button"
           onClick={onLogoClick}
@@ -94,7 +90,6 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
         </button>
       </div>
 
-      {/* RIGHT */}
       <div className="flex items-center gap-3">
         <IconButton label="Open calendar">
           <Calendar className="h-5 w-5" />
@@ -104,7 +99,6 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
           <Bell className="h-5 w-5" />
         </IconButton>
 
-        {/* ACCOUNT */}
         <button
           type="button"
           className="
@@ -113,11 +107,11 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
             bg-white px-2.5 py-1.5
             text-sm font-medium text-slate-700
             transition-all duration-200
-            hover:bg-green-50 hover:border-green-300
-            hover:text-green-700
+            hover:bg-emerald-50 hover:border-emerald-300
+            hover:text-emerald-700
           "
         >
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500 text-xs font-semibold text-white">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-xs font-semibold text-white">
             J
           </span>
           Account
