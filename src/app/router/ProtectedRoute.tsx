@@ -8,7 +8,7 @@ type ProtectedRouteProps = {
 function isAuthed(): boolean {
   return localStorage.getItem('skolar_auth') === '1';
 }
-
+// testing only
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   if (!isAuthed()) {
     return <Navigate to="/" replace />;
