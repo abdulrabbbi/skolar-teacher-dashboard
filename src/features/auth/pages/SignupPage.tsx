@@ -30,14 +30,14 @@ export default function SignupPage() {
             <div className="mb-1 text-[11px] font-medium text-slate-500">
               Full Name
             </div>
-            <input className="h-10 w-full rounded-xl border border-slate-200 bg-white/80 px-3 text-sm outline-none focus:ring-2 focus:ring-emerald-200" />
+            <input className="h-10 w-full rounded-xl border border-slate-200 bg-white/80 px-3 text-sm outline-none focus:ring-2 focus:ring-[#00B96B]" />
           </div>
 
           <div>
             <div className="mb-1 text-[11px] font-medium text-slate-500">
               Email Address
             </div>
-            <input className="h-10 w-full rounded-xl border border-slate-200 bg-white/80 px-3 text-sm outline-none focus:ring-2 focus:ring-emerald-200" />
+            <input className="h-10 w-full rounded-xl border border-slate-200 bg-white/80 px-3 text-sm outline-none focus:ring-2 focus:ring-[#00B96B]" />
           </div>
 
           <div>
@@ -46,14 +46,14 @@ export default function SignupPage() {
             </div>
             <input
               type="password"
-              className="h-10 w-full rounded-xl border border-slate-200 bg-white/80 px-3 text-sm outline-none focus:ring-2 focus:ring-emerald-200"
+              className="h-10 w-full rounded-xl border border-slate-200 bg-white/80 px-3 text-sm outline-none focus:ring-2 focus:ring-[#00B96B]"
             />
           </div>
 
           <button
             type="button"
             onClick={() => navigate("/auth/login")}
-            className="h-10 w-full rounded-xl bg-[#00B96B] text-xs font-semibold text-white hover:bg-emerald-700"
+            className="h-10 w-full rounded-xl bg-[#00B96B] text-xs font-semibold text-white hover:bg-[#009f5c]"
           >
             Continue
           </button>
@@ -63,7 +63,7 @@ export default function SignupPage() {
             <button
               type="button"
               onClick={() => navigate("/auth/login")}
-              className="font-semibold text-emerald-700 hover:text-emerald-800"
+              className="font-semibold text-[#00B96B] hover:text-[#00B96B]"
             >
               Login
             </button>

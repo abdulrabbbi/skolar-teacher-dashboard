@@ -21,8 +21,8 @@ const baseStyles =
   "inline-flex items-center justify-center gap-2 rounded-md font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50";
 
 const variantStyles: Record<ButtonVariant, string> = {
-  // ✅ Make primary match the Calendar pills (emerald)
-  primary: "bg-emerald-600 text-white hover:bg-emerald-700 focus-visible:ring-emerald-500",
+  // Make primary match the Calendar pills (main green)
+  primary: "bg-[#00B96B] text-white hover:bg-[#009f5c] focus-visible:ring-[#00B96B]",
 
   secondary: "bg-white text-black hover:bg-slate-50 border border-slate-300",
 
@@ -30,10 +30,10 @@ const variantStyles: Record<ButtonVariant, string> = {
 
   ghost: "text-slate-700 hover:bg-slate-100",
 
-  // ✅ Make success match the Calendar pills (emerald)
-  success: "bg-emerald-600 text-white hover:bg-emerald-700 focus-visible:ring-emerald-500",
+  // Make success match the Calendar pills (main green)
+  success: "bg-[#00B96B] text-white hover:bg-[#009f5c] focus-visible:ring-[#00B96B]",
 
-  // ✅ ORANGE BUTTON (for moderation alert)
+  //  ORANGE BUTTON (for moderation alert)
   warning: "bg-[#E17100] text-white hover:bg-[#D46600] focus-visible:ring-[#E17100]",
 };
 

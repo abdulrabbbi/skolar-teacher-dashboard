@@ -11,7 +11,7 @@
 // };
 
 // const variantStyles: Record<ProgressVariant, string> = {
-//   green: 'bg-emerald-500',
+//   green: 'bg-[#00B96B]',
 //   orange: 'bg-amber-500',
 //   red: 'bg-rose-500',
 // };
@@ -56,7 +56,7 @@ export type ProgressBarProps = {
 };
 
 const variantStyles: Record<ProgressVariant, string> = {
-  green: 'bg-emerald-500',
+  green: 'bg-[#00B96B]',
   orange: 'bg-amber-500',
   red: 'bg-rose-500',
   black: 'bg-slate-900',
@@ -88,3 +88,5 @@ export function ProgressBar({
 }
 
 export default ProgressBar;
+
+

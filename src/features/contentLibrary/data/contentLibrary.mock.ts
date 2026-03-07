@@ -1,4 +1,4 @@
-﻿import type {
+import type {
   ContentLibraryFilters,
   ContentResource,
   ContentResourceType,
@@ -9,6 +9,46 @@
   YearLevel,
 } from '../types/contentLibrary.types';
 
+export const subjectColorStyles: Record<
+  ContentSubjectId,
+  {
+    badge: string;
+    cardBorder: string;
+    legendSurface: string;
+    legendText: string;
+  }
+> = {
+  methods: {
+    badge: 'bg-blue-100 text-blue-700 border-blue-200',
+    cardBorder: 'border-blue-200',
+    legendSurface: 'bg-blue-50 border-blue-200',
+    legendText: 'text-blue-700',
+  },
+  specialist: {
+    badge: 'bg-amber-100 text-amber-700 border-amber-200',
+    cardBorder: 'border-amber-200',
+    legendSurface: 'bg-amber-50 border-amber-200',
+    legendText: 'text-amber-700',
+  },
+  biology: {
+    badge: 'bg-[#00B96B1A] text-[#00B96B] border-[#00B96B]',
+    cardBorder: 'border-[#00B96B]',
+    legendSurface: 'bg-[#00B96B1A] border-[#00B96B]',
+    legendText: 'text-[#00B96B]',
+  },
+  chemistry: {
+    badge: 'bg-violet-100 text-violet-700 border-violet-200',
+    cardBorder: 'border-violet-200',
+    legendSurface: 'bg-violet-50 border-violet-200',
+    legendText: 'text-violet-700',
+  },
+  english: {
+    badge: 'bg-pink-100 text-pink-700 border-pink-200',
+    cardBorder: 'border-pink-200',
+    legendSurface: 'bg-pink-50 border-pink-200',
+    legendText: 'text-pink-700',
+  },
+};
 export const contentLibrarySubjects: SubjectCatalogItem[] = [
   { id: 'methods', name: 'Methods' },
   { id: 'specialist', name: 'Specialist' },
@@ -266,3 +306,4 @@ export const contentResourcesMock: ContentResource[] = [
     rating: 4.6,
   },
 ];
+

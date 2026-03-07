@@ -36,7 +36,7 @@ export default function PastQuizzes({ quizzes }: PastQuizzesProps) {
         <div className="mb-4 flex items-start justify-between gap-3">
           <div className="flex items-start gap-3">
             <div className="mt-1 flex items-center justify-center">
-              <History className="h-6 w-6 text-emerald-600" strokeWidth={3} />
+              <History className="h-6 w-6 text-[#00B96B]" strokeWidth={3} />
             </div>
 
             <div>
@@ -108,7 +108,7 @@ export default function PastQuizzes({ quizzes }: PastQuizzesProps) {
                       <Users className="h-3.5 w-3.5" />
                       {quiz.participants} participants
                     </span>
-                    <span className="flex items-center gap-1 text-emerald-600 font-medium">
+                    <span className="flex items-center gap-1 text-[#00B96B] font-medium">
                       <TrendingUp className="h-3.5 w-3.5" />
                       {quiz.avgScore}% avg score
                     </span>

@@ -56,13 +56,14 @@ export default function SubmissionsTable({
 
         {/* TABLE (desktop/tablet) */}
         <div className="hidden md:block">
-          <div className="w-full">
+          <div className="w-full overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
                 {/* ✅ Title row font/spacing like Figma */}
                 <tr className="border-b border-slate-200">
                   {[
                     "#",
+                    "Student",
                     "Assessment",
                     "Submitted",
                     "SKOLAR Mark",
@@ -74,7 +75,7 @@ export default function SubmissionsTable({
                     <th
                       key={h}
                       scope="col"
-                      className="px-6 py-4 text-left text-[13px] font-medium text-slate-500"
+                      className="px-6 py-4 text-left text-[13px] font-medium text-slate-500 whitespace-nowrap"
                     >
                       {h}
                     </th>
@@ -100,6 +101,13 @@ export default function SubmissionsTable({
                     {/* # */}
                     <td className="px-6 py-5 text-sm font-semibold text-slate-900 whitespace-nowrap">
                       {row.index}
+                    </td>
+
+                    {/* Student */}
+                    <td className="px-6 py-5">
+                      <div className="text-sm font-medium text-slate-900 whitespace-nowrap">
+                        {row.studentName}
+                      </div>
                     </td>
 
                     {/* Assessment */}
@@ -155,8 +163,8 @@ export default function SubmissionsTable({
                           size="sm"
                           className="
                             inline-flex items-center gap-2
-                            rounded-xl bg-emerald-600 text-white
-                            hover:bg-emerald-700
+                            rounded-xl bg-[#00B96B] text-white
+                            hover:bg-[#009f5c]
                             transition-all duration-200 hover:-translate-y-0.5
                             px-4
                           "
@@ -205,6 +213,9 @@ export default function SubmissionsTable({
                     <div className="mt-1 text-xs text-slate-500">
                       {row.submitted}
                     </div>
+                    <div className="mt-1 text-xs font-medium text-slate-700">
+                      {row.studentName}
+                    </div>
                   </div>
 
                   <Badge variant={statusVariant[row.status]}>{row.status}</Badge>
@@ -246,8 +257,8 @@ export default function SubmissionsTable({
                         size="sm"
                         className="
                           w-full inline-flex items-center justify-center gap-2
-                          rounded-xl bg-emerald-600 text-white
-                          hover:bg-emerald-700
+                          rounded-xl bg-[#00B96B] text-white
+                          hover:bg-[#009f5c]
                         "
                       >
                         <CheckSquare className="h-4 w-4" />

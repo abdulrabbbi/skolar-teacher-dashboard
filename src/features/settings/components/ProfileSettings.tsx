@@ -16,7 +16,7 @@ export default function ProfileSettings({ profile }: ProfileSettingsProps) {
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           {/* ✅ green avatar like figma */}
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 text-sm font-semibold text-white">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#00B96B] text-sm font-semibold text-white">
             {profile.initials}
           </div>
 

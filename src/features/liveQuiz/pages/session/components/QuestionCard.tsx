@@ -23,7 +23,7 @@ export default function QuestionCard({
           <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
           <p className="text-sm text-slate-500">{topic}</p>
         </div>
-        <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+        <span className="rounded-full bg-[#00B96B14] px-3 py-1 text-xs font-semibold text-[#00B96B]">
           {timeLimit}
         </span>
       </div>
@@ -36,7 +36,7 @@ export default function QuestionCard({
             key={option.id}
             className={`rounded-lg border p-3 text-sm ${
               option.isCorrect
-                ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                ? 'border-[#00B96B] bg-[#00B96B14] text-[#00B96B]'
                 : 'border-slate-200 bg-white text-slate-700'
             }`}
           >
@@ -50,3 +50,4 @@ export default function QuestionCard({
     </Card>
   );
 }
+

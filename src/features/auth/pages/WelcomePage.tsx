@@ -37,7 +37,7 @@ export default function WelcomePage() {
         <button
           type="button"
           onClick={() => navigate("/auth/login")}
-          className="h-10 w-full rounded-xl bg-[#00B96B] text-xs font-semibold text-white hover:bg-emerald-700"
+          className="h-10 w-full rounded-xl bg-[#00B96B] text-xs font-semibold text-white hover:bg-[#009f5c]"
         >
           Login
         </button>
@@ -58,3 +58,4 @@ export default function WelcomePage() {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-﻿import Card from '../../../shared/components/ui/Card';
+import Card from '../../../shared/components/ui/Card';
 import { cn } from '../../../shared/lib/cn';
 
 import SubjectIcon from '../../taskCompiler/components/SubjectIcon';
@@ -41,7 +41,7 @@ export default function CurriculumSidebar({
               className={cn(
                 'flex w-full items-center gap-3 rounded-xl border px-3 py-2 text-left transition',
                 isActive
-                  ? 'border-emerald-500 bg-emerald-50'
+                  ? 'border-[#00B96B] bg-[#00B96B14]'
                   : 'border-slate-200 bg-white hover:bg-slate-50',
               )}
             >
@@ -85,3 +85,4 @@ export default function CurriculumSidebar({
     </Card>
   );
 }
+

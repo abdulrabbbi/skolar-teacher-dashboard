@@ -9,7 +9,7 @@ export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
 
 const variantStyles: Record<BadgeVariant, string> = {
   // ✅ Marked (green) — figma style
-  success: "bg-emerald-100 text-emerald-700",
+  success: "bg-[#00B96B1A] text-[#00B96B]",
 
   // ✅ Moderation (blue) — figma style
   warning: "bg-blue-100 text-blue-700",

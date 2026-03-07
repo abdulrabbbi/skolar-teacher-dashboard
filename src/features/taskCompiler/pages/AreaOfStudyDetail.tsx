@@ -13,9 +13,18 @@ function toggleId(list: string[], id: string) {
   return list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
 }
 
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
 function CountPill({ value }: { value: number }) {
   return (
-    <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-emerald-100 px-2 text-xs font-semibold text-emerald-700">
+    <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-[#00B96B1A] px-2 text-xs font-semibold text-[#00B96B]">
       {value}
     </span>
   );
@@ -50,7 +59,7 @@ function SelectableListCard({
                 type="checkbox"
                 checked={checked}
                 onChange={() => onToggle(it.id)}
-                className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 accent-emerald-600"
+                className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#00B96B] accent-[#00B96B]"
               />
               <span className="text-sm text-slate-700">{it.label}</span>
             </label>
@@ -71,7 +80,7 @@ function ContentSummaryCard({
   skills: number;
 }) {
   return (
-    <div className="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-5">
+    <div className="rounded-2xl border border-[#00B96B] bg-[#00B96B1A] p-5">
       <p className="text-sm font-semibold text-slate-900">Content Summary</p>
 
       <div className="mt-4 space-y-3 text-sm text-slate-600">
@@ -152,7 +161,7 @@ function TaskSettingsCard({
                   className={cn(
                     "rounded-xl border px-3 py-2 text-sm font-medium transition",
                     active
-                      ? "border-emerald-600 bg-emerald-600 text-white"
+                      ? "border-[#00B96B] bg-[#00B96B] text-white"
                       : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50",
                   )}
                 >
@@ -168,7 +177,7 @@ function TaskSettingsCard({
             type="checkbox"
             checked={includeMarkingGuide}
             onChange={(e) => setIncludeMarkingGuide(e.target.checked)}
-            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 accent-emerald-600"
+            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#00B96B] accent-[#00B96B]"
           />
           <div>
             <p className="text-sm font-medium text-slate-900">Include Marking Guide</p>
@@ -201,6 +210,98 @@ export default function AreaOfStudyDetail() {
     selectedOutcomes.length + selectedKnowledge.length + selectedSkills.length;
 
   const canGenerate = totalSelected > 0;
+
+  const handleGeneratePrintableTask = () => {
+    if (!canGenerate) {
+      return;
+    }
+
+    const selectedOutcomeLabels = content.outcomes
+      .filter((item) => selectedOutcomes.includes(item.id))
+      .map((item) => item.label);
+    const selectedKnowledgeLabels = content.keyKnowledge
+      .filter((item) => selectedKnowledge.includes(item.id))
+      .map((item) => item.label);
+    const selectedSkillLabels = content.keySkills
+      .filter((item) => selectedSkills.includes(item.id))
+      .map((item) => item.label);
+
+    const toListItems = (items: string[]) =>
+      items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+
+    const printWindow = window.open("", "_blank", "noopener,noreferrer");
+    if (!printWindow) {
+      return;
+    }
+
+    const printableMarkup = `<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>${escapeHtml(area?.title ?? "Printable Task")}</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 32px; color: #0f172a; }
+      h1 { margin: 0 0 8px; font-size: 24px; }
+      h2 { margin: 24px 0 10px; font-size: 18px; }
+      p { margin: 0 0 8px; color: #334155; }
+      ul { margin: 0; padding-left: 20px; }
+      li { margin: 6px 0; line-height: 1.4; }
+      .meta { margin-top: 12px; display: grid; gap: 6px; }
+      .guide { margin-top: 24px; border-top: 1px solid #cbd5e1; padding-top: 16px; }
+      .line { border-bottom: 1px solid #cbd5e1; height: 28px; margin: 8px 0; }
+      @media print { body { margin: 14mm; } }
+    </style>
+  </head>
+  <body>
+    <h1>${escapeHtml(area?.title ?? "Generated Task")}</h1>
+    <p>${escapeHtml(subject?.title ?? "Task Compiler")} | ${escapeHtml(
+      area?.unit ?? "Area",
+    )}</p>
+
+    <div class="meta">
+      <p><strong>Target Duration:</strong> ${escapeHtml(duration)}</p>
+      <p><strong>Difficulty:</strong> ${escapeHtml(difficulty)}</p>
+      <p><strong>Include Marking Guide:</strong> ${
+        includeMarkingGuide ? "Yes" : "No"
+      }</p>
+    </div>
+
+    ${
+      selectedOutcomeLabels.length > 0
+        ? `<h2>Outcomes</h2><ul>${toListItems(selectedOutcomeLabels)}</ul>`
+        : ""
+    }
+    ${
+      selectedKnowledgeLabels.length > 0
+        ? `<h2>Key Knowledge</h2><ul>${toListItems(selectedKnowledgeLabels)}</ul>`
+        : ""
+    }
+    ${
+      selectedSkillLabels.length > 0
+        ? `<h2>Key Skills</h2><ul>${toListItems(selectedSkillLabels)}</ul>`
+        : ""
+    }
+
+    ${
+      includeMarkingGuide
+        ? `<div class="guide">
+            <h2>Marking Guide</h2>
+            <p>Use the lines below for criteria and scoring notes.</p>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>`
+        : ""
+    }
+  </body>
+</html>`;
+
+    printWindow.document.open();
+    printWindow.document.write(printableMarkup);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+  };
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-6">
@@ -280,11 +381,12 @@ export default function AreaOfStudyDetail() {
                 <button
                   type="button"
                   disabled={!canGenerate}
+                  onClick={handleGeneratePrintableTask}
                   className={cn(
                     "w-full rounded-xl px-4 py-3 text-sm font-semibold transition",
                     canGenerate
-                      ? "bg-emerald-600 text-white hover:bg-emerald-700"
-                      : "bg-emerald-300/60 text-white cursor-not-allowed",
+                      ? "bg-[#00B96B] text-white hover:bg-[#009f5c]"
+                      : "bg-[#00B96B]/60 text-white cursor-not-allowed",
                   )}
                 >
                   Generate Printable Task

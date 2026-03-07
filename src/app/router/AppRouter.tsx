@@ -7,6 +7,7 @@ import ProtectedRoute from './ProtectedRoute';
 import LoginPage from '../../features/auth/pages/LoginPage';
 import SignupPage from '../../features/auth/pages/SignupPage';
 import WelcomePage from '../../features/auth/pages/WelcomePage';
+import ContactSkolarPage from '../../features/auth/pages/ContactSkolarPage';
 
 import AnalyticsPage from '../../features/analytics/pages/AnalyticsPage';
 import AssessmentsPage from '../../features/assessments/pages/AssessmentsPage';
@@ -14,10 +15,13 @@ import CalendarPage from '../../features/calendar/pages/CalendarPage';
 import ClassDetailPage from '../../features/classes/pages/ClassDetailPage';
 import MyClassesPage from '../../features/classes/pages/MyClassesPage';
 import CrossMarkingPage from '../../features/crossMarking/pages/CrossMarkingPage';
+import ModerationRoomPage from '../../features/crossMarking/pages/ModerationRoomPage';
 import DashboardPage from '../../features/dashboard/pages/DashboardPage';
+import UpcomingAssessmentsPage from '../../features/dashboard/pages/UpcomingAssessmentsPage';
 import GamesPage from '../../features/games/pages/GamesPage';
 import LiveQuizPage from '../../features/liveQuiz/pages/LiveQuizPage';
 import LiveQuizSessionPage from '../../features/liveQuiz/pages/session/LiveQuizSessionPage';
+import LiveQuizSessionAnalyticsPage from '../../features/liveQuiz/pages/session/LiveQuizSessionAnalyticsPage';
 import SettingsPage from '../../features/settings/pages/SettingsPage';
 import AreaOfStudyDetail from '../../features/taskCompiler/pages/AreaOfStudyDetail';
 import GenerateQuickContentPage from '../../features/taskCompiler/pages/GenerateQuickContentPage';
@@ -37,6 +41,7 @@ export default function AppRouter() {
           <Route path="/" element={<WelcomePage />} />
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/signup" element={<SignupPage />} />
+          <Route path="/auth/contact" element={<ContactSkolarPage />} />
         </Route>
 
         <Route
@@ -50,6 +55,10 @@ export default function AppRouter() {
           <Route index element={<Navigate to="dashboard" replace />} />
 
           <Route path="dashboard" element={<DashboardPage />} />
+          <Route
+            path="upcoming-assessments"
+            element={<UpcomingAssessmentsPage />}
+          />
           <Route path="classes" element={<MyClassesPage />} />
           <Route path="classes/:classId" element={<ClassDetailPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
@@ -57,6 +66,10 @@ export default function AppRouter() {
           <Route path="games" element={<GamesPage />} />
           <Route path="assessments" element={<AssessmentsPage />} />
           <Route path="cross-marking" element={<CrossMarkingPage />} />
+          <Route
+            path="cross-marking/moderation-room"
+            element={<ModerationRoomPage />}
+          />
 
           <Route path="task-compiler" element={<TaskCompilerPage />}>
             <Route index element={<Navigate to="by-subject" replace />} />
@@ -74,6 +87,10 @@ export default function AppRouter() {
 
           <Route path="live-quiz" element={<LiveQuizPage />} />
           <Route path="live-quiz/session/:quizId" element={<LiveQuizSessionPage />} />
+          <Route
+            path="live-quiz/session/:quizId/analytics"
+            element={<LiveQuizSessionAnalyticsPage />}
+          />
 
           <Route path="content-library" element={<ContentLibraryPage />} />
           <Route path="curriculum" element={<CurriculumPage />} />

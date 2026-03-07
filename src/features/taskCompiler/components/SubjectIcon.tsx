@@ -17,7 +17,7 @@ const iconSrcMap: Record<SubjectCardIcon, string> = {
 
 const iconBgClasses: Record<SubjectCardColor, string> = {
   blue: " text-blue-600",
-  green: " text-emerald-600",
+  green: " text-[#00B96B]",
   purple: "text-purple-600",
   orange: " text-orange-600",
   pink: " text-pink-600",

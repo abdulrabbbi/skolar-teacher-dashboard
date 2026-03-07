@@ -45,7 +45,7 @@ const sidebarSections: { title: string; items: SidebarItem[] }[] = [
     title: "Tools",
     items: [
       { label: "Assessments", path: "assessments", icon: ClipboardCheck, end: true },
-      { label: "Cross-Marking", path: "cross-marking", icon: Shuffle, end: true },
+      { label: "Cross-Marking", path: "cross-marking", icon: Shuffle, end: false },
       { label: "Task Compiler", path: "task-compiler", icon: Sparkles, end: false },
       { label: "Live Quiz", path: "live-quiz", icon: Zap, end: false },
     ],
@@ -61,9 +61,9 @@ const sidebarSections: { title: string; items: SidebarItem[] }[] = [
 
 const baseLink =
   "group mx-2 flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors";
-const inactive = "text-slate-700 hover:bg-slate-100";
+const inactive = "text-slate-700 hover:bg-blue-50 hover:text-blue-600";
 
-const active = "bg-emerald-600 text-white shadow-sm";
+const active = "bg-[#00B96B] text-white shadow-sm";
 
 export default function AppSidebar({ mobileOpen, onClose }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
@@ -167,7 +167,7 @@ export default function AppSidebar({ mobileOpen, onClose }: SidebarProps) {
                             className={`shrink-0 transition-colors ${
                               isActive
                                 ? "text-white"
-                                : "text-slate-400 group-hover:text-slate-600"
+                                : "text-slate-400 group-hover:text-blue-600"
                             }`}
                           />
                           {!collapsed && <span>{item.label}</span>}
@@ -187,7 +187,7 @@ export default function AppSidebar({ mobileOpen, onClose }: SidebarProps) {
               collapsed ? "md:justify-center" : ""
             }`}
           >
-            <div className="h-8 w-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-semibold">
+            <div className="h-8 w-8 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-semibold">
               J
             </div>
 
@@ -217,7 +217,7 @@ export default function AppSidebar({ mobileOpen, onClose }: SidebarProps) {
                   className={`shrink-0 transition-colors ${
                     isActive
                       ? "text-white"
-                      : "text-slate-400 group-hover:text-slate-600"
+                      : "text-slate-400 group-hover:text-blue-600"
                   }`}
                 />
                 {!collapsed && <span>Settings</span>}

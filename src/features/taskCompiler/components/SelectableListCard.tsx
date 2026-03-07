@@ -35,7 +35,7 @@ export default function SelectableListCard({
           >
             <input
               type="checkbox"
-              className="mt-1 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+              className="mt-1 h-4 w-4 rounded border-slate-300 text-[#00B96B] focus:ring-[#00B96B]"
               checked={selectedIds.includes(item.id)}
               onChange={() => onToggle(item.id)}
             />
@@ -46,3 +46,4 @@ export default function SelectableListCard({
     </Card>
   );
 }
+

@@ -14,8 +14,9 @@ export function SplashPage() {
     <div className="flex w-full items-center justify-center">
       <div className="flex flex-col items-center gap-2">
         <SkolarMark size={54} className="drop-shadow-sm" />
-        <div className="text-xs font-semibold tracking-wide text-green-700">SKOLAR</div>
+        <div className="text-xs font-semibold tracking-wide text-[#00B96B]">SKOLAR</div>
       </div>
     </div>
   );
 }
+

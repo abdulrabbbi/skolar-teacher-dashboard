@@ -30,7 +30,7 @@ const iconMap: Record<PulseStat["icon"], JSX.Element> = {
 
 const iconBgMap: Record<PulseStat["icon"], string> = {
   students: "bg-blue-600 text-white",
-  onTrack: "bg-green-600 text-white",
+  onTrack: "bg-[#00B96B] text-white",
   atRisk: "bg-orange-500 text-white",
   accuracy: "bg-purple-600 text-white",
 };

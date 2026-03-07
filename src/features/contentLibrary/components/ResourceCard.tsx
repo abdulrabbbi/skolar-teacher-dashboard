@@ -1,14 +1,16 @@
-﻿import { CalendarDays, Clock3, Copy, Download, Eye, FileText } from 'lucide-react';
+import { CalendarDays, Clock3, Copy, Download, Eye, FileText } from 'lucide-react';
 
 import Badge from '../../../shared/components/ui/Badge';
 import Button from '../../../shared/components/ui/Button';
 import Card from '../../../shared/components/ui/Card';
+import { cn } from '../../../shared/lib/cn';
 
+import { subjectColorStyles } from '../data/contentLibrary.mock';
 import { formatResourceDate } from '../utils/contentLibrary.utils';
 import type { ContentDifficulty, ContentResource } from '../types/contentLibrary.types';
 
 const difficultyTone: Record<ContentDifficulty, string> = {
-  Easy: 'bg-emerald-100 text-emerald-700',
+  Easy: 'bg-[#00B96B1A] text-[#00B96B]',
   Medium: 'bg-sky-100 text-sky-700',
   Hard: 'bg-rose-100 text-rose-700',
   Mixed: 'bg-amber-100 text-amber-700',
@@ -27,10 +29,15 @@ export default function ResourceCard({
   onDuplicate,
   onDownload,
 }: ResourceCardProps) {
+  const subjectTone = subjectColorStyles[resource.subjectId];
+
   return (
     <Card
       hover={false}
-      className="rounded-2xl border border-slate-200 bg-white p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+      className={cn(
+        'rounded-2xl border bg-white p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg',
+        subjectTone.cardBorder,
+      )}
     >
       <div className="space-y-4">
         <div className="space-y-2">
@@ -38,7 +45,14 @@ export default function ResourceCard({
 
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant="neutral">{resource.type}</Badge>
-            <Badge variant="neutral">{resource.subjectName}</Badge>
+            <span
+              className={cn(
+                'inline-flex items-center justify-center rounded-full border px-3 py-1.5 text-xs font-semibold',
+                subjectTone.badge,
+              )}
+            >
+              {resource.subjectName}
+            </span>
             <Badge className={difficultyTone[resource.difficulty]}>{resource.difficulty}</Badge>
           </div>
         </div>
@@ -91,3 +105,4 @@ export default function ResourceCard({
     </Card>
   );
 }
+

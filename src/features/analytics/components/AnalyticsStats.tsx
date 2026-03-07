@@ -13,7 +13,7 @@ function splitDelta(subtitle: string): { delta?: string; rest: string } {
 
 function deltaColor(delta?: string) {
   if (!delta) return "";
-  return delta.trim().startsWith("-") ? "text-rose-600" : "text-emerald-600";
+  return delta.trim().startsWith("-") ? "text-rose-600" : "text-[#00B96B]";
 }
 
 export default function AnalyticsStats({ stats }: AnalyticsStatsProps) {

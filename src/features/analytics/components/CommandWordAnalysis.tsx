@@ -68,7 +68,7 @@ export default function CommandWordAnalysis({
                 <span
                   className={`text-sm font-semibold ${
                     item.tone === "green"
-                      ? "text-emerald-600"
+                      ? "text-[#00B96B]"
                       : item.tone === "orange"
                         ? "text-orange-600"
                         : "text-rose-600"
@@ -104,3 +104,4 @@ export default function CommandWordAnalysis({
     </section>
   );
 }
+

@@ -41,6 +41,7 @@ export type SubmissionAction = 'Mark' | 'Review';
 export type SubmissionRow = {
   id: string;
   index: string;
+  studentName: string;
   assessment: string;
   submitted: string;
   skolarMark: string;
@@ -81,6 +82,7 @@ export type CriteriaMarkItem = {
 
 export type SubmissionDetailData = {
   id: string;
+  studentName: string;
   assessment: string;
   preMarkScore: number;
   preMarkMax: number;
@@ -149,6 +151,7 @@ export const submissions: SubmissionRow[] = [
   {
     id: 'submission-1',
     index: '#1',
+    studentName: 'Ariana Shah',
     assessment: 'SAC 2: Calculus',
     submitted: '2 hours ago',
     skolarMark: '32 / 40',
@@ -160,6 +163,7 @@ export const submissions: SubmissionRow[] = [
   {
     id: 'submission-2',
     index: '#2',
+    studentName: 'Bilal Khan',
     assessment: 'SAC 2: Calculus',
     submitted: '3 hours ago',
     skolarMark: '28 / 40',
@@ -171,6 +175,7 @@ export const submissions: SubmissionRow[] = [
   {
     id: 'submission-3',
     index: '#3',
+    studentName: 'Chloe Martin',
     assessment: 'SAC 2: Calculus',
     submitted: '4 hours ago',
     skolarMark: '26 / 40',
@@ -182,6 +187,7 @@ export const submissions: SubmissionRow[] = [
   {
     id: 'submission-4',
     index: '#4',
+    studentName: 'Daniel Brooks',
     assessment: 'SAC 2: Calculus',
     submitted: '1 day ago',
     skolarMark: '35 / 40',
@@ -193,6 +199,7 @@ export const submissions: SubmissionRow[] = [
   {
     id: 'submission-5',
     index: '#5',
+    studentName: 'Elena Costa',
     assessment: 'SAC 2: Calculus',
     submitted: '1 day ago',
     skolarMark: '22 / 40',
@@ -351,6 +358,7 @@ const totalScoreMap: Record<string, number> = {
 export const submissionDetails: SubmissionDetailData[] = submissions.map(
   (submission) => ({
     id: submission.id,
+    studentName: submission.studentName,
     assessment: submission.assessment,
     preMarkScore: totalScoreMap[submission.id],
     preMarkMax: 40,

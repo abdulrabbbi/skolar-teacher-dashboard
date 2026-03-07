@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
+import type { QuickTemplatePreset } from './QuickTemplatesCard';
 
 export type DifficultyLevel = 'Easy' | 'Medium' | 'Hard' | 'Mixed';
 
 export type GenerateQuickContentFormProps = {
   onGenerate?: () => void;
+  templatePreset?: QuickTemplatePreset | null;
 };
 
 export default function GenerateQuickContentForm({
   onGenerate,
+  templatePreset,
 }: GenerateQuickContentFormProps) {
   const [studyDesignCode, setStudyDesignCode] = useState('');
   const [targetClass, setTargetClass] = useState('Year 12 Methods');
@@ -19,6 +22,22 @@ export default function GenerateQuickContentForm({
   const [includeMarkingGuide, setIncludeMarkingGuide] = useState(true);
   const [generateDifferentiated, setGenerateDifferentiated] = useState(false);
   const [targetWeakPoints, setTargetWeakPoints] = useState(true);
+  const [appliedTemplateTitle, setAppliedTemplateTitle] = useState('');
+
+  useEffect(() => {
+    if (!templatePreset) {
+      return;
+    }
+
+    setStudyDesignCode(templatePreset.studyDesignCode);
+    setTargetClass(templatePreset.targetClass);
+    setDuration(templatePreset.duration);
+    setDifficulty(templatePreset.difficulty);
+    setIncludeMarkingGuide(templatePreset.includeMarkingGuide);
+    setGenerateDifferentiated(templatePreset.generateDifferentiated);
+    setTargetWeakPoints(templatePreset.targetWeakPoints);
+    setAppliedTemplateTitle(templatePreset.title);
+  }, [templatePreset]);
 
   return (
     <Card
@@ -37,6 +56,11 @@ export default function GenerateQuickContentForm({
         <p className="text-sm text-slate-500">
           Create worksheets aligned to VCAA outcomes
         </p>
+        {appliedTemplateTitle ? (
+          <p className="text-xs font-medium text-[#00B96B]">
+            Template applied: {appliedTemplateTitle}
+          </p>
+        ) : null}
       </div>
 
       {/* FORM FIELDS */}
@@ -47,7 +71,7 @@ export default function GenerateQuickContentForm({
             Study Design Code
           </label>
           <select
-            className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+            className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 transition focus:border-[#00B96B] focus:ring-2 focus:ring-[#00B96B]"
             value={studyDesignCode}
             onChange={(event) => setStudyDesignCode(event.target.value)}
           >
@@ -65,7 +89,7 @@ export default function GenerateQuickContentForm({
             Target Class
           </label>
           <select
-            className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+            className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 transition focus:border-[#00B96B] focus:ring-2 focus:ring-[#00B96B]"
             value={targetClass}
             onChange={(event) => setTargetClass(event.target.value)}
           >
@@ -79,7 +103,7 @@ export default function GenerateQuickContentForm({
             Target Duration
           </label>
           <select
-            className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+            className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 transition focus:border-[#00B96B] focus:ring-2 focus:ring-[#00B96B]"
             value={duration}
             onChange={(event) => setDuration(event.target.value)}
           >
@@ -106,7 +130,7 @@ export default function GenerateQuickContentForm({
                   hover:scale-105 hover:-translate-y-0.5
                   ${
                     difficulty === level
-                      ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
+                      ? 'border-[#00B96B] bg-[#00B96B] text-white shadow-sm'
                       : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                   }
                 `}
@@ -170,3 +194,4 @@ export default function GenerateQuickContentForm({
     </Card>
   );
 }
+

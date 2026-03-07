@@ -5,6 +5,7 @@ interface GridBackgroundProps {
   dotColor?: string;
   glowColor?: string;
   spacing?: number;
+  forceShow?: boolean;
 }
 
 /**
@@ -15,13 +16,14 @@ export default function GridBackground({
   dotColor = "#cbd5e1",
   glowColor = "#b1a8ff",
   spacing = 20,
+  forceShow = false,
 }: GridBackgroundProps) {
   const { pathname } = useLocation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   // Hide on teacher area
-  const hide = pathname.startsWith("/teacher");
+  const hide = pathname.startsWith("/teacher") && !forceShow;
 
   // Helper to convert hex to rgb
   const hexToRgb = (hex: string) => {

@@ -13,7 +13,7 @@ export default function ContentSummaryCard({
   skillsCount,
 }: ContentSummaryCardProps) {
   return (
-    <Card className="space-y-2 border-emerald-200 bg-emerald-50 p-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
+    <Card className="space-y-2 border-[#00B96B] bg-[#00B96B14] p-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
       <h3 className="text-sm font-semibold text-slate-900">
         Content Summary
       </h3>
@@ -35,3 +35,4 @@ export default function ContentSummaryCard({
     </Card>
   );
 }
+

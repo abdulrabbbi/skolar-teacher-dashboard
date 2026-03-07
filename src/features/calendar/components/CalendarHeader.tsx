@@ -34,7 +34,7 @@ function Pill({
       className={cn(
         "h-10 rounded-xl px-4 text-sm font-semibold transition",
         active
-          ? "bg-emerald-600 text-white shadow-sm"
+          ? "bg-[#00B96B] text-white shadow-sm"
           : "bg-white text-slate-900 border border-slate-200 hover:bg-slate-50",
       )}
     >
@@ -61,8 +61,8 @@ function WeekNavButton({
       disabled={disabled}
       aria-label={ariaLabel}
       className={cn(
-        "grid h-10 w-10 place-items-center rounded-xl border border-emerald-100 bg-emerald-50 text-emerald-700 transition hover:bg-emerald-100",
-        disabled && "cursor-not-allowed opacity-50 hover:bg-emerald-50",
+        "grid h-10 w-10 place-items-center rounded-xl bg-[#00B96B14] text-[#00B96B] transition hover:bg-[#00B96B14]",
+        disabled && "cursor-not-allowed opacity-50 hover:bg-[#00B96B14]",
       )}
     >
       {children}
@@ -144,3 +144,4 @@ export default function CalendarHeader({
     </div>
   );
 }
+

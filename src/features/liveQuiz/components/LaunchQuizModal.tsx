@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, Sparkles } from "lucide-react";
 import Button from "../../../shared/components/ui/Button";
 import Card from "../../../shared/components/ui/Card";
@@ -33,15 +36,38 @@ export default function LaunchQuizModal({
   reasoningToggle,
   summary,
 }: LaunchQuizModalProps) {
-  if (!isOpen) return null;
+  const [mounted, setMounted] = useState(false);
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen]);
+
+  if (!mounted || !isOpen) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4">
       {/* BACKDROP */}
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+      <div
+        className="absolute inset-0 bg-slate-900/30 backdrop-blur-md"
+        onClick={onClose}
+      />
 
       {/* MODAL */}
-      <Card className="relative z-10 w-full max-w-xl max-h-[90vh] p-6 flex flex-col transition-all duration-200">
+      <Card
+        className="relative z-10 w-full max-w-xl max-h-[90vh] p-6 flex flex-col transition-all duration-200"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* HEADER */}
         <div className="flex items-start justify-between">
           <div>
@@ -180,6 +206,7 @@ export default function LaunchQuizModal({
           </Button>
         </div>
       </Card>
-    </div>
+    </div>,
+    document.body,
   );
 }

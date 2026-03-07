@@ -28,7 +28,7 @@ export default function PreferenceSettings({ preferences }: PreferenceSettingsPr
         </Card>
       </Section>
 
-      {/* ✅ Match screenshot: title + subtitle inside the panel, inputs stacked */}
+      {/*  Match screenshot: title + subtitle inside the panel, inputs stacked */}
       <Section>
         <Card className="space-y-5 p-5">
           <div>
@@ -47,7 +47,7 @@ export default function PreferenceSettings({ preferences }: PreferenceSettingsPr
                   {field.label}
                 </p>
 
-                {/* ✅ White input + light border like screenshot */}
+                {/* White input + light border like screenshot */}
                 <InputField
                   label=""
                   defaultValue={field.value}

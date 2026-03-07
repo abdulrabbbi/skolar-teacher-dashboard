@@ -131,7 +131,7 @@ export const preferenceSettings: PreferenceSettingsData = {
     {
       id: 'detailed-analytics',
       title: 'Detailed Analytics Dashboard',
-      description: 'Show advanced metrics and data visualizations',
+      description: 'Show advanced metrics and data visualisation',
       enabled: false,
     },
   ],

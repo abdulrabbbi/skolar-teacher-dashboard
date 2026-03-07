@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../app/router/routes";
 import CrossMarkingStats from "../components/CrossMarkingStats";
 import CrossMarkingSummary from "../components/CrossMarkingSummary";
 import ModerationAlert from "../components/ModerationAlert";
@@ -16,6 +18,7 @@ import {
 } from "../data/crossMarking.mock";
 
 export default function CrossMarkingPage() {
+  const navigate = useNavigate();
   const [selectedSubmission, setSelectedSubmission] =
     useState<SubmissionRow | null>(null);
 
@@ -63,8 +66,8 @@ export default function CrossMarkingPage() {
                   "shadow-sm",
                   "transition-colors duration-300 ease-in-out",
                   "group-active:scale-[0.98] transition-transform",
-                  "focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:ring-offset-2",
-                  blindMode ? "bg-emerald-600" : "bg-slate-300",
+                  "focus:outline-none focus:ring-2 focus:ring-[#00B96B] focus:ring-offset-2",
+                  blindMode ? "bg-[#00B96B]" : "bg-slate-300",
                 ].join(" ")}
               >
                 <span
@@ -96,7 +99,10 @@ export default function CrossMarkingPage() {
       ) : (
         <>
           <CrossMarkingStats stats={crossMarkingStats} />
-          <ModerationAlert alert={moderationAlert} />
+          <ModerationAlert
+            alert={moderationAlert}
+            onOpen={() => navigate(ROUTES.crossMarkingModerationRoom)}
+          />
           <SubmissionsTable rows={submissions} onSelect={setSelectedSubmission} />
           <CrossMarkingSummary
             performance={crossMarkingSummary.performance}

@@ -65,6 +65,23 @@ export default function CurriculumPage() {
         />
       </Card>
 
+      <Card className="rounded-2xl border-slate-200 p-4 sm:p-5">
+        <div className="flex flex-wrap items-center gap-2 text-xs font-medium">
+          <span className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-blue-700">
+            Outcomes
+          </span>
+          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-700">
+            Key Knowledge
+          </span>
+          <span className="rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-violet-700">
+            Key Skills
+          </span>
+        </div>
+        <p className="mt-2 text-sm text-slate-500">
+          Dot points now include extra context so each item is clearer for planning and assessment.
+        </p>
+      </Card>
+
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[320px_1fr]">
         <CurriculumSidebar
           subjects={curriculumSubjectsMock}

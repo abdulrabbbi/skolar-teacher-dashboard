@@ -95,7 +95,7 @@
 
 
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useState } from "react";
 import { Copy, Download, Eye, CalendarDays, Clock, FileText, Users } from "lucide-react";
 import Badge, { type BadgeVariant } from "../../../shared/components/ui/Badge";
 import Button from "../../../shared/components/ui/Button";
@@ -131,8 +131,89 @@ function withCreatedPrefix(v: string) {
   return s.toLowerCase().startsWith("created") ? s : `Created ${s}`;
 }
 
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
 export default function TaskHistoryItem({ item }: TaskHistoryItemProps) {
   const createdText = withCreatedPrefix(item.createdAt);
+  const [actionMessage, setActionMessage] = useState("");
+
+  const taskSummary = [
+    `Title: ${item.title}`,
+    `Subject: ${item.subject}`,
+    `Code: ${item.code}`,
+    `Status: ${item.status}`,
+    `Difficulty: ${item.difficulty}`,
+    `Created: ${item.createdAt}`,
+    `Duration: ${item.duration}`,
+    `Marks: ${item.marks}`,
+    `Students: ${item.students}`,
+  ].join("\n");
+
+  const handleView = () => {
+    const previewWindow = window.open("", "_blank", "noopener,noreferrer");
+    if (!previewWindow) {
+      return;
+    }
+
+    const html = `<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>${escapeHtml(item.title)}</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 28px; color: #0f172a; }
+      h1 { margin: 0 0 8px; font-size: 24px; }
+      p { margin: 8px 0; color: #334155; }
+      .pill { display: inline-block; border: 1px solid #cbd5e1; border-radius: 999px; padding: 4px 10px; margin-right: 8px; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <h1>${escapeHtml(item.title)}</h1>
+    <p>${escapeHtml(item.subject)} | ${escapeHtml(item.code)}</p>
+    <p>
+      <span class="pill">${escapeHtml(item.status)}</span>
+      <span class="pill">${escapeHtml(item.difficulty)}</span>
+    </p>
+    <p><strong>Created:</strong> ${escapeHtml(item.createdAt)}</p>
+    <p><strong>Duration:</strong> ${escapeHtml(item.duration)}</p>
+    <p><strong>Marks:</strong> ${escapeHtml(item.marks)}</p>
+    <p><strong>Students:</strong> ${item.students}</p>
+  </body>
+</html>`;
+
+    previewWindow.document.open();
+    previewWindow.document.write(html);
+    previewWindow.document.close();
+  };
+
+  const handleDuplicate = async () => {
+    try {
+      await navigator.clipboard.writeText(taskSummary);
+      setActionMessage("Task copied to clipboard");
+    } catch {
+      setActionMessage("Copy failed");
+    }
+  };
+
+  const handleDownload = () => {
+    const blob = new Blob([taskSummary], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `${item.title.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}.txt`;
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+    setActionMessage("Download started");
+  };
 
   return (
     <Card
@@ -190,6 +271,7 @@ export default function TaskHistoryItem({ item }: TaskHistoryItemProps) {
         <Button
           size="sm"
           variant="outline"
+          onClick={handleView}
           className="transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
         >
           <Eye className="h-4 w-4" />
@@ -199,6 +281,7 @@ export default function TaskHistoryItem({ item }: TaskHistoryItemProps) {
         <Button
           size="sm"
           variant="outline"
+          onClick={handleDuplicate}
           className="transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
         >
           <Copy className="h-4 w-4" />
@@ -208,12 +291,17 @@ export default function TaskHistoryItem({ item }: TaskHistoryItemProps) {
         <Button
           size="sm"
           variant="outline"
+          onClick={handleDownload}
           className="transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
         >
           <Download className="h-4 w-4" />
           Download
         </Button>
       </div>
+
+      {actionMessage ? (
+        <p className="text-xs text-slate-500 sm:hidden">{actionMessage}</p>
+      ) : null}
     </Card>
   );
 }

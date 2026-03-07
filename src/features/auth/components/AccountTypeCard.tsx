@@ -9,7 +9,7 @@ type Props = {
 };
 
 const colors = {
-  green: "bg-green-50 text-green-700 border-green-200",
+  green: "bg-[#00B96B14] text-[#00B96B] border-[#00B96B]",
 };
 
 export function AccountTypeCard({ title, desc, color, selected, onClick }: Props) {
@@ -19,7 +19,7 @@ export function AccountTypeCard({ title, desc, color, selected, onClick }: Props
       onClick={onClick}
       className={cn(
         "w-full rounded-2xl border bg-white px-4 py-4 text-left shadow-sm transition",
-        selected ? "border-green-400 ring-2 ring-green-100" : "border-slate-200 hover:bg-slate-50/50",
+        selected ? "border-[#00B96B] ring-2 ring-[#00B96B]" : "border-slate-200 hover:bg-slate-50/50",
       )}
     >
       <div className={cn("grid h-9 w-9 place-items-center rounded-xl border", colors[color])}>
@@ -32,11 +32,11 @@ export function AccountTypeCard({ title, desc, color, selected, onClick }: Props
       </div>
 
       <div className="mt-3 text-[11px] text-slate-500">
-        <span className={cn("inline-flex items-center gap-2", selected && "text-green-700")}>
+        <span className={cn("inline-flex items-center gap-2", selected && "text-[#00B96B]")}>
           <span
             className={cn(
               "h-3 w-3 rounded-full border",
-              selected ? "border-green-600 bg-green-600" : "border-slate-300 bg-white",
+              selected ? "border-[#00B96B] bg-[#00B96B]" : "border-slate-300 bg-white",
             )}
           />
           {selected ? "Selected" : "Select"}
@@ -45,3 +45,4 @@ export function AccountTypeCard({ title, desc, color, selected, onClick }: Props
     </button>
   );
 }
+

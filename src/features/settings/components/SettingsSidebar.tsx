@@ -40,28 +40,28 @@ export default function SettingsSidebar({
             onClick={() => onTabChange(tab.id)}
             className={cn(
               "relative h-12 justify-start gap-3 ",
-              " shadow-none hover:bg-green-500",
+              " shadow-none hover:bg-[#009f5c]",
              
               isActive &&
-                "bg-green-100 text-emerald-700 hover:bg-emerald-200"
+                "bg-[#00B96B1A] text-[#00B96B] hover:bg-[#00B96B1A]"
             )}
           >
             {/* ✅ green left bar (only active) */}
             {isActive ? (
-              <span className="absolute left-0 top-2 bottom-2 w-1 rounded-full bg-emerald-600" />
+              <span className="absolute left-0 top-2 bottom-2 w-1 rounded-full bg-[#00B96B]" />
             ) : null}
 
             <Icon
               className={cn(
                 "h-5 w-5",
-                isActive ? "text-emerald-700" : "text-slate-400"
+                isActive ? "text-[#00B96B]" : "text-slate-400"
               )}
             />
 
             <span
               className={cn(
                 "text-sm font-semibold",
-                isActive ? "text-emerald-700" : "text-slate-600"
+                isActive ? "text-[#00B96B]" : "text-slate-600"
               )}
             >
               {tab.label}

@@ -1,38 +1,110 @@
-
-import Button from '../../../shared/components/ui/Button';
-import Card from '../../../shared/components/ui/Card';
-import TextArea from '../../../shared/components/ui/TextArea';
+/* eslint-disable react-hooks/set-state-in-effect */
+import { useEffect, useMemo, useState } from "react";
+import Button from "../../../shared/components/ui/Button";
+import Card from "../../../shared/components/ui/Card";
 
 export type FeedbackPanelProps = {
   placeholder: string;
+  studentName?: string;
+  submissionId?: string;
 };
 
-export default function FeedbackPanel({ placeholder }: FeedbackPanelProps) {
+export default function FeedbackPanel({
+  placeholder,
+  studentName,
+  submissionId,
+}: FeedbackPanelProps) {
+  const displayStudentName = studentName?.trim() || "John Doe";
+
+  const storageKey = useMemo(
+    () => `crossMarking:feedbackDraft:${submissionId ?? displayStudentName}`,
+    [displayStudentName, submissionId],
+  );
+
+  const [feedback, setFeedback] = useState("");
+  const [statusMessage, setStatusMessage] = useState("");
+
+  useEffect(() => {
+    const savedDraft = localStorage.getItem(storageKey);
+    if (savedDraft) {
+      setFeedback(savedDraft);
+    } else {
+      setFeedback("");
+    }
+    setStatusMessage("");
+  }, [storageKey]);
+
+  const handleSaveDraft = () => {
+    localStorage.setItem(storageKey, feedback);
+    setStatusMessage("Draft saved");
+  };
+
+  const handleSubmitMark = () => {
+    localStorage.setItem(
+      `crossMarking:feedbackSubmitted:${submissionId ?? "unknown"}`,
+      feedback,
+    );
+    localStorage.removeItem(storageKey);
+    setStatusMessage("Mark submitted");
+  };
+
   return (
-    <Card className="space-y-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
-      <div>
-        <h3 className="text-base font-semibold text-slate-900">Feedback</h3>
-        <p className="text-sm text-slate-500">
-          Provide student feedback before submitting marks.
-        </p>
+    <div className="space-y-4">
+      <Card className="rounded-[22px] border border-slate-200 bg-[#F8F8FA] p-5 sm:p-6">
+        <div className="">
+          <div className="flex items-center gap-3">
+            <h3 className="text-[18px] tracking-[-0.01em] text-slate-900 sm:text-[18px]">
+              Feedback to Student
+            </h3>
+          </div>
+          <p className="mt-1 text-sm font-medium text-slate-700">
+            Student: {displayStudentName}
+          </p>
+
+          <p className="text-[16px] leading-8 text-[#6B6F80]">
+            Provide personalised comments and guidance
+          </p>
+          <br></br>
+
+          <div className="rounded-2xl bg-[#ECECF1] px-5 py-4">
+            <textarea
+              aria-label="Feedback to student"
+              placeholder={placeholder || "Add personalised feedback..."}
+              value={feedback}
+              onChange={(event) => setFeedback(event.target.value)}
+              className="min-h-[52px] w-full resize-none bg-transparent text-[15px] leading-7 text-[#6B6F80] placeholder:text-[#6B6F80] focus:outline-none"
+            />
+          </div>
+        </div>
+      </Card>
+
+      <div className="flex flex-wrap justify-end gap-4">
+        <div className="relative">
+          <Button
+            variant="outline"
+            onClick={handleSaveDraft}
+            disabled={!feedback.trim()}
+            className="h-12 min-w-[104px] rounded-xl border border-[#D0D5DD] bg-white px-7 text-[15px] font-medium text-slate-900 shadow-[0_1px_0_rgba(16,24,40,0.03)] hover:bg-white"
+          >
+            Save Draft
+          </Button>
+        </div>
+
+        <div className="relative">
+          <Button
+            variant="success"
+            onClick={handleSubmitMark}
+            disabled={!feedback.trim()}
+            className="h-12 min-w-[108px] rounded-xl bg-[#00B96B] px-7 text-[15px] font-medium text-white hover:bg-[#00B96B]"
+          >
+            Submit Mark
+          </Button>
+        </div>
       </div>
 
-      <TextArea label="Feedback" placeholder={placeholder} />
-
-      <div className="flex flex-wrap justify-end gap-2">
-        <Button
-          variant="secondary"
-          className="transition-all duration-200 hover:-translate-y-0.5"
-        >
-          Save Draft
-        </Button>
-        <Button
-          variant="success"
-          className="transition-all duration-200 hover:-translate-y-0.5"
-        >
-          Submit Mark
-        </Button>
-      </div>
-    </Card>
+      {statusMessage ? (
+        <p className="text-right text-sm text-slate-600">{statusMessage}</p>
+      ) : null}
+    </div>
   );
 }

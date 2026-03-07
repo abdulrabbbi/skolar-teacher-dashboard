@@ -18,7 +18,7 @@
 // //   if (key === "sac") return "bg-violet-500";
 // //   if (key === "test") return "bg-blue-600";
 // //   if (key === "exam") return "bg-rose-500";
-// //   if (key === "practice") return "bg-emerald-500";
+// //   if (key === "practice") return "bg-[#00B96B]";
 
 // //   return "bg-slate-400";
 // // };
@@ -114,7 +114,7 @@
 //   if (key === "sac") return "bg-violet-500";
 //   if (key === "test") return "bg-blue-600";
 //   if (key === "exam") return "bg-rose-500";
-//   if (key === "practice") return "bg-emerald-500";
+//   if (key === "practice") return "bg-[#00B96B]";
 
 //   return "bg-slate-400";
 // };
@@ -215,7 +215,7 @@ const typeDotColor = (label: string) => {
   if (key === "sac") return "bg-violet-500";
   if (key === "test") return "bg-blue-600";
   if (key === "exam") return "bg-rose-500";
-  if (key === "practice") return "bg-emerald-500";
+  if (key === "practice") return "bg-[#00B96B]";
 
   return "bg-slate-400";
 };
@@ -295,3 +295,4 @@ export default function AssessmentSidePanels({
     </div>
   );
 }
+

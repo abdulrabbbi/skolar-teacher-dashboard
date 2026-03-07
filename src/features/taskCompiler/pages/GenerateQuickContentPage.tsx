@@ -1,9 +1,15 @@
+import { useState } from "react";
 import Card from "../../../shared/components/ui/Card";
 import GenerateQuickContentForm from "../components/GenerateQuickContentForm";
 import ClassWeakPointsCard from "../components/ClassWeakPointsCard";
-import QuickTemplatesCard from "../components/QuickTemplatesCard";
+import QuickTemplatesCard, {
+  type QuickTemplatePreset,
+} from "../components/QuickTemplatesCard";
 
 export default function GenerateQuickContentPage() {
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<QuickTemplatePreset | null>(null);
+
   return (
     <section className="space-y-6">
       <Card className="rounded-2xl bg-white p-5 shadow-sm sm:p-6 lg:p-6">
@@ -17,10 +23,13 @@ export default function GenerateQuickContentPage() {
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2">
-          <GenerateQuickContentForm />
+          <GenerateQuickContentForm templatePreset={selectedTemplate} />
           <div className="space-y-6">
             <ClassWeakPointsCard />
-            <QuickTemplatesCard />
+            <QuickTemplatesCard
+              selectedTemplateId={selectedTemplate?.id ?? null}
+              onSelectTemplate={setSelectedTemplate}
+            />
           </div>
         </div>
       </Card>

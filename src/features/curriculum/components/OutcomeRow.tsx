@@ -1,4 +1,4 @@
-﻿import Badge from '../../../shared/components/ui/Badge';
+import Badge from '../../../shared/components/ui/Badge';
 import Button from '../../../shared/components/ui/Button';
 import { cn } from '../../../shared/lib/cn';
 
@@ -12,7 +12,7 @@ type OutcomeRowProps = {
 
 const difficultyStyles: Record<CurriculumOutcome['difficulty'], string> = {
   Foundation: 'bg-slate-100 text-slate-700',
-  Core: 'bg-emerald-100 text-emerald-700',
+  Core: 'bg-[#00B96B1A] text-[#00B96B]',
   Extension: 'bg-amber-100 text-amber-700',
 };
 

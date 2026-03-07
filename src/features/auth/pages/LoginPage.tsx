@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -12,7 +12,6 @@ export default function LoginPage() {
 
   return (
     <div className="w-full max-w-md">
-      {/* Back pill like screenshot */}
       <button
         type="button"
         onClick={() => navigate("/")}
@@ -22,12 +21,9 @@ export default function LoginPage() {
         Back
       </button>
 
-      {/* Card */}
       <div className="rounded-2xl border border-white/40 bg-white/65 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)] backdrop-blur-md">
         <div className="text-center">
-          <div className="text-lg font-semibold text-slate-900">
-            Welcome Back
-          </div>
+          <div className="text-lg font-semibold text-slate-900">Welcome Back</div>
           <div className="mt-1 text-xs text-slate-500">
             Log in to continue your learning
           </div>
@@ -40,7 +36,7 @@ export default function LoginPage() {
             </div>
             <input
               placeholder="john.doe@example.com"
-              className="h-10 w-full rounded-xl border border-slate-200 bg-white/80 px-3 text-sm outline-none focus:ring-2 focus:ring-emerald-200"
+              className="h-10 w-full rounded-xl border border-slate-200 bg-white/80 px-3 text-sm outline-none focus:ring-2 focus:ring-[#00B96B]"
             />
           </div>
 
@@ -49,7 +45,7 @@ export default function LoginPage() {
               <span>Password</span>
               <button
                 type="button"
-                className="text-emerald-700 hover:text-emerald-800"
+                className="text-[#00B96B] hover:text-[#00B96B]"
               >
                 Forgot Password?
               </button>
@@ -57,26 +53,26 @@ export default function LoginPage() {
             <input
               type="password"
               placeholder="Enter your password"
-              className="h-10 w-full rounded-xl border border-slate-200 bg-white/80 px-3 text-sm outline-none focus:ring-2 focus:ring-emerald-200"
+              className="h-10 w-full rounded-xl border border-slate-200 bg-white/80 px-3 text-sm outline-none focus:ring-2 focus:ring-[#00B96B]"
             />
           </div>
 
           <button
             type="button"
             onClick={onLogin}
-            className="h-10 w-full rounded-xl bg-[#00B96B] text-xs font-semibold text-white hover:bg-emerald-700"
+            className="h-10 w-full rounded-xl bg-[#00B96B] text-xs font-semibold text-white hover:bg-[#009f5c]"
           >
             Login
           </button>
 
           <div className="pt-2 text-center text-xs text-slate-600">
-            Don’t have an account?{" "}
+            Need a teacher account?{" "}
             <button
               type="button"
-              onClick={() => navigate("/auth/signup")}
-              className="font-semibold text-emerald-700 hover:text-emerald-800"
+              onClick={() => navigate("/auth/contact")}
+              className="font-semibold text-[#00B96B] hover:text-[#00B96B]"
             >
-              Create Account
+              Contact the Skolar team
             </button>
           </div>
         </div>

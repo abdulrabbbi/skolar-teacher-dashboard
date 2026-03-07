@@ -52,7 +52,7 @@ export default function LearningProfile({ profiles }: LearningProfileProps) {
 
                   <div className="relative h-7 w-full overflow-hidden rounded-full bg-slate-200">
                     <div
-                      className="h-full rounded-full bg-green-500"
+                      className="h-full rounded-full bg-[#00B96B]"
                       style={{ width: `${score}%` }}
                     />
                     <div className="pointer-events-none absolute inset-0 flex items-center">
@@ -76,3 +76,4 @@ export default function LearningProfile({ profiles }: LearningProfileProps) {
     </section>
   );
 }
+

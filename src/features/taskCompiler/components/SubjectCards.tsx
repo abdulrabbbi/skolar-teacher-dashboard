@@ -9,7 +9,7 @@ const tone: Record<
   string
 > = {
   blue: "bg-blue-50/70 border-blue-200",
-  green: "bg-emerald-50/70 border-emerald-200",
+  green: "bg-[#00B96B1A] border-[#00B96B]",
   purple: "bg-purple-50/70 border-purple-200",
   orange: "bg-orange-50/70 border-orange-200",
   pink: "bg-pink-50/70 border-pink-200",
@@ -59,3 +59,4 @@ export default function SubjectCards({
     </div>
   );
 }
+

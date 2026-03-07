@@ -15,6 +15,7 @@ export type MarkingQueueItem = {
   className: string;
   pending: number;
   submissions: string;
+  pendingStudents: string[];
 };
 
 export type AssessmentStatus = 'Marking' | 'Active' | 'Draft' | 'Complete';
@@ -105,6 +106,22 @@ export const markingQueue: MarkingQueueItem[] = [
     className: 'Year 12 Methods',
     pending: 14,
     submissions: '8 / 22',
+    pendingStudents: [
+      'Ariana Shah',
+      'Bilal Khan',
+      'Chloe Martin',
+      'Daniel Brooks',
+      'Elena Costa',
+      'Farhan Ali',
+      'Grace Nguyen',
+      'Hassan Raza',
+      'Ivy Patel',
+      'Jacob Wilson',
+      'Kiran Ahmed',
+      'Liam Scott',
+      'Maya Chen',
+      'Noah James',
+    ],
   },
   {
     id: 'topic-test-probability',
@@ -112,6 +129,23 @@ export const markingQueue: MarkingQueueItem[] = [
     className: 'Year 11 Methods',
     pending: 15,
     submissions: '0 / 15',
+    pendingStudents: [
+      'Olivia Reed',
+      'Priya Singh',
+      'Quinn Murphy',
+      'Ryan Cooper',
+      'Sana Tariq',
+      'Theo Walker',
+      'Uma Iqbal',
+      'Vera Holmes',
+      'Will Carter',
+      'Xavier Hall',
+      'Yara Siddiqui',
+      'Zayn Ahmed',
+      'Aiden Ross',
+      'Bella Stone',
+      'Caleb Young',
+    ],
   },
 ];
 

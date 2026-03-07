@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   BarChart3,
   Zap,
@@ -7,6 +8,7 @@ import {
 import Card from "../../../shared/components/ui/Card";
 import type { QuickActionItem } from "../data/dashboard.mock";
 import type { JSX } from "react/jsx-runtime";
+import { ROUTES } from "../../../app/router/routes";
 
 export type QuickActionsProps = {
   actions: QuickActionItem[];
@@ -21,51 +23,68 @@ const iconMap: Record<QuickActionItem["icon"], JSX.Element> = {
 
 const iconBgMap: Record<QuickActionItem["icon"], string> = {
   quiz: "bg-purple-500",
-  compiler: "bg-green-500",
+  compiler: "bg-[#00B96B]",
   crossMarking: "bg-blue-500",
   analytics: "bg-orange-500",
 };
 
+const routeMap: Record<QuickActionItem["icon"], string> = {
+  quiz: ROUTES.liveQuiz,
+  compiler: ROUTES.taskCompiler,
+  crossMarking: ROUTES.crossMarking,
+  analytics: ROUTES.analytics,
+};
+
 export default function QuickActions({ actions }: QuickActionsProps) {
+  const navigate = useNavigate();
+
   return (
     <section className="space-y-2">
       <h2 className="text-base font-semibold text-slate-900">
         Quick Actions
       </h2>
 
-      <div className="space-y-3 h-85">
+      <div className="h-85 space-y-3">
         {actions.map((action) => (
-          <Card
+          <button
             key={action.id}
-            className="
-              group flex items-center gap-4
-              rounded-xl border border-slate-200 p-4
-              transition-all duration-300 ease-in-out
-              hover:-translate-y-1 hover:shadow-xl
-              hover:shadow-lg
-            "
+            type="button"
+            onClick={() => navigate(routeMap[action.icon])}
+            className="block w-full text-left"
           >
-            <div
-              className={`
-                flex h-10 w-10 items-center justify-center rounded-lg
-                transition-transform duration-200 group-hover:scale-110
-                ${iconBgMap[action.icon]}
-              `}
+            <Card
+              className="
+                group flex items-center gap-4
+                rounded-xl border border-slate-200 p-4
+                transition-all duration-300 ease-in-out
+                hover:-translate-y-1 hover:shadow-xl
+                hover:shadow-lg
+                cursor-pointer
+              "
             >
-              {iconMap[action.icon]}
-            </div>
+              <div
+                className={`
+                  flex h-10 w-10 items-center justify-center rounded-lg
+                  transition-transform duration-200 group-hover:scale-110
+                  ${iconBgMap[action.icon]}
+                `}
+              >
+                {iconMap[action.icon]}
+              </div>
 
-            <div>
-              <p className="text-sm font-semibold text-slate-900">
-                {action.title}
-              </p>
-              <p className="text-xs text-slate-500">
-                {action.description}
-              </p>
-            </div>
-          </Card>
+              <div>
+                <p className="text-sm font-semibold text-slate-900">
+                  {action.title}
+                </p>
+                <p className="text-xs text-slate-500">
+                  {action.description}
+                </p>
+              </div>
+            </Card>
+          </button>
         ))}
       </div>
     </section>
   );
 }
+

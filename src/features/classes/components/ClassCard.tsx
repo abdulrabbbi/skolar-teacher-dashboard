@@ -1,5 +1,5 @@
 
-import { ChevronRight, Users } from "lucide-react";
+import { ArrowRight, Users } from "lucide-react";
 import Card from "../../../shared/components/ui/Card";
 import ProgressBar from "../../../shared/components/ui/ProgressBar";
 import type { ClassSummary } from "../data/classes.mock";
@@ -36,9 +36,10 @@ export default function ClassCard({ classItem }: ClassCardProps) {
           </div>
         </div>
 
-        <ChevronRight
+        <ArrowRight
+          strokeWidth={2.8}
           className="
-            h-5 w-5 shrink-0 text-slate-400
+            h-4 w-4 shrink-0 text-slate-500
             transition-transform transition-colors
             group-hover:translate-x-1
             group-hover:text-slate-600

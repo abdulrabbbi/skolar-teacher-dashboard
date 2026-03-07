@@ -7,9 +7,10 @@ export type WeeklyViewProps = {
   headerLabel: string; 
   stats: WeeklyStats;
   days: WeeklyDay[];
+  onToggleEvent?: (id: string) => void;
 };
 
-export default function WeeklyView({ stats, days }: WeeklyViewProps) {
+export default function WeeklyView({ stats, days, onToggleEvent }: WeeklyViewProps) {
   const numberClass = "mt-1 text-2xl font-semibold text-slate-900";
 
   return (
@@ -80,8 +81,13 @@ export default function WeeklyView({ stats, days }: WeeklyViewProps) {
                   key={event.id}
                   event={event}
                   checked={Boolean(event.completed)}
+                  onToggle={onToggleEvent}
                 />
               ))}
+
+              {day.events.length === 0 && (
+                <p className="text-center text-xs text-slate-500">No events</p>
+              )}
             </div>
           </Card>
         ))}

@@ -15,7 +15,7 @@
 //     case 'red':
 //       return 'bg-red-500 text-white';
 //     case 'green':
-//       return 'bg-emerald-600 text-white';
+//       return 'bg-[#00B96B] text-white';
 //     case 'orange':
 //       return 'bg-orange-500 text-white';
 //     case 'purple':
@@ -91,7 +91,7 @@ function getIconTile(color?: StatCardProps["color"]) {
     case "red":
       return "bg-red-50 text-red-600";
     case "green":
-      return "bg-emerald-100 text-emerald-700";
+      return "bg-[#00B96B1A] text-[#00B96B]";
     case "orange":
       return "bg-orange-50 text-orange-600";
     case "purple":

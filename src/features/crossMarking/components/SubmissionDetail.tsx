@@ -42,14 +42,18 @@ export default function SubmissionDetail({
         confidence={detail.confidence}
       />
 
-      <FeedbackPanel placeholder={feedbackPlaceholder} />
+      <FeedbackPanel
+        placeholder={feedbackPlaceholder}
+        studentName={detail.studentName}
+        submissionId={detail.id}
+      />
     </div>
   );
 
   return (
     <div className="space-y-6">
       {/* TOP BAR */}
-      <Card className="p-3 sm:p-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
+      <Card className="p-3 sm:p-4 transition-all duration-300 ease-in-out hover:-translate-y-0.3">
         <div className="flex items-center justify-between gap-3">
           <button
             type="button"
@@ -71,13 +75,16 @@ export default function SubmissionDetail({
       </Card>
 
       {/* SUBMISSION HEADER */}
-      <Card className="p-4 sm:p-5 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
+      <Card className="p-4 sm:p-5 transition-all duration-300 ease-in-out hover:-translate-y- hover:shadow-xl">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-lg sm:text-xl font-semibold text-slate-900">
               {detail.id.replace("submission-", "Submission #")}
             </h2>
             <p className="text-sm text-slate-500">{detail.assessment}</p>
+            <p className="mt-1 text-sm font-medium text-slate-700">
+              Student: {detail.studentName}
+            </p>
           </div>
 
           <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
@@ -85,8 +92,8 @@ export default function SubmissionDetail({
             <button
               type="button"
               onClick={() => setBlindMode(!blindMode)}
-              className={`relative inline-flex h-5 w-9 items-center rounded-full transition transition-all duration-200 hover:-translate-y-0.5 ${
-                blindMode ? "bg-emerald-600" : "bg-slate-300"
+              className={`relative inline-flex h-5 w-9 items-center rounded-full transition transition-all duration-200 hover:-translate-y-0. ${
+                blindMode ? "bg-[#00B96B]" : "bg-slate-300"
               }`}
             >
               <span

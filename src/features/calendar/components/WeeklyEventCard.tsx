@@ -1,4 +1,4 @@
-import { Clock } from "lucide-react";
+import { Check, Clock } from "lucide-react";
 import { cn } from "../../../shared/lib/cn";
 import type { WeeklyEvent } from "../data/calendar.weekly.mock";
 
@@ -25,13 +25,15 @@ function splitTitle(event: WeeklyEvent) {
 
   if (t.toLowerCase().endsWith("deadline")) {
     const parts = t.split(" ").filter(Boolean);
-    if (parts.length >= 2)
+    if (parts.length >= 2) {
       return { subject: parts[0]!, main: parts.slice(1).join(" ") };
+    }
   }
 
   const parts = t.split(" ").filter(Boolean);
-  if (parts.length >= 2)
+  if (parts.length >= 2) {
     return { subject: parts[0]!, main: parts.slice(1).join(" ") };
+  }
 
   return { subject: event.type, main: t };
 }
@@ -46,58 +48,50 @@ export default function WeeklyEventCard({
   onToggle?: (id: string) => void;
 }) {
   const { subject, main } = splitTitle(event);
+  const isChecked = Boolean(checked);
 
   return (
     <div
       className="
-        w-full rounded-2xl
-        border border-slate-200/70
-        bg-slate-50
-        px-1 py-2
-        shadow-sm
+        w-full rounded-2xl border border-slate-200/70
+        bg-slate-50 px-3 py-3 shadow-sm
       "
     >
-      <div className="flex items-start">
+      <div className="flex items-start gap-3">
         <button
           type="button"
           onClick={() => onToggle?.(event.id)}
+          aria-pressed={isChecked}
           className={cn(
             "mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-lg border transition",
-            checked
+            isChecked
               ? "border-slate-900 bg-slate-900"
-              : "border-slate-300 bg-white hover:bg-slate-50"
+              : "border-slate-300 bg-white hover:bg-slate-50",
           )}
           aria-label="Toggle event"
         >
-          {checked ? (
-            <span className="text-[11px] font-bold text-white">✓</span>
-          ) : null}
+          {isChecked ? <Check className="h-3 w-3 text-white" /> : null}
         </button>
 
-        <div className="min-w-0 flex-1 w-full">
-          <div className="flex items-center justify-center gap-2 w-full min-w-0">
-            <span
-              className={cn("h-2 w-2 shrink-0 rounded-full", dotMap[event.type])}
-            />
-            <span className="min-w-0 max-w-full truncate text-[11px] font-medium text-slate-500 text-center">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2">
+            <span className={cn("h-2 w-2 shrink-0 rounded-full", dotMap[event.type])} />
+            <span className="truncate text-[11px] font-medium text-slate-500">
               {subject || "Subject"}
             </span>
           </div>
 
           <p
-            className="
-              mt-1 w-full text-center text-[13px] font-semibold leading-5 text-slate-900
-              overflow-hidden
-              [display:-webkit-box]
-              [-webkit-box-orient:vertical]
-              [-webkit-line-clamp:2]
-            "
+            className={cn(
+              "mt-1 overflow-hidden text-[13px] font-semibold leading-5 text-slate-900 [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]",
+              isChecked && "line-through opacity-75",
+            )}
             title={main}
           >
             {main}
           </p>
 
-          <div className="mt-2 flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
+          <div className="mt-2 flex items-center gap-1.5 text-[11px] text-slate-500">
             <Clock className="h-3.5 w-3.5 text-slate-400" />
             <span className="truncate">{event.duration}</span>
           </div>

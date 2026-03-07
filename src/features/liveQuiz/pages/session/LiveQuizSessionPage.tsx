@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '../../../../app/router/routes';
 import { liveQuizSessions } from '../../data/liveQuizSession.mock';
 import SessionStatusBar from './components/SessionStatusBar';
 import QuestionCard from './components/QuestionCard';
@@ -10,6 +11,7 @@ import StudentsNotAnsweredCard from './components/StudentsNotAnsweredCard';
 import QuickActionsCard from './components/QuickActionsCard';
 
 export default function LiveQuizSessionPage() {
+  const navigate = useNavigate();
   const { quizId } = useParams<{ quizId: string }>();
 
   const session = useMemo(() => {
@@ -24,12 +26,17 @@ export default function LiveQuizSessionPage() {
       100
   );
 
+  const handleEndQuiz = () => {
+    navigate(ROUTES.liveQuizSessionAnalytics(session.id));
+  };
+
   return (
     <section className="space-y-6">
       <SessionStatusBar
         progress={session.progress}
         timeRemaining={session.timeRemaining}
         studentsAnswered={session.studentsAnswered}
+        onEndQuiz={handleEndQuiz}
       />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
@@ -42,7 +49,10 @@ export default function LiveQuizSessionPage() {
             options={session.question.options}
           />
 
-          <ParticipationCard percent={participationPercent} />
+          <ParticipationCard
+            percent={participationPercent}
+            students={session.studentsAnsweredList}
+          />
 
           <AnswerDistributionCard items={session.answerDistribution} />
         </div>

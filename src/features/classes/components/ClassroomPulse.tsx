@@ -31,7 +31,7 @@ const iconMap: Record<ClassroomPulseStat["icon"], JSX.Element> = {
 
 const iconBgMap: Record<ClassroomPulseStat["icon"], string> = {
   students: "bg-blue-600 text-white",
-  onTrack: "bg-emerald-600 text-white",
+  onTrack: "bg-[#00B96B] text-white",
   atRisk: "bg-orange-500 text-white",
   accuracy: "bg-purple-600 text-white",
 };
@@ -107,3 +107,4 @@ export default function ClassroomPulse({
     </div>
   );
 }
+
