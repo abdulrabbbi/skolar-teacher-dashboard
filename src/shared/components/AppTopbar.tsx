@@ -147,8 +147,8 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
       const rect = trigger.getBoundingClientRect();
 
       setPanelPosition({
-        top: rect.bottom + 14,
-        right: Math.max(12, window.innerWidth - rect.right),
+        top: rect.bottom + 10,
+        right: Math.max(10, window.innerWidth - rect.right),
       });
     };
 

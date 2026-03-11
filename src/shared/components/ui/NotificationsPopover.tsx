@@ -79,30 +79,32 @@ export function NotificationsPopover({
           role="dialog"
           aria-label="Notifications"
           className={cn(
-            "relative z-[10000] w-[min(420px,calc(100vw-20px))] overflow-hidden",
-            "rounded-[26px] border border-[#D9E1EC] bg-white",
+            "relative z-[10000] w-[min(360px,calc(100vw-24px))] flex flex-col",
+            "max-h-[min(400px,calc(100dvh-90px))] overflow-hidden",
+            "rounded-[22px] border border-[#D9E1EC] bg-white",
             "shadow-[0_18px_55px_rgba(15,23,42,0.16)]",
           )}
         >
-          <div className="border-b border-[#E9EEF5] px-5 py-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <div className="text-[18px] font-extrabold leading-none text-[#0F172A] sm:text-[20px]">
-                  Notifications
-                </div>
-                <div className="mt-1.5 text-[13px] font-medium text-[#64748B] sm:text-[14px]">
-                  {unreadCount} unread
-                </div>
+          <div className="shrink-0 border-b border-[#E9EEF5] px-4 pt-4 pb-3">
+            {/* Row 1 – title */}
+            <div className="text-[18px] font-extrabold leading-none text-[#0F172A]">
+              Notifications
+            </div>
+
+            {/* Row 2 – unread count + actions */}
+            <div className="mt-2.5 flex items-center justify-between gap-2">
+              <div className="text-[12px] font-medium text-[#64748B]">
+                {unreadCount} unread
               </div>
 
-              <div className="flex shrink-0 items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <button
                   type="button"
                   onClick={onMarkAllRead}
                   className={cn(
-                    "inline-flex h-10 items-center justify-center rounded-[16px]",
-                    "border border-[#D5DEE8] bg-white px-4",
-                    "text-[13px] font-semibold text-[#334155]",
+                    "inline-flex h-7 items-center justify-center rounded-[10px]",
+                    "border border-[#D5DEE8] bg-white px-2.5",
+                    "text-[11px] font-semibold text-[#334155]",
                     "transition hover:bg-slate-50",
                   )}
                 >
@@ -113,9 +115,9 @@ export function NotificationsPopover({
                   type="button"
                   onClick={onEditProfile}
                   className={cn(
-                    "inline-flex h-10 items-center justify-center rounded-[16px]",
-                    "bg-[#0F172A] px-4",
-                    "text-[13px] font-semibold text-white",
+                    "inline-flex h-7 items-center justify-center rounded-[10px]",
+                    "bg-[#0F172A] px-2.5",
+                    "text-[11px] font-semibold text-white",
                     "transition hover:bg-[#111C33]",
                   )}
                 >
@@ -125,8 +127,8 @@ export function NotificationsPopover({
             </div>
           </div>
 
-          <div className="max-h-[440px] overflow-y-auto px-3 py-3">
-            <div className="space-y-2">
+          <div className="scrollbar-hide flex-1 overflow-y-auto px-3 py-2.5">
+            <div className="space-y-1.5">
               {notifications.map((n) => {
                 const Icon = iconFor(n.iconType);
 
@@ -136,51 +138,55 @@ export function NotificationsPopover({
                     type="button"
                     onClick={() => onNotificationClick(n)}
                     className={cn(
-                      "relative w-full rounded-[18px] border border-[#E2E8F0] bg-white text-left",
-                      "px-3 py-3 transition",
+                      "w-full rounded-[14px] border border-[#E2E8F0] bg-white text-left",
+                      "px-3 py-2.5 transition",
                       n.targetRoute
                         ? "hover:border-indigo-200 hover:bg-indigo-50/30"
                         : "hover:bg-slate-50",
                     )}
                   >
                     <div className="flex items-start gap-2.5">
+                      {/* icon */}
                       <div
                         className={cn(
-                          "grid h-11 w-11 shrink-0 place-items-center rounded-[14px] border",
+                          "grid h-9 w-9 shrink-0 place-items-center rounded-[10px] border",
                           iconTone(n.iconType),
                         )}
                       >
-                        <Icon className="h-4.5 w-4.5" />
+                        <Icon className="h-4 w-4" />
                       </div>
 
-                      <div className="min-w-0 flex-1 pr-6">
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="min-w-0">
-                            <div className="truncate text-[14px] font-extrabold leading-tight text-[#0F172A]">
-                              {n.title}
-                            </div>
-
-                            <div className="mt-1 text-[12px] leading-[1.35] text-[#475569]">
-                              {n.message}
-                            </div>
+                      {/* content */}
+                      <div className="min-w-0 flex-1">
+                        {/* title row */}
+                        <div className="flex items-start justify-between gap-1.5">
+                          <div className="truncate text-[13px] font-bold leading-tight text-[#0F172A]">
+                            {n.title}
                           </div>
-
-                          <div className="shrink-0 pt-0.5 text-[12px] font-semibold text-[#64748B]">
-                            {n.timeAgo}
+                          {/* time + unread dot */}
+                          <div className="flex shrink-0 items-center gap-1 pt-px">
+                            <span className="text-[11px] font-semibold text-[#64748B]">
+                              {n.timeAgo}
+                            </span>
+                            {n.unread && (
+                              <span className="h-2 w-2 shrink-0 rounded-full bg-[#FF2D55]" />
+                            )}
                           </div>
                         </div>
 
+                        {/* message */}
+                        <div className="mt-0.5 text-[11.5px] leading-[1.4] text-[#475569]">
+                          {n.message}
+                        </div>
+
+                        {/* CTA */}
                         {n.targetRoute ? (
-                          <div className="mt-2 text-[12px] font-semibold text-[#4F46E5]">
+                          <div className="mt-1.5 text-[11.5px] font-semibold text-[#4F46E5]">
                             {n.ctaLabel ?? "Open"}
                           </div>
                         ) : null}
                       </div>
                     </div>
-
-                    {n.unread && (
-                      <span className="absolute right-2.5 top-2.5 h-3.5 w-3.5 rounded-full bg-[#FF2D55] shadow-[0_0_0_2px_white]" />
-                    )}
                   </button>
                 );
               })}
