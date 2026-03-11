@@ -9,7 +9,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { useLocation, useNavigate } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
+import topbarIcon from "../../assets/images/topiconn.svg";
 import {
   NotificationsPopover,
   type NotificationItem,
@@ -266,7 +266,7 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
           "
         >
           <img
-            src={logo}
+            src={topbarIcon}
             alt="Skolar logo"
             className="h-10 w-10 shrink-0 object-contain transition-transform duration-300 ease-out group-hover:scale-150"
             draggable={false}

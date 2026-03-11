@@ -20,10 +20,10 @@ export default function UpcomingAssessments({
     <section className="space-y-2">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-base font-semibold text-slate-900">
+          <h2 className="text-base font-semibold text-emerald-950">
             Upcoming Assessments
           </h2>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-emerald-900/70">
             SACs and exams on your schedule
           </p>
         </div>
@@ -61,7 +61,11 @@ export default function UpcomingAssessments({
           return (
             <Card
               key={assessment.id}
-              className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+              className="
+                space-y-4 rounded-2xl border border-emerald-200/70
+                bg-white/45 p-5 backdrop-blur-md
+                shadow-[0_10px_24px_rgba(16,185,129,0.10)]
+              "
             >
               {/* title */}
               <div>
@@ -98,9 +102,9 @@ export default function UpcomingAssessments({
 
                 {/* progress bar: figma style (black fill) */}
                 <div className="pt-1">
-                  <div className="h-2.5 w-full overflow-hidden rounded-full bg-slate-200">
+                  <div className="h-2.5 w-full overflow-hidden rounded-full bg-emerald-100/80">
                     <div
-                      className="h-full rounded-full bg-slate-950"
+                      className="h-full rounded-full bg-[#00B96B]"
                       style={{ width: `${average}%` }}
                     />
                   </div>

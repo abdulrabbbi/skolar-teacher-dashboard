@@ -40,7 +40,7 @@ export default function QuickActions({ actions }: QuickActionsProps) {
 
   return (
     <section className="space-y-2">
-      <h2 className="text-base font-semibold text-slate-900">
+      <h2 className="text-base font-semibold text-emerald-950">
         Quick Actions
       </h2>
 
@@ -55,10 +55,11 @@ export default function QuickActions({ actions }: QuickActionsProps) {
             <Card
               className="
                 group flex items-center gap-4
-                rounded-xl border border-slate-200 p-4
+                rounded-xl border border-emerald-200/70 bg-white/45 p-4
+                backdrop-blur-md shadow-[0_10px_24px_rgba(16,185,129,0.10)]
                 transition-all duration-300 ease-in-out
-                hover:-translate-y-1 hover:shadow-xl
-                hover:shadow-lg
+                hover:-translate-y-1 hover:border-emerald-300/90 hover:bg-white/60
+                hover:shadow-[0_14px_30px_rgba(16,185,129,0.18)]
                 cursor-pointer
               "
             >

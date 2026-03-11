@@ -29,20 +29,20 @@ const iconMap: Record<PulseStat["icon"], JSX.Element> = {
 };
 
 const iconBgMap: Record<PulseStat["icon"], string> = {
-  students: "bg-blue-600 text-white",
+  students: "bg-emerald-500 text-white",
   onTrack: "bg-[#00B96B] text-white",
-  atRisk: "bg-orange-500 text-white",
-  accuracy: "bg-purple-600 text-white",
+  atRisk: "bg-amber-500 text-white",
+  accuracy: "bg-emerald-700 text-white",
 };
 
 export default function ClassroomPulse({ stats }: ClassroomPulseProps) {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-base font-extrabold text-slate-900 sm:text-lg">
+        <h2 className="text-base font-extrabold text-emerald-950 sm:text-lg">
           Classroom Pulse
         </h2>
-        <p className="mt-1 text-xs text-slate-500 sm:text-sm">
+        <p className="mt-1 text-xs text-emerald-900/70 sm:text-sm">
           Real-time class health overview
         </p>
       </div>
@@ -61,7 +61,13 @@ export default function ClassroomPulse({ stats }: ClassroomPulseProps) {
                 {iconMap[stat.icon]}
               </div>
             }
-            className="group transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg"
+            className="
+              group border-emerald-200/70 bg-white/45
+              backdrop-blur-md shadow-[0_10px_24px_rgba(16,185,129,0.12)]
+              transition-all duration-300 ease-in-out
+              hover:-translate-y-1 hover:border-emerald-300/90 hover:bg-white/60
+              hover:shadow-[0_14px_30px_rgba(16,185,129,0.18)]
+            "
           />
         ))}
       </div>

@@ -39,10 +39,10 @@ export default function TopicPerformance({
     <>
       <section className="w-full space-y-6">
         <div className="space-y-2">
-          <h2 className="text-base font-semibold text-slate-900">
+          <h2 className="text-base font-semibold text-emerald-950">
             Topic Performance
           </h2>
-          <p className="text-sm text-slate-500">This week's pain points</p>
+          <p className="text-sm text-emerald-900/70">This week's pain points</p>
         </div>
 
         <div className="space-y-6">

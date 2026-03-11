@@ -26,9 +26,9 @@ type StudentItem = {
 
 const toneConfig = {
   alert: { Icon: AlertCircle, iconClass: "text-orange-500" },
-  insight: { Icon: Users, iconClass: "text-blue-600" },
+  insight: { Icon: Users, iconClass: "text-[#00B96B]" },
   reminder: { Icon: Clock, iconClass: "text-red-500" },
-  support: { Icon: FileText, iconClass: "text-violet-600" },
+  support: { Icon: FileText, iconClass: "text-[#0E8F5B]" },
 } as const;
 
 function getStudentsForAlert(alert: AlertInsightItem): StudentItem[] {
@@ -219,10 +219,10 @@ export default function AlertsInsights({ alerts }: AlertsInsightsProps) {
   return (
     <>
       <section>
-        <h2 className="text-base font-semibold text-slate-900">
+        <h2 className="text-base font-semibold text-emerald-950">
           Alerts & Insights
         </h2>
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1 text-xs text-emerald-900/70">
           Actionable signals from your data
         </p>
 
@@ -233,7 +233,12 @@ export default function AlertsInsights({ alerts }: AlertsInsightsProps) {
             return (
               <li
                 key={alert.id}
-                className="rounded-xl border border-slate-200 bg-white px-2 py-5"
+                className="
+                  rounded-xl border border-emerald-200/70 bg-white/45
+                  px-2 py-5 backdrop-blur-md
+                  shadow-[0_8px_22px_rgba(16,185,129,0.10)]
+                  transition-colors duration-200 hover:bg-white/55
+                "
               >
                 <div className="flex items-center gap-4">
                   <Icon className={`h-6 w-6 shrink-0 ${iconClass}`} />
