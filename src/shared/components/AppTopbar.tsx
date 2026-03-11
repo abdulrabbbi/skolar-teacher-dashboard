@@ -1,10 +1,19 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { Bell, Calendar, Menu } from "lucide-react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { createPortal } from "react-dom";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ROUTES } from "../../app/router/routes";
 import logo from "../../assets/images/logo.png";
+import {
+  NotificationsPopover,
+  type NotificationItem,
+} from "../components/ui/NotificationsPopover";
 
 export type AppTopbarProps = {
   onMenuClick?: () => void;
@@ -16,6 +25,11 @@ type IconButtonProps = {
   children: ReactNode;
   onClick?: () => void;
   ariaExpanded?: boolean;
+};
+
+type PanelPosition = {
+  top: number;
+  right: number;
 };
 
 function IconButton({
@@ -48,35 +62,97 @@ function IconButton({
   );
 }
 
-const topbarNotifications = [
-  {
-    id: "notif-1",
-    title: "3 students have not answered yet",
-    time: "Just now",
-  },
-  {
-    id: "notif-2",
-    title: "Live quiz confidence dropped to 71%",
-    time: "2 min ago",
-  },
-  {
-    id: "notif-3",
-    title: "Moderation room has a new submission",
-    time: "8 min ago",
-  },
-] as const;
+function buildTopbarNotifications(): NotificationItem[] {
+  return [
+    {
+      id: "notif-live-quiz",
+      title: "Live Quiz Started",
+      message:
+        "Your teacher has started a live Methods quiz. Join now before the timer runs out.",
+      timeAgo: "now",
+      unread: true,
+      iconType: "liveQuiz",
+      targetRoute: "/teacher/live-quiz",
+      ctaLabel: "Join Live Quiz",
+    },
+    {
+      id: "notif-feedback",
+      title: "Feedback Available",
+      message:
+        "Your Exam Simulation attempt has new AI feedback ready to review.",
+      timeAgo: "2m",
+      unread: true,
+      iconType: "feedback",
+      targetRoute: "/teacher/analytics",
+    },
+    {
+      id: "notif-streak",
+      title: "Streak Milestone!",
+      message: "You hit a 7-day study streak. Keep going to reach 14 days.",
+      timeAgo: "1h",
+      unread: true,
+      iconType: "streak",
+      targetRoute: "/teacher/dashboard",
+    },
+    {
+      id: "notif-reminder",
+      title: "Study Reminder",
+      message: "Planner: You scheduled a 30-minute revision block for today.",
+      timeAgo: "3h",
+      unread: false,
+      iconType: "reminder",
+      targetRoute: "/teacher/calendar",
+    },
+    {
+      id: "notif-summary",
+      title: "Weekly Progress Summary",
+      message:
+        "Your accuracy improved by 5% this week. See the breakdown by topic.",
+      timeAgo: "1d",
+      unread: true,
+      iconType: "summary",
+      targetRoute: "/teacher/analytics",
+    },
+  ];
+}
 
 export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationItem[]>(
+    () => buildTopbarNotifications(),
+  );
+  const [panelPosition, setPanelPosition] = useState<PanelPosition>({
+    top: 72,
+    right: 16,
+  });
+
   const notificationsRef = useRef<HTMLDivElement | null>(null);
   const notificationsPanelRef = useRef<HTMLDivElement | null>(null);
 
+  const unreadCount = useMemo(
+    () => notifications.filter((item) => item.unread).length,
+    [notifications],
+  );
+
   useEffect(() => {
-    if (!notificationsOpen) {
-      return;
-    }
+    if (!notificationsOpen) return;
+
+    const updatePosition = () => {
+      const trigger = notificationsRef.current;
+      if (!trigger) return;
+
+      const rect = trigger.getBoundingClientRect();
+
+      setPanelPosition({
+        top: rect.bottom + 14,
+        right: Math.max(12, window.innerWidth - rect.right),
+      });
+    };
+
+    updatePosition();
 
     const handlePointerDown = (event: MouseEvent) => {
       const target = event.target as Node;
@@ -94,10 +170,14 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
       }
     };
 
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
     document.addEventListener("mousedown", handlePointerDown);
     document.addEventListener("keydown", handleEscape);
 
     return () => {
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
       document.removeEventListener("mousedown", handlePointerDown);
       document.removeEventListener("keydown", handleEscape);
     };
@@ -108,11 +188,39 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
   }, [location.pathname]);
 
   const handleOpenCalendar = () => {
-    navigate(ROUTES.calendar);
+    navigate("/teacher/calendar");
   };
 
   const handleToggleNotifications = () => {
     setNotificationsOpen((previous) => !previous);
+  };
+
+  const handleMarkAllRead = () => {
+    setNotifications((previous) =>
+      previous.map((item) => ({
+        ...item,
+        unread: false,
+      })),
+    );
+  };
+
+  const handleEditProfile = () => {
+    navigate("/teacher/settings");
+    setNotificationsOpen(false);
+  };
+
+  const handleNotificationClick = (notification: NotificationItem) => {
+    setNotifications((previous) =>
+      previous.map((item) =>
+        item.id === notification.id ? { ...item, unread: false } : item,
+      ),
+    );
+
+    setNotificationsOpen(false);
+
+    if (notification.targetRoute) {
+      navigate(notification.targetRoute);
+    }
   };
 
   return (
@@ -153,17 +261,17 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
             group flex items-center gap-2
             rounded-xl
             px-1 py-1
-            hover:bg-slate-50
             transition-all duration-300 ease-out
+            hover:bg-slate-50
           "
         >
           <img
             src={logo}
             alt="Skolar logo"
-            className="h-10 w-10 shrink-0 object-contain transform-gpu transition-transform duration-300 ease-out group-hover:scale-150"
+            className="h-10 w-10 shrink-0 object-contain transition-transform duration-300 ease-out group-hover:scale-150"
             draggable={false}
           />
-          <span className="text-lg font-semibold tracking-wide text-slate-900 transition-transform duration-300 ease-out group-hover:translate-y-[-1px]">
+          <span className="text-lg font-semibold tracking-wide text-slate-900 transition-transform duration-300 ease-out group-hover:-translate-y-[1px]">
             SKOLAR
           </span>
         </button>
@@ -175,53 +283,46 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
         </IconButton>
 
         <div ref={notificationsRef} className="relative">
-          <IconButton
-            label="View notifications"
-            onClick={handleToggleNotifications}
-            ariaExpanded={notificationsOpen}
-          >
-            <Bell className="h-5 w-5" />
-          </IconButton>
+          <div className="relative">
+            <IconButton
+              label="View notifications"
+              onClick={handleToggleNotifications}
+              ariaExpanded={notificationsOpen}
+            >
+              <Bell className="h-5 w-5" />
+            </IconButton>
 
-          {notificationsOpen && typeof document !== "undefined"
-            ? createPortal(
-                <div
-                  ref={notificationsPanelRef}
-                  className="fixed right-4 top-[4.25rem] z-[250] w-64 rounded-xl border border-slate-200 bg-white p-2.5 shadow-xl md:right-6"
-                >
-                  <div className="mb-2 flex items-center justify-between px-1">
-                    <p className="text-xs font-semibold text-slate-900">
-                      Notifications
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => setNotificationsOpen(false)}
-                      className="text-[11px] font-medium text-slate-500 hover:text-slate-700"
-                    >
-                      Close
-                    </button>
-                  </div>
-
-                  <div className="max-h-56 space-y-1.5 overflow-y-auto pr-0.5">
-                    {topbarNotifications.map((notification) => (
-                      <div
-                        key={notification.id}
-                        className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1.5"
-                      >
-                        <p className="text-[11px] font-medium leading-4 text-slate-800">
-                          {notification.title}
-                        </p>
-                        <p className="mt-0.5 text-[10px] text-slate-500">
-                          {notification.time}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>,
-                document.body,
-              )
-            : null}
+            {unreadCount > 0 && (
+              <span className="pointer-events-none absolute -right-1 -top-1 grid h-5 min-w-[20px] place-items-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white shadow-sm">
+                {unreadCount > 9 ? "9+" : unreadCount}
+              </span>
+            )}
+          </div>
         </div>
+
+        {notificationsOpen && typeof document !== "undefined"
+          ? createPortal(
+              <div
+                ref={notificationsPanelRef}
+                className="fixed z-[9999]"
+                style={{
+                  top: `${panelPosition.top}px`,
+                  right: `${panelPosition.right}px`,
+                }}
+              >
+                <NotificationsPopover
+                  open={notificationsOpen}
+                  unreadCount={unreadCount}
+                  notifications={notifications}
+                  onClose={() => setNotificationsOpen(false)}
+                  onMarkAllRead={handleMarkAllRead}
+                  onEditProfile={handleEditProfile}
+                  onNotificationClick={handleNotificationClick}
+                />
+              </div>,
+              document.body,
+            )
+          : null}
 
         <button
           type="button"
@@ -231,7 +332,8 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
             bg-white px-2.5 py-1.5
             text-sm font-medium text-slate-700
             transition-all duration-200
-            hover:bg-[#00B96B14] hover:border-[#00B96B]
+            hover:border-[#00B96B]
+            hover:bg-[#00B96B14]
             hover:text-[#00B96B]
           "
         >

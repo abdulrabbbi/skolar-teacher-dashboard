@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import AppSidebar from "../../shared/components/AppSidebar";
 import AppTopbar from "../../shared/components/AppTopbar";
-import GridBackground from "../../features/auth/components/GridBackground";
 
 export default function TeacherShellLayout() {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -16,15 +15,23 @@ export default function TeacherShellLayout() {
     return location.pathname.endsWith("/dashboard");
   }, [location.pathname]);
 
-  const shellBgStyle = useMemo<CSSProperties | undefined>(() => {
+  const shellBgStyle = useMemo<CSSProperties>(() => {
     if (isDashboard) {
-      return undefined;
+      return {
+        backgroundColor: "#f4fff8",
+        backgroundImage: `
+          radial-gradient(2000px circle at 72% 70%, rgba(16,185,129,0.16), transparent 80%),
+          radial-gradient(2000px circle at 90% 85%, rgba(34,197,94,0.12), transparent 80%),
+          radial-gradient(circle, rgba(16,185,129,0.2) 1px, transparent 1px)
+        `,
+        backgroundSize: "auto, auto, 18px 18px",
+      };
     }
 
     return {
       backgroundColor: "#ffffff",
       backgroundImage: `
-        radial-gradient(circle, rgba(99,102,241,0.14) 2px, transparent 2px)
+        radial-gradient(circle, rgba(99,102,241,0.14) 1px, transparent 1px)
       `,
       backgroundSize: "18px 18px",
     };
@@ -40,25 +47,7 @@ export default function TeacherShellLayout() {
 
   return (
     <div className="h-dvh w-full overflow-hidden">
-      <div
-        className={`relative h-full w-full ${isDashboard ? "" : "teacher-dots-motion"}`}
-        style={shellBgStyle}
-      >
-        {isDashboard ? (
-          <>
-            <div className="pointer-events-none absolute inset-0 -z-20 bg-white" />
-            <div className="pointer-events-none absolute -left-40 top-24 h-[520px] w-[520px] rounded-full bg-[#00B96B]/35 blur-3xl -z-20 animate-skolar-fog-1" />
-            <div className="pointer-events-none absolute right-[-220px] top-[-80px] h-[680px] w-[680px] rounded-full bg-[#00B96B]/30 blur-3xl -z-20 animate-skolar-fog-2" />
-            <div className="pointer-events-none absolute right-[-180px] bottom-[-240px] h-[680px] w-[680px] rounded-full bg-[#00B96B]/25 blur-3xl -z-20 animate-skolar-fog-3" />
-            <GridBackground
-              dotColor="#cbd5e1"
-              glowColor="#00B96B"
-              spacing={22}
-              forceShow
-            />
-          </>
-        ) : null}
-
+      <div className="h-full w-full" style={shellBgStyle}>
         <div className="flex h-full w-full min-h-0 flex-col">
           {/* Topbar */}
           <div className="shrink-0">
@@ -77,7 +66,7 @@ export default function TeacherShellLayout() {
                 <div className="h-full bg-transparent backdrop-blur">
                   <div
                     ref={scrollRef}
-                    className={`h-full overflow-x-hidden overflow-y-auto no-scrollbar ${isDashboard ? "" : "teacher-dots-motion"}`}
+                    className="h-full overflow-x-hidden overflow-y-auto no-scrollbar"
                     style={shellBgStyle}
                   >
                     <AnimatePresence mode="wait">

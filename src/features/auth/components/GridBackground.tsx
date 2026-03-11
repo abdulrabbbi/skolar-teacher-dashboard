@@ -6,6 +6,7 @@ interface GridBackgroundProps {
   glowColor?: string;
   spacing?: number;
   forceShow?: boolean;
+  className?: string;
 }
 
 /**
@@ -17,6 +18,7 @@ export default function GridBackground({
   glowColor = "#b1a8ff",
   spacing = 20,
   forceShow = false,
+  className = "",
 }: GridBackgroundProps) {
   const { pathname } = useLocation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -61,14 +63,8 @@ export default function GridBackground({
     let animationFrameId = 0;
 
     const resizeCanvas = () => {
-      const parent = canvas.parentElement;
-      if (parent) {
-        canvas.width = parent.clientWidth;
-        canvas.height = parent.clientHeight;
-      } else {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
 
     window.addEventListener("resize", resizeCanvas);
@@ -91,7 +87,7 @@ export default function GridBackground({
           const dy = mousePos.y - y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          let alpha = 0.22;
+          let alpha = 0.25;
           let r = baseRgb.r;
           let g = baseRgb.g;
           let b = baseRgb.b;
@@ -100,7 +96,7 @@ export default function GridBackground({
             const normDist = 1 - distance / glowRadius;
             const intensity = normDist * normDist * (3 - 2 * normDist);
 
-            alpha = 0.22 + intensity * 0.45;
+            alpha = 0.25 + intensity * 0.55;
 
             r = baseRgb.r + (glowRgb.r - baseRgb.r) * intensity;
             g = baseRgb.g + (glowRgb.g - baseRgb.g) * intensity;
@@ -108,7 +104,7 @@ export default function GridBackground({
           }
 
           ctx.beginPath();
-          ctx.arc(x, y, 1.35, 0, Math.PI * 2);
+          ctx.arc(x, y, 1.5, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(
             b,
           )}, 1)`;
@@ -133,7 +129,7 @@ export default function GridBackground({
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 -z-10 pointer-events-none"
+      className={`fixed inset-0 -z-10 pointer-events-none ${className}`}
     />
   );
 }
