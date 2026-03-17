@@ -180,7 +180,7 @@ export default function AppSidebar({ mobileOpen, onClose }: SidebarProps) {
                             className={`shrink-0 transition-colors ${
                               isActive
                                 ? "text-white"
-                                : "text-green-400 group-hover:text-green-600"
+                                : "text-gray-400 group-hover:text-green-600"
                             }`}
                           />
                           {!collapsed && <span>{item.label}</span>}

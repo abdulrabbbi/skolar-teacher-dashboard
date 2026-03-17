@@ -1,4 +1,3 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useMemo } from "react";
@@ -10,15 +9,18 @@ export type MonthGridProps = {
   events: CalendarEvent[];
   eventTypes: EventTypeConfig[];
 
-  monthISO?: string;  
-  monthLabel?: string; 
+  monthISO?: string;
+  monthLabel?: string;
 
   onPrevMonth?: () => void;
   onNextMonth?: () => void;
+
+  onSelectDay?: (dateISO: string) => void;
+  onSelectEvent?: (event: CalendarEvent) => void;
 };
 
 type MonthCell = {
-  key: string; 
+  key: string;
   date: Date;
   inMonth: boolean;
 };
@@ -75,15 +77,22 @@ function getEventISO(e: CalendarEvent, monthISO: string): string {
   return toISODate(new Date(year, month, day));
 }
 
+function getEventTitle(e: CalendarEvent, fallbackLabel: string): string {
+  const anyE = e as any;
+  return String(anyE.title ?? anyE.name ?? anyE.subject ?? fallbackLabel);
+}
+
 function buildEventsByDate(
   events: CalendarEvent[],
   monthISO: string,
 ): Map<string, CalendarEvent[]> {
   const map = new Map<string, CalendarEvent[]>();
+
   for (const e of events) {
     const key = getEventISO(e, monthISO);
     map.set(key, [...(map.get(key) ?? []), e]);
   }
+
   return map;
 }
 
@@ -94,6 +103,8 @@ export default function MonthGrid({
   monthLabel = "January 2026",
   onPrevMonth,
   onNextMonth,
+  onSelectDay,
+  onSelectEvent,
 }: MonthGridProps) {
   const typeMap = useMemo(
     () => new Map(eventTypes.map((t) => [String(t.id), t])),
@@ -108,7 +119,7 @@ export default function MonthGrid({
   );
 
   return (
-    <Card className="p-4 rounded-2xl border border-slate-200 bg-white">
+    <Card className="rounded-2xl border border-slate-200 bg-white p-4">
       <div className="mb-3 flex items-center justify-between">
         <div className="text-lg font-semibold text-slate-900">{monthLabel}</div>
 
@@ -116,78 +127,109 @@ export default function MonthGrid({
           <button
             type="button"
             onClick={onPrevMonth}
-            className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 hover:bg-slate-50 transition-all duration-200 hover:-translate-y-0.5"
+            className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50"
           >
             ‹
           </button>
           <button
             type="button"
             onClick={onNextMonth}
-            className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 hover:bg-slate-50 transition-all duration-200 hover:-translate-y-0.5"
+            className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50"
           >
             ›
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-2 text-xs text-slate-500">
-        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
-          <div key={d} className="px-1 py-1">
-            {d}
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-2 grid grid-cols-7 gap-2">
-        {cells.map((cell) => {
-          const dayEvents = byDate.get(cell.key) ?? [];
-
-          return (
-            <div
-              key={cell.key}
-              className={cn(
-                "min-h-[86px] rounded-xl border border-slate-200 bg-white p-2",
-                !cell.inMonth && "opacity-40",
-              )}
-            >
-              <div className="text-xs text-slate-500">{cell.date.getDate()}</div>
-
-              <div className="mt-2 space-y-1">
-                {dayEvents.slice(0, 2).map((event) => {
-                  const typeId = getEventTypeId(event);
-                  const type = typeMap.get(typeId);
-                  if (!type) return null;
-
-                  const pillClass = `${type.dotClass} text-white`;
-
-                  return (
-                    <div
-                      key={(event as any).id ?? `${cell.key}-${typeId}`}
-                      className={cn(
-                        "rounded-lg px-2 py-1 text-[11px] font-medium",
-                        pillClass,
-                      )}
-                      title={type.label}
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="truncate">{type.label}</span>
-                        {(event as any).time && (
-                          <span className="opacity-90">{(event as any).time}</span>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-
-                {dayEvents.length > 2 && (
-                  <div className="text-[11px] text-slate-500">
-                    +{dayEvents.length - 2} more
-                  </div>
-                )}
+      <div className="overflow-x-auto">
+        <div className="min-w-[760px]">
+          <div className="grid grid-cols-7 gap-2 text-xs text-slate-500">
+            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
+              <div key={d} className="px-1 py-1">
+                {d}
               </div>
-            </div>
-          );
-        })}
+            ))}
+          </div>
+
+          <div className="mt-2 grid grid-cols-7 gap-2">
+            {cells.map((cell) => {
+              const dayEvents = byDate.get(cell.key) ?? [];
+
+              return (
+                <div
+                  key={cell.key}
+                  onClick={() => onSelectDay?.(cell.key)}
+                  className={cn(
+                    "min-h-[118px] rounded-xl border border-slate-200 bg-white p-2",
+                    !cell.inMonth && "opacity-40",
+                    onSelectDay &&
+                      "cursor-pointer transition-all duration-200 hover:border-indigo-200 hover:shadow-sm",
+                  )}
+                >
+                  <div className="text-xs text-slate-500">
+                    {cell.date.getDate()}
+                  </div>
+
+                  <div className="mt-2 space-y-1">
+                    {dayEvents.slice(0, 2).map((event, index) => {
+                      const typeId = getEventTypeId(event);
+                      const type = typeMap.get(typeId);
+                      if (!type) return null;
+
+                      const pillClass = `${type.dotClass} text-white`;
+                      const title = getEventTitle(event, type.label);
+
+                      return (
+                        <button
+                          key={
+                            (event as any).id ??
+                            `${cell.key}-${typeId}-${index}`
+                          }
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectEvent?.(event);
+                          }}
+                          className={cn(
+                            "flex h-7 w-full items-center rounded-lg px-2 py-1 text-left text-[11px] font-medium",
+                            "transition-opacity duration-200 hover:opacity-90",
+                            pillClass,
+                          )}
+                          title={title}
+                        >
+                          <div className="flex w-full items-center justify-between gap-2 overflow-hidden">
+                            <span className="block flex-1 truncate leading-4">
+                              {title}
+                            </span>
+
+                            {(event as any).time && (
+                              <span className="shrink-0 opacity-90">
+                                {(event as any).time}
+                              </span>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
+
+                    {dayEvents.length > 2 && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelectDay?.(cell.key);
+                        }}
+                        className="text-[11px] text-slate-500 transition hover:text-slate-700"
+                      >
+                        +{dayEvents.length - 2} more
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-slate-600">

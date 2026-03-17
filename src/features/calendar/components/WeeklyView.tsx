@@ -4,13 +4,19 @@ import type { WeeklyDay, WeeklyStats } from "../data/calendar.weekly.mock";
 import WeeklyEventCard from "./WeeklyEventCard";
 
 export type WeeklyViewProps = {
-  headerLabel: string; 
+  headerLabel: string;
   stats: WeeklyStats;
   days: WeeklyDay[];
   onToggleEvent?: (id: string) => void;
+  onDeleteEvent?: (id: string) => void;
 };
 
-export default function WeeklyView({ stats, days, onToggleEvent }: WeeklyViewProps) {
+export default function WeeklyView({
+  stats,
+  days,
+  onToggleEvent,
+  onDeleteEvent,
+}: WeeklyViewProps) {
   const numberClass = "mt-1 text-2xl font-semibold text-slate-900";
 
   return (
@@ -56,7 +62,6 @@ export default function WeeklyView({ stats, days, onToggleEvent }: WeeklyViewPro
               p-4
             "
           >
-
             <div className="text-center">
               <p className="text-base font-semibold text-slate-900">
                 {day.label}
@@ -76,17 +81,26 @@ export default function WeeklyView({ stats, days, onToggleEvent }: WeeklyViewPro
             </div>
 
             <div className="mt-5 space-y-4">
-              {day.events.map((event: any) => (
-                <WeeklyEventCard
-                  key={event.id}
-                  event={event}
-                  checked={Boolean(event.completed)}
-                  onToggle={onToggleEvent}
-                />
-              ))}
-
-              {day.events.length === 0 && (
-                <p className="text-center text-xs text-slate-500">No events</p>
+              {day.events.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-3 py-3 text-center">
+                  <div className="text-xs font-semibold text-slate-700">
+                    No events
+                  </div>
+                  <div className="mt-1 text-[11px] text-slate-500">
+                    Add an event
+                  </div>
+                </div>
+              ) : (
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                day.events.map((event: any) => (
+                  <WeeklyEventCard
+                    key={event.id}
+                    event={event}
+                    checked={Boolean(event.completed)}
+                    onToggle={onToggleEvent}
+                    onDelete={onDeleteEvent}
+                  />
+                ))
               )}
             </div>
           </Card>

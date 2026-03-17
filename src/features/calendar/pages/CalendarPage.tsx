@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useMemo, useState } from "react";
 
 import Card from "../../../shared/components/ui/Card";
-import AddEventModal, { type AddEventFormValues } from "../components/AddEventModal";
+import AddEventModal, {
+  type AddEventFormValues,
+} from "../components/AddEventModal";
 import CalendarHeader from "../components/CalendarHeader";
 import EventTypes from "../components/EventTypes";
+import MonthEventDetailsModal from "../components/MonthEventDetailsModal";
 import MonthGrid from "../components/MonthGrid";
 import UpcomingEvents from "../components/UpcomingEvents";
 import WeeklyView from "../components/WeeklyView";
@@ -81,8 +86,12 @@ function formatMonthDay(date: Date): string {
 
 function formatWeekLabel(weekStart: Date): string {
   const weekEnd = addDays(weekStart, 6);
-  const startMonth = new Intl.DateTimeFormat("en-US", { month: "short" }).format(weekStart);
-  const endMonth = new Intl.DateTimeFormat("en-US", { month: "short" }).format(weekEnd);
+  const startMonth = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+  }).format(weekStart);
+  const endMonth = new Intl.DateTimeFormat("en-US", { month: "short" }).format(
+    weekEnd,
+  );
   const startDay = String(weekStart.getDate()).padStart(2, "0");
   const endDay = String(weekEnd.getDate()).padStart(2, "0");
 
@@ -155,12 +164,90 @@ function sortUpcomingEvents(events: UpcomingEvent[]): UpcomingEvent[] {
   });
 }
 
+function resolveCalendarEventDateISO(event: CalendarEvent, monthISO: string): string {
+  const anyEvent = event as any;
+
+  if (anyEvent.dateISO) return anyEvent.dateISO;
+
+  const base = new Date(monthISO);
+  const year = base.getFullYear();
+  const month = base.getMonth();
+  const day = Number(anyEvent.day ?? 1);
+
+  return toISODate(new Date(year, month, day));
+}
+
+function resolveCalendarEventTitle(event: CalendarEvent, fallback = "Event"): string {
+  const anyEvent = event as any;
+  return String(anyEvent.title ?? anyEvent.name ?? anyEvent.subject ?? fallback);
+}
+
+function resolveCalendarEventClassName(event: CalendarEvent): string {
+  const anyEvent = event as any;
+  return String(anyEvent.className ?? anyEvent.subject ?? anyEvent.name ?? "");
+}
+
+function toTimeInputValue(displayTime?: string): string {
+  if (!displayTime) return "";
+
+  const raw = displayTime.trim().toLowerCase();
+
+  const match24 = raw.match(/^(\d{1,2}):(\d{2})$/);
+  if (match24) {
+    const hours = String(Number(match24[1])).padStart(2, "0");
+    const minutes = match24[2];
+    return `${hours}:${minutes}`;
+  }
+
+  const match12 = raw.match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)$/);
+  if (match12) {
+    let hours = Number(match12[1]);
+    const minutes = match12[2] ?? "00";
+    const meridiem = match12[3];
+
+    if (meridiem === "pm" && hours !== 12) hours += 12;
+    if (meridiem === "am" && hours === 12) hours = 0;
+
+    return `${String(hours).padStart(2, "0")}:${minutes}`;
+  }
+
+  return "";
+}
+
+function getCustomBaseIdFromMonthId(eventId: string): string | null {
+  if (eventId.startsWith("custom-") && eventId.endsWith("-month")) {
+    return eventId.slice(0, -"-month".length);
+  }
+
+  return null;
+}
+
+function removeWeeklyCustomEvent(
+  prev: Record<string, WeeklyEvent[]>,
+  eventId: string,
+): Record<string, WeeklyEvent[]> {
+  let changed = false;
+  const next: Record<string, WeeklyEvent[]> = {};
+
+  for (const [dateISO, events] of Object.entries(prev)) {
+    const filtered = events.filter((event) => event.id !== eventId);
+    if (filtered.length !== events.length) changed = true;
+    if (filtered.length > 0) next[dateISO] = filtered;
+  }
+
+  return changed ? next : prev;
+}
+
 export default function CalendarPage() {
   const [isAddEventOpen, setIsAddEventOpen] = useState(false);
   const [viewMode, setViewMode] = useState<"monthly" | "weekly">("weekly");
 
-  const [monthCursor, setMonthCursor] = useState<Date>(() => startOfMonth(new Date("2026-01-01")));
-  const [weekCursor, setWeekCursor] = useState<Date>(() => startOfWeekMonday(new Date("2026-01-01")));
+  const [monthCursor, setMonthCursor] = useState<Date>(() =>
+    startOfMonth(new Date("2026-01-01")),
+  );
+  const [weekCursor, setWeekCursor] = useState<Date>(() =>
+    startOfWeekMonday(new Date("2026-01-01")),
+  );
 
   const [types, setTypes] = useState<EventTypeConfig[]>(eventTypes);
   const [monthlyEvents, setMonthlyEvents] = useState<CalendarEvent[]>(calendarEvents);
@@ -168,7 +255,18 @@ export default function CalendarPage() {
   const [weeklyCompletion, setWeeklyCompletion] = useState<Record<string, boolean>>(
     getInitialCompletionMap,
   );
-  const [customWeeklyByDate, setCustomWeeklyByDate] = useState<Record<string, WeeklyEvent[]>>({});
+  const [customWeeklyByDate, setCustomWeeklyByDate] = useState<
+    Record<string, WeeklyEvent[]>
+  >({});
+  const [weeklyDeleted, setWeeklyDeleted] = useState<Record<string, true>>({});
+
+  const [selectedDateISO, setSelectedDateISO] = useState<string | null>(null);
+  const [selectedMonthEvent, setSelectedMonthEvent] = useState<CalendarEvent | null>(
+    null,
+  );
+  const [editingMonthEvent, setEditingMonthEvent] = useState<CalendarEvent | null>(
+    null,
+  );
 
   const monthLabel = useMemo(() => formatMonthLabel(monthCursor), [monthCursor]);
   const monthISO = useMemo(() => toMonthISO(monthCursor), [monthCursor]);
@@ -191,21 +289,29 @@ export default function CalendarPage() {
       const date = addDays(weekCursor, index);
       const dateISO = toISODate(date);
 
-      const baseEvents = templateDay.events.map((event) => ({
-        ...event,
-        completed: weeklyCompletion[event.id] ?? Boolean(event.completed),
-      }));
+      const baseEvents = templateDay.events
+        .filter((event) => !weeklyDeleted[event.id])
+        .map((event) => ({
+          ...event,
+          completed: weeklyCompletion[event.id] ?? Boolean(event.completed),
+        }));
 
-      const customEvents = (customWeeklyByDate[dateISO] ?? []).map((event) => ({
-        ...event,
-        completed: weeklyCompletion[event.id] ?? false,
-      }));
+      const customEvents = (customWeeklyByDate[dateISO] ?? [])
+        .filter((event) => !weeklyDeleted[event.id])
+        .map((event) => ({
+          ...event,
+          completed: weeklyCompletion[event.id] ?? false,
+        }));
 
       const events = [...baseEvents, ...customEvents];
 
-      const minutesTotal = events.reduce((sum, event) => sum + parseMinutes(event.duration), 0);
+      const minutesTotal = events.reduce(
+        (sum, event) => sum + parseMinutes(event.duration),
+        0,
+      );
       const minutesDone = events.reduce(
-        (sum, event) => sum + (event.completed ? parseMinutes(event.duration) : 0),
+        (sum, event) =>
+          sum + (event.completed ? parseMinutes(event.duration) : 0),
         0,
       );
 
@@ -218,11 +324,14 @@ export default function CalendarPage() {
         events,
       };
     });
-  }, [customWeeklyByDate, weekCursor, weeklyCompletion]);
+  }, [customWeeklyByDate, weekCursor, weeklyCompletion, weeklyDeleted]);
 
   const weeklyStats = useMemo<WeeklyStats>(() => {
     const totalMinutes = weeklyDays.reduce((sum, day) => sum + day.minutesTotal, 0);
-    const completedMinutes = weeklyDays.reduce((sum, day) => sum + day.minutesDone, 0);
+    const completedMinutes = weeklyDays.reduce(
+      (sum, day) => sum + day.minutesDone,
+      0,
+    );
     const completionRate =
       totalMinutes === 0 ? 0 : Math.round((completedMinutes / totalMinutes) * 100);
 
@@ -232,6 +341,33 @@ export default function CalendarPage() {
       completionRate,
     };
   }, [weeklyDays]);
+
+  const addEventInitialValues = useMemo<Partial<AddEventFormValues> | null>(() => {
+    if (editingMonthEvent) {
+      return {
+        type: (editingMonthEvent as any).type as EventType,
+        title: resolveCalendarEventTitle(
+          editingMonthEvent,
+          String((editingMonthEvent as any).type ?? "Event"),
+        ),
+        date: resolveCalendarEventDateISO(editingMonthEvent, monthISO),
+        time: toTimeInputValue((editingMonthEvent as any).time),
+        className: resolveCalendarEventClassName(editingMonthEvent),
+      };
+    }
+
+    if (selectedDateISO) {
+      return {
+        type: "Class",
+        title: "",
+        date: selectedDateISO,
+        time: "",
+        className: "",
+      };
+    }
+
+    return null;
+  }, [editingMonthEvent, monthISO, selectedDateISO]);
 
   const onPrevWeek = () => {
     setWeekCursor((prev) => addDays(prev, -7));
@@ -250,7 +386,11 @@ export default function CalendarPage() {
   };
 
   const onToggleType = (id: string) => {
-    setTypes((prev) => prev.map((type) => (type.id === id ? { ...type, checked: !type.checked } : type)));
+    setTypes((prev) =>
+      prev.map((type) =>
+        type.id === id ? { ...type, checked: !type.checked } : type,
+      ),
+    );
   };
 
   const onToggleWeeklyEvent = (id: string) => {
@@ -260,22 +400,182 @@ export default function CalendarPage() {
     }));
   };
 
-  const onAddEvent = (values: AddEventFormValues) => {
+  const deleteWeeklyEvent = (id: string) => {
+    setWeeklyDeleted((prev) => (prev[id] ? prev : { ...prev, [id]: true }));
+
+    setCustomWeeklyByDate((prev) => {
+      let changed = false;
+      const next: Record<string, WeeklyEvent[]> = {};
+
+      for (const [dateISO, events] of Object.entries(prev)) {
+        const filtered = events.filter((event) => event.id !== id);
+        if (filtered.length !== events.length) changed = true;
+        if (filtered.length > 0) next[dateISO] = filtered;
+      }
+
+      return changed ? next : prev;
+    });
+
+    setWeeklyCompletion((prev) => {
+      if (!(id in prev)) return prev;
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+
+    if (id.startsWith("custom-") && id.endsWith("-weekly")) {
+      const baseId = id.slice(0, -"-weekly".length);
+      setMonthlyEvents((prev) =>
+        prev.filter((event) => event.id !== `${baseId}-month`),
+      );
+      setUpcoming((prev) =>
+        prev.filter((event) => event.id !== `${baseId}-upcoming`),
+      );
+    }
+  };
+
+  const openAddModalForDate = (dateISO: string) => {
+    setSelectedMonthEvent(null);
+    setEditingMonthEvent(null);
+    setSelectedDateISO(dateISO);
+    setIsAddEventOpen(true);
+  };
+
+  const openAddModalFromHeader = () => {
+    setSelectedMonthEvent(null);
+    setEditingMonthEvent(null);
+    setSelectedDateISO(null);
+    setIsAddEventOpen(true);
+  };
+
+  const openEventDetails = (event: CalendarEvent) => {
+    setSelectedMonthEvent(event);
+  };
+
+  const closeAddModal = () => {
+    setIsAddEventOpen(false);
+    setEditingMonthEvent(null);
+    setSelectedDateISO(null);
+  };
+
+  const startEditingSelectedEvent = () => {
+    if (!selectedMonthEvent) return;
+    setEditingMonthEvent(selectedMonthEvent);
+    setSelectedDateISO(resolveCalendarEventDateISO(selectedMonthEvent, monthISO));
+    setSelectedMonthEvent(null);
+    setIsAddEventOpen(true);
+  };
+
+  const handleDeleteSelectedMonthEvent = () => {
+    if (!selectedMonthEvent) return;
+
+    const eventId = String((selectedMonthEvent as any).id ?? "");
+    const customBaseId = getCustomBaseIdFromMonthId(eventId);
+
+    setMonthlyEvents((prev) =>
+      prev.filter((event) => String((event as any).id ?? "") !== eventId),
+    );
+
+    if (customBaseId) {
+      const weeklyId = `${customBaseId}-weekly`;
+      const upcomingId = `${customBaseId}-upcoming`;
+
+      setUpcoming((prev) => prev.filter((event) => event.id !== upcomingId));
+
+      setCustomWeeklyByDate((prev) => removeWeeklyCustomEvent(prev, weeklyId));
+
+      setWeeklyCompletion((prev) => {
+        if (!(weeklyId in prev)) return prev;
+        const next = { ...prev };
+        delete next[weeklyId];
+        return next;
+      });
+    } else {
+      setUpcoming((prev) => prev.filter((event) => event.id !== eventId));
+    }
+
+    setSelectedMonthEvent(null);
+  };
+
+  const handleSubmitEvent = (values: AddEventFormValues) => {
+    const eventDate = fromISODate(values.date);
+    const eventTitle = values.title.trim() || values.type;
+    const displayTime = formatTime(values.time);
+
+    if (editingMonthEvent) {
+      const eventId = String((editingMonthEvent as any).id ?? "");
+      const customBaseId = getCustomBaseIdFromMonthId(eventId);
+
+      setMonthlyEvents((prev) =>
+        prev.map((event) => {
+          if (String((event as any).id ?? "") !== eventId) return event;
+
+          return {
+            ...event,
+            type: values.type,
+            title: eventTitle,
+            dateISO: values.date,
+            ...(displayTime === "All Day" ? { time: undefined } : { time: displayTime }),
+            ...(values.className ? { className: values.className } : {}),
+          } as CalendarEvent;
+        }),
+      );
+
+      if (customBaseId) {
+        const weeklyId = `${customBaseId}-weekly`;
+        const upcomingId = `${customBaseId}-upcoming`;
+
+        setUpcoming((prev) =>
+          prev.map((item) =>
+            item.id === upcomingId
+              ? {
+                  ...item,
+                  title: eventTitle,
+                  time: `${formatMonthDay(eventDate)} - ${displayTime}`,
+                  type: values.type,
+                  className: values.className || undefined,
+                  dateISO: values.date,
+                }
+              : item,
+          ),
+        );
+
+        setCustomWeeklyByDate((prev) => {
+          const cleaned = removeWeeklyCustomEvent(prev, weeklyId);
+          const updatedWeeklyEvent: WeeklyEvent = {
+            id: weeklyId,
+            title: eventTitle,
+            duration: "30 min",
+            type: mapToWeeklyEventType(values.type),
+            completed: weeklyCompletion[weeklyId] ?? false,
+          };
+
+          return {
+            ...cleaned,
+            [values.date]: [...(cleaned[values.date] ?? []), updatedWeeklyEvent],
+          };
+        });
+      }
+
+      setMonthCursor(startOfMonth(eventDate));
+      setWeekCursor(startOfWeekMonday(eventDate));
+      closeAddModal();
+      return;
+    }
+
     const timestamp = Date.now();
     const baseId = `custom-${timestamp}`;
-    const eventTime = formatTime(values.time);
-    const eventDate = fromISODate(values.date);
-    const eventTitle = values.title || values.type;
 
     setMonthlyEvents((prev) => [
       ...prev,
       {
         id: `${baseId}-month`,
         dateISO: values.date,
-        time: eventTime === "All Day" ? undefined : eventTime,
         title: eventTitle,
         type: values.type,
-      },
+        ...(displayTime === "All Day" ? {} : { time: displayTime }),
+        ...(values.className ? { className: values.className } : {}),
+      } as CalendarEvent,
     ]);
 
     setUpcoming((prev) => {
@@ -284,7 +584,7 @@ export default function CalendarPage() {
         {
           id: `${baseId}-upcoming`,
           title: eventTitle,
-          time: `${formatMonthDay(eventDate)} - ${eventTime}`,
+          time: `${formatMonthDay(eventDate)} - ${displayTime}`,
           type: values.type,
           className: values.className || undefined,
           dateISO: values.date,
@@ -311,20 +611,20 @@ export default function CalendarPage() {
       ...prev,
       [weeklyEvent.id]: false,
     }));
+
+    setMonthCursor(startOfMonth(eventDate));
+    setWeekCursor(startOfWeekMonday(eventDate));
+    closeAddModal();
   };
 
   return (
     <div className="space-y-4">
-      <Card
-        className="p-4 sm:p-5
-          transition-all duration-300 ease-in-out
-          hover:shadow-lg"
-      >
+      <Card className="p-4 transition-all duration-300 ease-in-out hover:shadow-lg sm:p-5">
         <CalendarHeader
           monthLabel={monthLabel}
           viewMode={viewMode}
           onViewChange={setViewMode}
-          onAddEvent={() => setIsAddEventOpen(true)}
+          onAddEvent={openAddModalFromHeader}
           weekLabel={weekLabel}
           onPrevWeek={onPrevWeek}
           onNextWeek={onNextWeek}
@@ -341,6 +641,8 @@ export default function CalendarPage() {
               monthLabel={monthLabel}
               onPrevMonth={onPrevMonth}
               onNextMonth={onNextMonth}
+              onSelectDay={openAddModalForDate}
+              onSelectEvent={openEventDetails}
             />
           </div>
 
@@ -357,13 +659,26 @@ export default function CalendarPage() {
           stats={weeklyStats}
           days={weeklyDays}
           onToggleEvent={onToggleWeeklyEvent}
+          onDeleteEvent={deleteWeeklyEvent}
         />
       )}
 
       <AddEventModal
         isOpen={isAddEventOpen}
-        onClose={() => setIsAddEventOpen(false)}
-        onSubmit={onAddEvent}
+        onClose={closeAddModal}
+        onSubmit={handleSubmitEvent}
+        mode={editingMonthEvent ? "edit" : "add"}
+        initialValues={addEventInitialValues}
+      />
+
+      <MonthEventDetailsModal
+        open={Boolean(selectedMonthEvent)}
+        event={selectedMonthEvent}
+        monthISO={monthISO}
+        eventTypes={types}
+        onClose={() => setSelectedMonthEvent(null)}
+        onEdit={startEditingSelectedEvent}
+        onDelete={handleDeleteSelectedMonthEvent}
       />
     </div>
   );
