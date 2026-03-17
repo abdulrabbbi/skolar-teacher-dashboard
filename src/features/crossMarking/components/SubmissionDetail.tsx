@@ -1,6 +1,6 @@
-import { useState } from "react";
 import ResizableSplit from "../../../shared/components/ui/ResizableSplit";
 import Card from "../../../shared/components/ui/Card";
+import { openPrintToPdfWindow } from "../../../shared/lib/printToPdf";
 import type { SubmissionDetailData } from "../data/crossMarking.mock";
 import CriteriaMarkingPanel from "./CriteriaMarkingPanel";
 import FeedbackPanel from "./FeedbackPanel";
@@ -11,14 +11,88 @@ export type SubmissionDetailProps = {
   detail: SubmissionDetailData;
   feedbackPlaceholder: string;
   onBack: () => void;
+  blindMode: boolean;
+  onToggleBlindMode: () => void;
+  blindStudentLabel?: string;
 };
 
 export default function SubmissionDetail({
   detail,
   feedbackPlaceholder,
   onBack,
+  blindMode,
+  onToggleBlindMode,
+  blindStudentLabel,
 }: SubmissionDetailProps) {
-  const [blindMode, setBlindMode] = useState(false);
+  const isProcessing =
+    detail.questionMarking.length === 0 && detail.criteriaMarks.length === 0;
+
+  const displayAssessment = detail.assessment.replace(/\bSAC\b/g, "QUIZ");
+  const displayStudentName = blindMode
+    ? blindStudentLabel ?? "Student"
+    : detail.studentName;
+
+  const handleExportPdf = () => {
+    const escapeHtml = (value: string) =>
+      String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+
+    const questionsHtml =
+      detail.questionMarking.length > 0
+        ? `
+          <h2>Question Marking</h2>
+          <ol>
+            ${detail.questionMarking
+              .map(
+                (q, index) =>
+                  `<li><strong>Q${index + 1}:</strong> ${escapeHtml(
+                    q.question,
+                  )}<div class="opt">SKOLAR: ${q.skolarScore} / ${
+                    q.maxMarks
+                  } • Final: ${q.editableScore} / ${q.maxMarks}</div></li>`,
+              )
+              .join("")}
+          </ol>
+        `
+        : "";
+
+    const criteriaHtml =
+      detail.criteriaMarks.length > 0
+        ? `
+          <div class="hr"></div>
+          <h2>Criteria Marks</h2>
+          <ul>
+            ${detail.criteriaMarks
+              .map(
+                (c) =>
+                  `<li><strong>${escapeHtml(c.label)}:</strong> ${c.score} / ${
+                    c.maxScore
+                  }</li>`,
+              )
+              .join("")}
+          </ul>
+        `
+        : "";
+
+    openPrintToPdfWindow({
+      title: `${detail.id.replace("submission-", "Submission #")} — Marking Export`,
+      subtitle: "Printable view — use your browser “Save as PDF” to download.",
+      bodyHtml: `
+        <div class="meta">
+          <p><span class="pill">${escapeHtml(displayAssessment)}</span><span class="pill">${escapeHtml(displayStudentName)}</span></p>
+          <p><strong>Pre-mark:</strong> ${detail.preMarkScore} / ${detail.preMarkMax} &nbsp; <strong>Total:</strong> ${detail.totalScore} / ${detail.totalMax}</p>
+          <p><strong>Confidence:</strong> ${detail.confidence}%</p>
+        </div>
+        <div class="hr"></div>
+        ${questionsHtml}
+        ${criteriaHtml}
+      `,
+    });
+  };
 
   const leftPanel = (
     <div className="relative">
@@ -44,7 +118,7 @@ export default function SubmissionDetail({
 
       <FeedbackPanel
         placeholder={feedbackPlaceholder}
-        studentName={detail.studentName}
+        studentName={displayStudentName}
         submissionId={detail.id}
       />
     </div>
@@ -67,7 +141,11 @@ export default function SubmissionDetail({
             <button className="rounded-lg bg-gray-200 px-3 py-1.5 text-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-200">
               + Add Student
             </button>
-            <button className="rounded-lg bg-gray-200 px-3 py-1.5 text-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-200">
+            <button
+              type="button"
+              onClick={handleExportPdf}
+              className="rounded-lg bg-gray-200 px-3 py-1.5 text-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-200"
+            >
               Export
             </button>
           </div>
@@ -81,9 +159,9 @@ export default function SubmissionDetail({
             <h2 className="text-lg sm:text-xl font-semibold text-slate-900">
               {detail.id.replace("submission-", "Submission #")}
             </h2>
-            <p className="text-sm text-slate-500">{detail.assessment}</p>
+            <p className="text-sm text-slate-500">{displayAssessment}</p>
             <p className="mt-1 text-sm font-medium text-slate-700">
-              Student: {detail.studentName}
+              Student: {displayStudentName}
             </p>
           </div>
 
@@ -91,7 +169,7 @@ export default function SubmissionDetail({
             <span>Blind Mode</span>
             <button
               type="button"
-              onClick={() => setBlindMode(!blindMode)}
+              onClick={onToggleBlindMode}
               className={`relative inline-flex h-5 w-9 items-center rounded-full transition transition-all duration-200 hover:-translate-y-0. ${
                 blindMode ? "bg-[#00B96B]" : "bg-slate-300"
               }`}
@@ -105,6 +183,18 @@ export default function SubmissionDetail({
           </label>
         </div>
       </Card>
+
+      {isProcessing ? (
+        <Card className="border border-slate-200 bg-slate-50 p-4 sm:p-5">
+          <p className="text-sm font-semibold text-slate-900">
+            SKOLAR is processing this submission
+          </p>
+          <p className="mt-1 text-sm text-slate-500">
+            Your upload is queued for cross-marking. Marks and confidence will
+            appear here once ready.
+          </p>
+        </Card>
+      ) : null}
 
       {/* CONTENT */}
       <div className="relative">

@@ -33,7 +33,7 @@ export default function LiveQuizStats({ stats }: LiveQuizStatsProps) {
             label={stat.label}
             value={stat.value}
             icon={iconMap[stat.icon]}
-            // ✅ all icons same green tile like screenshot
+            //  all icons same green tile like screenshot
             color="green"
             className="group transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg"
           />

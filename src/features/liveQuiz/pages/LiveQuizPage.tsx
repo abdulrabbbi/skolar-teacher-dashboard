@@ -1,3 +1,4 @@
+import { Play } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "../../../shared/components/ui/Card";
@@ -112,6 +113,7 @@ export default function LiveQuizPage() {
               }}
               className="transition-all duration-200 hover:-translate-y-0.5"
             >
+              <Play className="h-4 w-4" aria-hidden="true" />
               Launch New Quiz
             </Button>
           }

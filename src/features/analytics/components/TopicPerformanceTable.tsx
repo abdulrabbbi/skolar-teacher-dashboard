@@ -26,7 +26,9 @@ export default function TopicPerformanceTable({
   rows,
 }: TopicPerformanceTableProps) {
   const [practiceOpen, setPracticeOpen] = useState(false);
-  const [quickPracticeTopic, setQuickPracticeTopic] = useState<string | null>(null);
+  const [quickPracticeTopic, setQuickPracticeTopic] = useState<string | null>(
+    null,
+  );
 
   const worksheetTopics = useMemo(() => {
     return rows.map((row) => ({
@@ -92,20 +94,21 @@ export default function TopicPerformanceTable({
 
           <div
             className="
-              overflow-x-auto
-              rounded-xl
-              border border-slate-200/60
-              [&_thead_th]:px-4
-              [&_thead_th]:py-3
-              [&_thead_th]:text-left
-              [&_thead_th]:text-[18px]
-              sm:[&_thead_th]:text-[15px]
-              [&_thead_th]:font-normal
-              [&_thead_th]:text-gray-500
-              [&_thead_th]:whitespace-nowrap
-              [&_tbody_tr]:border-t
-              [&_tbody_tr]:border-slate-100
-            "
+    overflow-x-auto
+    rounded-xl
+    border border-slate-200/60
+    [&_thead_th]:px-4
+    [&_thead_th]:py-3
+    [&_thead_th]:text-left
+    [&_thead_th]:text-[18px]
+    sm:[&_thead_th]:text-[15px]
+    [&_thead_th]:font-normal
+    [&_thead_th]:text-gray-500
+    [&_thead_th]:whitespace-nowrap
+    [&_thead_th]:normal-case
+    [&_tbody_tr]:border-t
+    [&_tbody_tr]:border-slate-100
+  "
           >
             <Table
               headers={[
@@ -113,7 +116,7 @@ export default function TopicPerformanceTable({
                 "Attempts",
                 "Class Avg",
                 "State Avg",
-                "Vs State",
+                "vs State",
                 "Trend",
                 "Action",
               ]}
@@ -131,7 +134,7 @@ export default function TopicPerformanceTable({
                       hover:bg-slate-50
                     "
                   >
-                    <td className="px-4 py-4 text-sm font-semibold text-slate-900">
+                    <td className="px-4 py-4 text-sm  text-slate-900">
                       {row.topic}
                     </td>
 

@@ -98,7 +98,7 @@ export default function ResourceCard({
             onClick={() => onDownload?.(resource)}
           >
             <Download className="h-4 w-4" />
-            Download
+            Download PDF
           </Button>
         </div>
       </div>

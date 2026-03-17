@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { X, Sparkles } from "lucide-react";
+import { Settings, X } from "lucide-react";
 import Button from "../../../shared/components/ui/Button";
 import Card from "../../../shared/components/ui/Card";
 import SelectField from "../../../shared/components/ui/SelectField";
@@ -16,6 +16,7 @@ import type {
 export type LaunchQuizModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  onStart?: (joinCode: string) => void;
   classOptions: LiveQuizSelectOption[];
   topicOptions: LiveQuizSelectOption[];
   questionOptions: LiveQuizSelectOption[];
@@ -28,6 +29,7 @@ export type LaunchQuizModalProps = {
 export default function LaunchQuizModal({
   isOpen,
   onClose,
+  onStart,
   classOptions,
   topicOptions,
   questionOptions,
@@ -37,6 +39,17 @@ export default function LaunchQuizModal({
   summary,
 }: LaunchQuizModalProps) {
   const [mounted, setMounted] = useState(false);
+  const [joinCode, setJoinCode] = useState("");
+  const [joinCodeMessage, setJoinCodeMessage] = useState("");
+
+  const generateJoinCode = (length = 6) => {
+    const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let next = "";
+    for (let i = 0; i < length; i += 1) {
+      next += alphabet[Math.floor(Math.random() * alphabet.length)];
+    }
+    return next;
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -53,7 +66,43 @@ export default function LaunchQuizModal({
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    setJoinCode(generateJoinCode());
+    setJoinCodeMessage("");
+  }, [isOpen]);
+
   if (!mounted || !isOpen) return null;
+
+  const handleCopyJoinCode = async () => {
+    try {
+      await navigator.clipboard.writeText(joinCode);
+      setJoinCodeMessage("Join code copied");
+      return true;
+    } catch {
+      setJoinCodeMessage("Copy failed");
+      return false;
+    }
+  };
+
+  const handleStart = async () => {
+    const code = joinCode.trim();
+    if (!code) return;
+
+    try {
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem("liveQuiz:lastJoinCode", code);
+      }
+    } catch {
+      // ignore
+    }
+
+    const copied = await handleCopyJoinCode();
+    onStart?.(code);
+    if (copied) {
+      onClose();
+    }
+  };
 
   return createPortal(
     <div className="fixed inset-0 z-9999 flex items-center justify-center p-4">
@@ -89,6 +138,67 @@ export default function LaunchQuizModal({
         <div className="flex-1 overflow-y-auto pr-1 space-y-5">
           {/* FORM */}
           <div className="grid grid-cols-1 gap-4">
+            <Card className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Student Join Code
+              </p>
+
+              <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <input
+                  value={joinCode}
+                  onChange={(e) => {
+                    const next = e.target.value
+                      .toUpperCase()
+                      .replace(/[^A-Z0-9]/g, "")
+                      .slice(0, 8);
+                    setJoinCode(next);
+                    setJoinCodeMessage("");
+                  }}
+                  placeholder="e.g. 7K2P9Q"
+                  inputMode="text"
+                  autoCapitalize="characters"
+                  className="
+                    h-11 w-full flex-1 rounded-xl border border-slate-200 bg-white
+                    px-4 font-mono text-base font-semibold tracking-[0.25em] text-slate-900
+                    outline-none focus:ring-2 focus:ring-slate-200
+                  "
+                  aria-label="Student join code"
+                />
+
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-11 rounded-xl px-4"
+                    onClick={() => {
+                      setJoinCode(generateJoinCode());
+                      setJoinCodeMessage("");
+                    }}
+                  >
+                    Generate
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-11 rounded-xl px-4"
+                    onClick={handleCopyJoinCode}
+                    disabled={!joinCode.trim()}
+                  >
+                    Copy
+                  </Button>
+                </div>
+              </div>
+
+              <p className="mt-2 text-xs text-slate-500">
+                Share this code with students so they can join the quiz.
+              </p>
+              {joinCodeMessage ? (
+                <p className="mt-2 text-xs font-medium text-slate-600">
+                  {joinCodeMessage}
+                </p>
+              ) : null}
+            </Card>
+
             <SelectField label="Select Class" defaultValue="">
               {classOptions.map((o) => (
                 <option key={o.id} value={o.value} disabled={!o.value}>
@@ -158,8 +268,8 @@ export default function LaunchQuizModal({
 
           {/* SUMMARY */}
           <Card className="quiz-summary-card">
-            <div className="quiz-summary-icon">
-              <Sparkles className="h-4 w-4" />
+            <div className="quiz-summary-icon relative">
+              <Settings className="h-4 w-4" aria-hidden="true" />
             </div>
 
             <div className="flex-1 space-y-2">
@@ -201,6 +311,8 @@ export default function LaunchQuizModal({
           <Button
             variant="success"
             className="transition-all duration-200 hover:-translate-y-0.5"
+            onClick={handleStart}
+            disabled={!joinCode.trim()}
           >
             Start Live Quiz
           </Button>

@@ -10,7 +10,6 @@ import WelcomePage from '../../features/auth/pages/WelcomePage';
 import ContactSkolarPage from '../../features/auth/pages/ContactSkolarPage';
 
 import AnalyticsPage from '../../features/analytics/pages/AnalyticsPage';
-import AssessmentsPage from '../../features/assessments/pages/AssessmentsPage';
 import CalendarPage from '../../features/calendar/pages/CalendarPage';
 import ClassDetailPage from '../../features/classes/pages/ClassDetailPage';
 import MyClassesPage from '../../features/classes/pages/MyClassesPage';
@@ -64,7 +63,6 @@ export default function AppRouter() {
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="games" element={<GamesPage />} />
-          <Route path="assessments" element={<AssessmentsPage />} />
           <Route path="cross-marking" element={<CrossMarkingPage />} />
           <Route
             path="cross-marking/moderation-room"

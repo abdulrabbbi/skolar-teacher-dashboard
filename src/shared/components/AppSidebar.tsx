@@ -6,7 +6,6 @@ import {
   BarChart3,
   Calendar,
   Gamepad2,
-  ClipboardCheck,
   Shuffle,
   Sparkles,
   Zap,
@@ -44,16 +43,30 @@ const sidebarSections: { title: string; items: SidebarItem[] }[] = [
   {
     title: "Tools",
     items: [
-      { label: "Assessments", path: "assessments", icon: ClipboardCheck, end: true },
-      { label: "Cross-Marking", path: "cross-marking", icon: Shuffle, end: false },
-      { label: "Task Compiler", path: "task-compiler", icon: Sparkles, end: false },
+      {
+        label: "Cross-Marking",
+        path: "cross-marking",
+        icon: Shuffle,
+        end: false,
+      },
+      {
+        label: "Task Compiler",
+        path: "task-compiler",
+        icon: Sparkles,
+        end: false,
+      },
       { label: "Live Quiz", path: "live-quiz", icon: Zap, end: false },
     ],
   },
   {
     title: "Resources",
     items: [
-      { label: "Content Library", path: "content-library", icon: Folder, end: true },
+      {
+        label: "Content Library",
+        path: "content-library",
+        icon: Folder,
+        end: true,
+      },
       { label: "Curriculum", path: "curriculum", icon: Layers, end: false },
     ],
   },
@@ -61,7 +74,7 @@ const sidebarSections: { title: string; items: SidebarItem[] }[] = [
 
 const baseLink =
   "group mx-2 flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors";
-const inactive = "text-slate-700 hover:bg-blue-50 hover:text-blue-600";
+const inactive = "text-slate-700 hover:bg-green-50 hover:text-green-600";
 
 const active = "bg-[#00B96B] text-white shadow-sm";
 
@@ -167,7 +180,7 @@ export default function AppSidebar({ mobileOpen, onClose }: SidebarProps) {
                             className={`shrink-0 transition-colors ${
                               isActive
                                 ? "text-white"
-                                : "text-slate-400 group-hover:text-blue-600"
+                                : "text-green-400 group-hover:text-green-600"
                             }`}
                           />
                           {!collapsed && <span>{item.label}</span>}
@@ -217,7 +230,7 @@ export default function AppSidebar({ mobileOpen, onClose }: SidebarProps) {
                   className={`shrink-0 transition-colors ${
                     isActive
                       ? "text-white"
-                      : "text-slate-400 group-hover:text-blue-600"
+                      : "text-green-400 group-hover:text-green-600"
                   }`}
                 />
                 {!collapsed && <span>Settings</span>}

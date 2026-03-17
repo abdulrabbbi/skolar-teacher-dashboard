@@ -1,16 +1,24 @@
 import { ArrowLeft, BarChart3, CircleAlert, Sparkles, Users } from 'lucide-react';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Button from '../../../../shared/components/ui/Button';
 import Card from '../../../../shared/components/ui/Card';
-import { liveQuizSessions } from '../../data/liveQuizSession.mock';
+import {
+  liveQuizSessions,
+  type LiveQuizQuizQuestion,
+  type LiveQuizStudentAnswer,
+} from '../../data/liveQuizSession.mock';
 
 const clampPct = (value: number) => Math.max(0, Math.min(100, value));
 
 export default function LiveQuizSessionAnalyticsPage() {
   const navigate = useNavigate();
   const { quizId } = useParams<{ quizId: string }>();
+  const [activeAnswer, setActiveAnswer] = useState<{
+    studentName: string;
+    answer: LiveQuizStudentAnswer;
+  } | null>(null);
 
   const session = useMemo(
     () => liveQuizSessions.find((item) => item.id === quizId) ?? null,
@@ -39,6 +47,29 @@ export default function LiveQuizSessionAnalyticsPage() {
 
   const { classPerformance, studentResults, commonWrongQuestions, easiestQuestions } =
     session.analytics;
+
+  const quizQuestions = session.analytics.quizQuestions ?? [];
+
+  const questionByLabel = useMemo(() => {
+    return new Map<string, LiveQuizQuizQuestion>(
+      quizQuestions.map((question) => [question.label, question]),
+    );
+  }, [quizQuestions]);
+
+  const activeQuestion = activeAnswer
+    ? (questionByLabel.get(activeAnswer.answer.questionLabel) ?? null)
+    : null;
+
+  useEffect(() => {
+    if (!activeAnswer) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setActiveAnswer(null);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeAnswer]);
 
   return (
     <section className="space-y-6">
@@ -172,6 +203,68 @@ export default function LiveQuizSessionAnalyticsPage() {
       </div>
 
       <Card className="rounded-2xl border-slate-200 p-5">
+        <h2 className="text-base font-semibold text-slate-900">
+          Quiz Questions
+        </h2>
+        <p className="mt-1 text-sm text-slate-500">
+          Review the questions that appeared in this quiz (with correct options).
+        </p>
+
+        <div className="mt-4 space-y-3">
+          {quizQuestions.map((q) => {
+            const correct = q.options.find((o) => o.isCorrect)?.id ?? null;
+
+            return (
+              <details
+                key={q.id}
+                className="rounded-2xl border border-slate-200 bg-white p-4"
+              >
+                <summary className="cursor-pointer list-none">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        {q.label} • {q.topic}
+                      </p>
+                      <p className="mt-1 text-sm font-semibold text-slate-900">
+                        {q.prompt}
+                      </p>
+                    </div>
+
+                    {correct ? (
+                      <span className="shrink-0 rounded-full border border-[#00B96B] bg-[#00B96B1A] px-3 py-1 text-xs font-semibold text-[#00B96B]">
+                        Correct: {correct}
+                      </span>
+                    ) : null}
+                  </div>
+                </summary>
+
+                <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {q.options.map((o) => (
+                    <div
+                      key={o.id}
+                      className={`rounded-xl border px-3 py-2 text-sm ${
+                        o.isCorrect
+                          ? 'border-[#00B96B] bg-[#00B96B1A] text-slate-900'
+                          : 'border-slate-200 bg-white text-slate-700'
+                      }`}
+                    >
+                      <span className="font-semibold">{o.id}.</span> {o.text}
+                    </div>
+                  ))}
+                </div>
+              </details>
+            );
+          })}
+
+          {quizQuestions.length === 0 ? (
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+              No quiz questions available for this session yet.
+            </div>
+          ) : null}
+        </div>
+      </Card>
+
+      <Card className="rounded-2xl border-slate-200 p-5">
         <div className="flex items-center gap-2">
           <Users className="h-5 w-5 text-slate-700" />
           <h2 className="text-base font-semibold text-slate-900">
@@ -213,16 +306,24 @@ export default function LiveQuizSessionAnalyticsPage() {
                     <td className="px-3 py-3">
                       <div className="flex flex-wrap gap-2">
                         {student.answers.map((answer) => (
-                          <span
+                          <button
+                            type="button"
                             key={`${student.id}-${answer.questionLabel}`}
+                            onClick={() =>
+                              setActiveAnswer({
+                                studentName: student.name,
+                                answer,
+                              })
+                            }
                             className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium ${
                               answer.isCorrect
                                 ? 'border-[#00B96B] bg-[#00B96B1A] text-[#00B96B]'
                                 : 'border-rose-200 bg-rose-50 text-rose-700'
-                            }`}
+                            } cursor-pointer transition hover:-translate-y-px hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
+                            aria-label={`View ${answer.questionLabel} details`}
                           >
-                            {answer.questionLabel}: {answer.selectedOption}
-                          </span>
+                            {answer.questionLabel}:{answer.selectedOption}
+                          </button>
                         ))}
                       </div>
                     </td>
@@ -233,6 +334,79 @@ export default function LiveQuizSessionAnalyticsPage() {
           </table>
         </div>
       </Card>
+
+      {activeAnswer ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4"
+          role="dialog"
+          aria-modal="true"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setActiveAnswer(null);
+          }}
+        >
+          <Card hover={false} className="w-full max-w-2xl rounded-2xl p-5 sm:p-6">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  {activeAnswer.studentName} • {activeAnswer.answer.questionLabel}:
+                  {activeAnswer.answer.selectedOption}{' '}
+                  {activeAnswer.answer.isCorrect ? (
+                    <span className="text-[#00B96B]">(Correct)</span>
+                  ) : (
+                    <span className="text-rose-600">(Incorrect)</span>
+                  )}
+                </p>
+                <p className="mt-2 text-sm font-semibold text-slate-900">
+                  {activeQuestion?.prompt ?? 'Question details not available.'}
+                </p>
+                {activeQuestion ? (
+                  <p className="mt-1 text-xs text-slate-500">{activeQuestion.topic}</p>
+                ) : null}
+              </div>
+
+              <Button variant="ghost" size="sm" onClick={() => setActiveAnswer(null)}>
+                Close
+              </Button>
+            </div>
+
+            {activeQuestion ? (
+              <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                {activeQuestion.options.map((option) => {
+                  const isSelected = option.id === activeAnswer.answer.selectedOption;
+                  const isCorrect = option.id === activeAnswer.answer.correctOption;
+
+                  let classes = 'border-slate-200 bg-white text-slate-700';
+                  if (isCorrect) classes = 'border-[#00B96B] bg-[#00B96B1A] text-slate-900';
+                  if (isSelected && !isCorrect) classes = 'border-rose-200 bg-rose-50 text-slate-900';
+
+                  return (
+                    <div
+                      key={option.id}
+                      className={`rounded-xl border px-3 py-2 text-sm ${classes}`}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <p className="min-w-0">
+                          <span className="font-semibold">{option.id}.</span>{' '}
+                          {option.text}
+                        </p>
+                        {isSelected ? (
+                          <span className="shrink-0 rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-600">
+                            Selected
+                          </span>
+                        ) : null}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+                This session does not have question details attached yet.
+              </div>
+            )}
+          </Card>
+        </div>
+      ) : null}
     </section>
   );
 }

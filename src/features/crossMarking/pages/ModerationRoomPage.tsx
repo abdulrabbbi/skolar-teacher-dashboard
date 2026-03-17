@@ -45,6 +45,8 @@ export default function ModerationRoomPage() {
           detail={activeDetail}
           feedbackPlaceholder={feedbackPlaceholder}
           onBack={() => setSelectedSubmission(null)}
+          blindMode={false}
+          onToggleBlindMode={() => {}}
         />
       ) : (
         <>

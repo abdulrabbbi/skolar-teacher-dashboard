@@ -2,7 +2,11 @@
 // TYPES
 // ==============================
 
-export type TaskHistoryStatus = 'Completed' | 'In Progress' | 'Queued';
+export type TaskHistoryStatus =
+  | "In Progress"
+  | "Draft"
+  | "Completed"
+  | "Assigned";
 export type TaskDifficulty = 'Easy' | 'Medium' | 'Hard' | 'Mixed';
 
 export type TaskHistoryItemData = {
@@ -64,7 +68,7 @@ export const taskHistoryItems: TaskHistoryItemData[] = [
     title: 'Integration by Substitution',
     subject: 'Year 12 Methods',
     code: 'VCEMAA369',
-    status: 'Queued',
+    status: 'Draft',
     difficulty: 'Easy',
     createdAt: 'Feb 3, 2026',
     duration: '45 minutes',
@@ -88,7 +92,7 @@ export const taskHistoryItems: TaskHistoryItemData[] = [
     title: 'Exam Revision Pack',
     subject: 'Year 12 Methods',
     code: 'VCEMAA371',
-    status: 'Completed',
+    status: 'Assigned',
     difficulty: 'Mixed',
     createdAt: 'Jan 29, 2026',
     duration: '60 minutes',

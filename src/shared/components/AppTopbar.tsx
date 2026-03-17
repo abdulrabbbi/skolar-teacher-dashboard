@@ -271,7 +271,7 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
             className="h-10 w-10 shrink-0 object-contain transition-transform duration-300 ease-out group-hover:scale-150"
             draggable={false}
           />
-          <span className="text-lg font-semibold tracking-wide text-slate-900 transition-transform duration-300 ease-out group-hover:-translate-y-[1px]">
+          <span className="text-lg font-extrabold tracking-wide text-slate-900 transition-transform duration-300 ease-out group-hover:-translate-y-[1px]">
             SKOLAR
           </span>
         </button>

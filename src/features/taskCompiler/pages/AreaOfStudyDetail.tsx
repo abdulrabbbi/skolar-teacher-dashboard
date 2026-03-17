@@ -1,10 +1,14 @@
 import { useMemo, useState } from "react";
 import { ArrowLeft } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { cn } from "../../../shared/lib/cn";
 
 import SubjectIcon from "../components/SubjectIcon";
-import { getAreaById, getSubjectById } from "../utils/taskCompilerSelectors";
+import {
+  getAreaById,
+  getAreasForSubject,
+  getSubjectById,
+} from "../utils/taskCompilerSelectors";
 import { getAreaDetailContent } from "../data/areaOfStudyDetail.mock";
 
 type Difficulty = "Easy" | "Medium" | "Hard" | "Mixed";
@@ -192,11 +196,81 @@ function TaskSettingsCard({
 export default function AreaOfStudyDetail() {
   const navigate = useNavigate();
   const { subjectId, areaId } = useParams<{ subjectId: string; areaId: string }>();
+  const [searchParams] = useSearchParams();
 
   const subject = getSubjectById(subjectId);
   const area = subject ? getAreaById(subject.id, areaId) : null;
 
-  const content = useMemo(() => getAreaDetailContent(area?.id), [area?.id]);
+  const includedAreaIds = useMemo(() => {
+    const raw = searchParams.get("areas") ?? "";
+    const fromQuery = raw
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean);
+
+    const ids = [...fromQuery, areaId].filter(Boolean);
+    return Array.from(new Set(ids));
+  }, [areaId, searchParams]);
+
+  const includedAreas = useMemo(() => {
+    if (!subject) return [];
+    return includedAreaIds
+      .map((id) => getAreaById(subject.id, id))
+      .filter((value) => value != null);
+  }, [includedAreaIds, subject]);
+
+  const areaMetaById = useMemo(() => {
+    if (!subject) return {};
+    const list = getAreasForSubject(subject.id);
+    return list.reduce<Record<string, { title: string; unit: string }>>(
+      (map, item) => {
+        map[item.id] = { title: item.title, unit: item.unit };
+        return map;
+      },
+      {},
+    );
+  }, [subject]);
+
+  const content = useMemo(() => {
+    const many = includedAreas.length > 1;
+
+    const combined = {
+      outcomes: [] as { id: string; label: string }[],
+      keyKnowledge: [] as { id: string; label: string }[],
+      keySkills: [] as { id: string; label: string }[],
+    };
+
+    const prefix = (areaIdValue: string, label: string) => {
+      if (!many) return label;
+      const meta = areaMetaById[areaIdValue];
+      if (!meta) return label;
+      return `${meta.unit} • ${meta.title}: ${label}`;
+    };
+
+    for (const included of includedAreas) {
+      const next = getAreaDetailContent(included.id);
+      combined.outcomes.push(
+        ...next.outcomes.map((item) => ({
+          id: item.id,
+          label: prefix(included.id, item.label),
+        })),
+      );
+      combined.keyKnowledge.push(
+        ...next.keyKnowledge.map((item) => ({
+          id: item.id,
+          label: prefix(included.id, item.label),
+        })),
+      );
+      combined.keySkills.push(
+        ...next.keySkills.map((item) => ({
+          id: item.id,
+          label: prefix(included.id, item.label),
+        })),
+      );
+    }
+
+    return combined;
+  }, [areaMetaById, includedAreas]);
 
   const [selectedOutcomes, setSelectedOutcomes] = useState<string[]>([]);
   const [selectedKnowledge, setSelectedKnowledge] = useState<string[]>([]);
@@ -234,11 +308,16 @@ export default function AreaOfStudyDetail() {
       return;
     }
 
+    const titleText =
+      includedAreas.length > 1
+        ? `${subject?.title ?? "Task Compiler"} — Multi-area task`
+        : area?.title ?? "Printable Task";
+
     const printableMarkup = `<!doctype html>
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>${escapeHtml(area?.title ?? "Printable Task")}</title>
+    <title>${escapeHtml(titleText)}</title>
     <style>
       body { font-family: Arial, sans-serif; margin: 32px; color: #0f172a; }
       h1 { margin: 0 0 8px; font-size: 24px; }
@@ -253,10 +332,15 @@ export default function AreaOfStudyDetail() {
     </style>
   </head>
   <body>
-    <h1>${escapeHtml(area?.title ?? "Generated Task")}</h1>
-    <p>${escapeHtml(subject?.title ?? "Task Compiler")} | ${escapeHtml(
-      area?.unit ?? "Area",
-    )}</p>
+    <h1>${escapeHtml(titleText)}</h1>
+    <p>${escapeHtml(subject?.title ?? "Task Compiler")}</p>
+    ${
+      includedAreas.length > 1
+        ? `<p><strong>Areas of Study:</strong> ${escapeHtml(
+            includedAreas.map((a) => `${a.unit} — ${a.title}`).join(", "),
+          )}</p>`
+        : `<p>${escapeHtml(area?.unit ?? "Area")}</p>`
+    }
 
     <div class="meta">
       <p><strong>Target Duration:</strong> ${escapeHtml(duration)}</p>
@@ -305,14 +389,14 @@ export default function AreaOfStudyDetail() {
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-6">
-      {/* Back to Subjects */}
+      {/* Back to Areas */}
       <button
         type="button"
-        onClick={() => navigate("/teacher/task-compiler/by-subject")}
+        onClick={() => navigate(`/teacher/task-compiler/by-subject/${subjectId}`)}
         className="inline-flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-slate-900"
       >
         <ArrowLeft className="h-4 w-4" />
-        Back to Subjects
+        Back to Areas
       </button>
 
       {subject && area ? (
@@ -322,11 +406,26 @@ export default function AreaOfStudyDetail() {
             <SubjectIcon icon={subject.icon} color={subject.color} size={44} />
             <div className="min-w-0">
               <h2 className="text-lg font-semibold text-slate-900">
-                {area.title}
+                {includedAreas.length > 1 ? "Multiple Areas of Study" : area.title}
               </h2>
               <p className="text-sm text-slate-500">
-                {subject.title} • {area.unit}
+                {subject.title} •{" "}
+                {includedAreas.length > 1
+                  ? `${includedAreas.length} areas selected`
+                  : area.unit}
               </p>
+              {includedAreas.length > 1 ? (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {includedAreas.map((item) => (
+                    <span
+                      key={item.id}
+                      className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
+                    >
+                      {item.unit}: {item.title}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
             </div>
           </div>
 
@@ -378,6 +477,25 @@ export default function AreaOfStudyDetail() {
               />
 
               <div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const params = new URLSearchParams();
+                    params.set("multi", "1");
+                    params.set("areas", includedAreaIds.join(","));
+                    navigate(
+                      `/teacher/task-compiler/by-subject/${subject.id}?${params.toString()}`,
+                    );
+                  }}
+                  className="
+                    mb-3 w-full rounded-xl border border-slate-200 bg-white
+                    px-4 py-3 text-sm font-semibold text-slate-700
+                    transition hover:bg-slate-50
+                  "
+                >
+                  Add more AOS and Units
+                </button>
+
                 <button
                   type="button"
                   disabled={!canGenerate}

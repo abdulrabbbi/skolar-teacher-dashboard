@@ -80,7 +80,7 @@ export function NotificationsPopover({
           aria-label="Notifications"
           className={cn(
             "relative z-[10000] w-[min(360px,calc(100vw-24px))] flex flex-col",
-            "max-h-[min(400px,calc(100dvh-90px))] overflow-hidden",
+            "max-h-[calc(100dvh-90px)] overflow-hidden",
             "rounded-[22px] border border-[#D9E1EC] bg-white",
             "shadow-[0_18px_55px_rgba(15,23,42,0.16)]",
           )}

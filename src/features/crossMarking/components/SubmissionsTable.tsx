@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { Eye, CheckSquare, ChevronDown } from "lucide-react";
 import Badge from "../../../shared/components/ui/Badge";
 import Button from "../../../shared/components/ui/Button";
@@ -8,6 +9,8 @@ import type { SubmissionRow, SubmissionStatus } from "../data/crossMarking.mock"
 export type SubmissionsTableProps = {
   rows: SubmissionRow[];
   onSelect: (row: SubmissionRow) => void;
+  blindMode?: boolean;
+  blindOrderById?: Record<string, number>;
 };
 
 const statusVariant: Record<SubmissionStatus, "success" | "warning" | "danger"> =
@@ -23,10 +26,38 @@ const progressVariant = (value: number) => {
   return "red" as const;
 };
 
+const formatAssessment = (value: string) => value.replace(/\bSAC\b/g, "QUIZ");
+
 export default function SubmissionsTable({
   rows,
   onSelect,
+  blindMode,
+  blindOrderById,
 }: SubmissionsTableProps) {
+  const [activeSection, setActiveSection] = useState<
+    "submissions" | "markedHistory"
+  >("submissions");
+
+  const submissionsRows = useMemo(
+    () => rows.filter((row) => row.status !== "Marked"),
+    [rows],
+  );
+  const markedHistoryRows = useMemo(
+    () => rows.filter((row) => row.status === "Marked"),
+    [rows],
+  );
+
+  const baseRows = activeSection === "markedHistory" ? markedHistoryRows : submissionsRows;
+
+  const displayRows = useMemo(() => {
+    if (!blindMode || !blindOrderById) return baseRows;
+
+    const max = Number.MAX_SAFE_INTEGER;
+    return [...baseRows].sort(
+      (a, b) => (blindOrderById[a.id] ?? max) - (blindOrderById[b.id] ?? max),
+    );
+  }, [baseRows, blindMode, blindOrderById]);
+
   return (
     <section className="space-y-4">
       <Card className="p-0 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
@@ -34,8 +65,40 @@ export default function SubmissionsTable({
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-4">
           <div>
             <h2 className="text-lg font-semibold text-slate-900">Submission</h2>
-            <p className="text-sm text-slate-500">
-              {rows.length} submissions awaiting marking
+
+            <div className="mt-2 inline-flex rounded-xl bg-slate-100 p-1">
+              <button
+                type="button"
+                onClick={() => setActiveSection("submissions")}
+                className={[
+                  "h-8 rounded-lg px-3 text-sm font-medium transition",
+                  activeSection === "submissions"
+                    ? "bg-white text-slate-900 shadow-sm"
+                    : "text-slate-600 hover:text-slate-900",
+                ].join(" ")}
+                aria-pressed={activeSection === "submissions"}
+              >
+                Submissions
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveSection("markedHistory")}
+                className={[
+                  "h-8 rounded-lg px-3 text-sm font-medium transition",
+                  activeSection === "markedHistory"
+                    ? "bg-white text-slate-900 shadow-sm"
+                    : "text-slate-600 hover:text-slate-900",
+                ].join(" ")}
+                aria-pressed={activeSection === "markedHistory"}
+              >
+                Marked History
+              </button>
+            </div>
+
+            <p className="mt-2 text-sm text-slate-500">
+              {activeSection === "markedHistory"
+                ? `${markedHistoryRows.length} marked submissions`
+                : `${submissionsRows.length} submissions awaiting marking`}
             </p>
           </div>
 
@@ -59,7 +122,7 @@ export default function SubmissionsTable({
           <div className="w-full overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
-                {/* ✅ Title row font/spacing like Figma */}
+                {/*  Title row font/spacing like Figma */}
                 <tr className="border-b border-slate-200">
                   {[
                     "#",
@@ -84,38 +147,47 @@ export default function SubmissionsTable({
               </thead>
 
               <tbody>
-                {rows.map((row) => (
-                  <tr
-                    key={row.id}
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => onSelect(row)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        onSelect(row);
-                      }
-                    }}
-                    className="cursor-pointer border-t border-slate-100 align-middle transition-colors duration-200 hover:bg-slate-50"
-                  >
-                    {/* # */}
-                    <td className="px-6 py-5 text-sm font-semibold text-slate-900 whitespace-nowrap">
-                      {row.index}
-                    </td>
+                {displayRows.map((row, rowIndex) => {
+                  const displayStudentName = blindMode
+                    ? `Student ${rowIndex + 1}`
+                    : row.studentName;
+                  const displayIndex = blindMode
+                    ? `#${rowIndex + 1}`
+                    : row.index;
+                  const displayAssessment = formatAssessment(row.assessment);
 
-                    {/* Student */}
-                    <td className="px-6 py-5">
-                      <div className="text-sm font-medium text-slate-900 whitespace-nowrap">
-                        {row.studentName}
-                      </div>
-                    </td>
+                  return (
+                    <tr
+                      key={row.id}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => onSelect(row)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          onSelect(row);
+                        }
+                      }}
+                      className="cursor-pointer border-t border-slate-100 align-middle transition-colors duration-200 hover:bg-slate-50"
+                    >
+                      {/* # */}
+                      <td className="px-6 py-5 text-sm font-semibold text-slate-900 whitespace-nowrap">
+                        {displayIndex}
+                      </td>
 
-                    {/* Assessment */}
-                    <td className="px-6 py-5">
-                      <div className="text-sm font-medium text-slate-900 whitespace-nowrap">
-                        {row.assessment}
-                      </div>
-                    </td>
+                      {/* Student */}
+                      <td className="px-6 py-5">
+                        <div className="text-sm font-medium text-slate-900 whitespace-nowrap">
+                          {displayStudentName}
+                        </div>
+                      </td>
+
+                      {/* Assessment */}
+                      <td className="px-6 py-5">
+                        <div className="text-sm font-medium text-slate-900 whitespace-nowrap">
+                          {displayAssessment}
+                        </div>
+                      </td>
 
                     {/* Submitted */}
                     <td className="px-6 py-5">
@@ -183,8 +255,9 @@ export default function SubmissionsTable({
                         </Button>
                       )}
                     </td>
-                  </tr>
-                ))}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -193,33 +266,42 @@ export default function SubmissionsTable({
         {/* MOBILE (responsive, no horizontal scroll) */}
         <div className="block md:hidden">
           <div className="divide-y divide-slate-100">
-            {rows.map((row) => (
-              <button
-                key={row.id}
-                type="button"
-                onClick={() => onSelect(row)}
-                className="w-full text-left px-4 py-4 hover:bg-slate-50 transition"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-slate-900">
-                        {row.index}
-                      </span>
-                      <span className="text-sm font-medium text-slate-900">
-                        {row.assessment}
-                      </span>
-                    </div>
-                    <div className="mt-1 text-xs text-slate-500">
-                      {row.submitted}
-                    </div>
-                    <div className="mt-1 text-xs font-medium text-slate-700">
-                      {row.studentName}
-                    </div>
-                  </div>
+            {displayRows.map((row, rowIndex) => {
+              const displayStudentName = blindMode
+                ? `Student ${rowIndex + 1}`
+                : row.studentName;
+              const displayIndex = blindMode ? `#${rowIndex + 1}` : row.index;
+              const displayAssessment = formatAssessment(row.assessment);
 
-                  <Badge variant={statusVariant[row.status]}>{row.status}</Badge>
-                </div>
+              return (
+                <button
+                  key={row.id}
+                  type="button"
+                  onClick={() => onSelect(row)}
+                  className="w-full text-left px-4 py-4 hover:bg-slate-50 transition"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-slate-900">
+                          {displayIndex}
+                        </span>
+                        <span className="text-sm font-medium text-slate-900">
+                          {displayAssessment}
+                        </span>
+                      </div>
+                      <div className="mt-1 text-xs text-slate-500">
+                        {row.submitted}
+                      </div>
+                      <div className="mt-1 text-xs font-medium text-slate-700">
+                        {displayStudentName}
+                      </div>
+                    </div>
+
+                    <Badge variant={statusVariant[row.status]}>
+                      {row.status}
+                    </Badge>
+                  </div>
 
                 <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
                   <div>
@@ -276,8 +358,9 @@ export default function SubmissionsTable({
                     )}
                   </div>
                 </div>
-              </button>
-            ))}
+                </button>
+              );
+            })}
           </div>
         </div>
       </Card>

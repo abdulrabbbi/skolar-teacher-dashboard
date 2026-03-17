@@ -184,7 +184,6 @@ export const ROUTES = {
   upcomingAssessments: buildTeacherRoute("upcoming-assessments"),
   calendar: buildTeacherRoute("calendar"),
   games: buildTeacherRoute("games"),
-  assessments: buildTeacherRoute("assessments"),
   crossMarking: buildTeacherRoute("cross-marking"),
   crossMarkingModerationRoom: buildTeacherRoute("cross-marking/moderation-room"),
   taskCompiler: buildTeacherRoute("task-compiler"),
@@ -233,12 +232,6 @@ export const teacherRoutes: TeacherRouteItem[] = [
     label: "Games",
     fullPath: buildTeacherRoute("games"),
     group: "Main",
-  },
-  {
-    slug: "assessments",
-    label: "Assessments",
-    fullPath: buildTeacherRoute("assessments"),
-    group: "Tools",
   },
   {
     slug: "cross-marking",

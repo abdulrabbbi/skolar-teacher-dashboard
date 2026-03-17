@@ -7,6 +7,7 @@ import { ArrowLeft, Download, Plus } from "lucide-react";
 import ClassroomPulse from "../components/ClassroomPulse";
 import StudentsTable from "../components/StudentsTable";
 import Button from "../../../shared/components/ui/Button";
+import { openPrintToPdfWindow } from "../../../shared/lib/printToPdf";
 
 import {
   classroomPulseStats,
@@ -46,6 +47,44 @@ export default function ClassDetailPage() {
     return <div className="text-slate-500">Class not found</div>;
   }
 
+  const handleExportPdf = () => {
+    const escapeHtml = (value: string) =>
+      String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+
+    const studentsHtml = `
+      <h2>Students</h2>
+      <ol>
+        ${filteredStudents
+          .map(
+            (s) =>
+              `<li>${escapeHtml(s.name)} — ${escapeHtml(
+                s.status,
+              )} (Accuracy: ${s.accuracy}%)</li>`,
+          )
+          .join("")}
+      </ol>
+    `;
+
+    openPrintToPdfWindow({
+      title: `${classItem.title} — Export`,
+      subtitle: "Printable view — use your browser “Save as PDF” to download.",
+      bodyHtml: `
+        <div class="meta">
+          <p><span class="pill">${escapeHtml(classItem.subject)}</span></p>
+          <p><strong>Filter:</strong> ${escapeHtml(activeFilter)}</p>
+          <p><strong>Total students:</strong> ${filteredStudents.length}</p>
+        </div>
+        <div class="hr"></div>
+        ${studentsHtml}
+      `,
+    });
+  };
+
   return (
     // ✅ full width inside your layout (no max width, no mx-auto)
     <div className="w-full min-w-0">
@@ -74,9 +113,10 @@ export default function ClassDetailPage() {
               size="sm"
               variant="outline"
               className="w-full justify-center transition-all duration-200 hover:-translate-y-0.5 sm:w-auto"
+              onClick={handleExportPdf}
             >
               <Download className="mr-1 h-4 w-4" />
-              Export
+              Export PDF
             </Button>
           </div>
         </div>

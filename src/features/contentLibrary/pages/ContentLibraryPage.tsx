@@ -1,20 +1,22 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 import Button from '../../../shared/components/ui/Button';
 import Card from '../../../shared/components/ui/Card';
 import PageHeader from '../../../shared/components/ui/PageHeader';
 import { cn } from '../../../shared/lib/cn';
+import { openPrintToPdfWindow } from '../../../shared/lib/printToPdf';
 
 import ContentLibraryFilters from '../components/ContentLibraryFilters';
 import ContentLibraryGrid from '../components/ContentLibraryGrid';
+import ResourcePreviewModal from '../components/ResourcePreviewModal';
 import {
   contentLibrarySubjects,
   contentResourcesMock,
   defaultContentLibraryFilters,
   subjectColorStyles,
 } from '../data/contentLibrary.mock';
+import { getContentResourceDetail } from '../data/contentResourceDetail.mock';
 import type { ContentResource } from '../types/contentLibrary.types';
 import { formatResourceDate, filterContentResources, getVisibleResources, hasMoreResources } from '../utils/contentLibrary.utils';
 
@@ -73,34 +75,72 @@ export default function ContentLibraryPage() {
   };
 
   const handleDownloadResource = (resource: ContentResource) => {
-    const fileSafeTitle = resource.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
+    const detail = getContentResourceDetail(resource);
 
-    const payload = [
-      `Title: ${resource.title}`,
-      `Subject: ${resource.subjectName}`,
-      `Type: ${resource.type}`,
-      `Difficulty: ${resource.difficulty}`,
-      `Year Level: ${resource.yearLevel}`,
-      `Duration: ${resource.durationMins} mins`,
-      `Marks: ${resource.marks}`,
-      `Tags: ${resource.tags.join(', ')}`,
-      `Created: ${formatResourceDate(resource.createdAt)}`,
-    ].join('\n');
+    const escapeHtml = (value: string) =>
+      String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
 
-    const blob = new Blob([payload], { type: 'text/plain;charset=utf-8' });
-    const blobUrl = URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.href = blobUrl;
-    anchor.download = `${fileSafeTitle || 'resource'}.txt`;
-    document.body.appendChild(anchor);
-    anchor.click();
-    anchor.remove();
-    URL.revokeObjectURL(blobUrl);
+    const metaHtml = `
+      <div class="meta">
+        <p><span class="pill">${escapeHtml(resource.subjectName)}</span><span class="pill">${escapeHtml(resource.type)}</span><span class="pill">${escapeHtml(resource.difficulty)}</span></p>
+        <p><strong>Year:</strong> ${resource.yearLevel} &nbsp; <strong>Duration:</strong> ${resource.durationMins} mins &nbsp; <strong>Marks:</strong> ${resource.marks}</p>
+        <p><strong>Author:</strong> ${escapeHtml(detail.authorName)} &nbsp; <strong>Updated:</strong> ${escapeHtml(formatResourceDate(detail.updatedAt))}</p>
+        <p><strong>Tags:</strong> ${escapeHtml(resource.tags.map((t) => `#${t}`).join(' '))}</p>
+      </div>
+      <div class="hr"></div>
+    `;
 
-    setActionMessage(`Downloaded "${resource.title}".`);
+    const mediaHtml = detail.media.length
+      ? `
+        <h2>Uploaded Media</h2>
+        <div class="grid">
+          ${detail.media
+            .map((m) => {
+              if (m.kind === 'image' && m.src) {
+                return `<div class="thumb"><img src="${m.src}" alt="${escapeHtml(m.title)}" /><div class="cap">${escapeHtml(m.fileName)}</div></div>`;
+              }
+              return `<div class="thumb"><div class="cap"><strong>PDF</strong><br/>${escapeHtml(m.fileName)}</div></div>`;
+            })
+            .join('')}
+        </div>
+        <div class="hr"></div>
+      `
+      : '';
+
+    const questionsHtml = `
+      <h2>Questions</h2>
+      <ol>
+        ${detail.questions
+          .map((q) => {
+            const options = q.options?.length
+              ? `<div class="opt">${q.options
+                  .map((opt) => `• ${escapeHtml(opt)}`)
+                  .join('<br/>')}</div>`
+              : '';
+            return `<li><div><strong>${escapeHtml(
+              q.type === 'multipleChoice'
+                ? 'Multiple Choice'
+                : q.type === 'shortAnswer'
+                  ? 'Short Answer'
+                  : 'Extended Response',
+            )}:</strong> ${escapeHtml(q.prompt)}</div>${options}</li>`;
+          })
+          .join('')}
+      </ol>
+    `;
+
+    openPrintToPdfWindow({
+      title: resource.title,
+      subtitle: 'Printable view — use your browser “Save as PDF” to download.',
+      bodyHtml: `${metaHtml}${mediaHtml}${questionsHtml}`,
+    });
+
+    setActionMessage(`Opened printable PDF for "${resource.title}".`);
   };
 
   return (
@@ -179,73 +219,11 @@ export default function ContentLibraryPage() {
       ) : null}
 
       {selectedResource ? (
-        <div
-          className="fixed inset-0 z-[130] flex items-center justify-center bg-slate-900/35 p-4 backdrop-blur-sm"
-          onClick={() => setSelectedResource(null)}
-        >
-          <Card
-            hover={false}
-            className="w-full max-w-xl rounded-2xl border-slate-200 p-5 sm:p-6"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-slate-900">
-                  {selectedResource.title}
-                </h3>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span
-                    className={cn(
-                      'inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold',
-                      subjectColorStyles[selectedResource.subjectId].legendSurface,
-                      subjectColorStyles[selectedResource.subjectId].legendText,
-                    )}
-                  >
-                    {selectedResource.subjectName}
-                  </span>
-                  <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">
-                    {selectedResource.type}
-                  </span>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setSelectedResource(null)}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
-                aria-label="Close resource preview"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-
-            <div className="mt-4 grid grid-cols-2 gap-3 text-sm text-slate-600">
-              <p>Year Level: {selectedResource.yearLevel}</p>
-              <p>Difficulty: {selectedResource.difficulty}</p>
-              <p>Duration: {selectedResource.durationMins} mins</p>
-              <p>Marks: {selectedResource.marks}</p>
-              <p className="col-span-2">
-                Created: {formatResourceDate(selectedResource.createdAt)}
-              </p>
-            </div>
-
-            <div className="mt-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                Tags
-              </p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {selectedResource.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-600"
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </Card>
-        </div>
+        <ResourcePreviewModal
+          resource={selectedResource}
+          onClose={() => setSelectedResource(null)}
+          onDownloadPdf={handleDownloadResource}
+        />
       ) : null}
     </div>
   );

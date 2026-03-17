@@ -49,6 +49,14 @@ export type LiveQuizQuestionInsight = {
   mostCommonWrongOption: AnswerOptionId;
 };
 
+export type LiveQuizQuizQuestion = {
+  id: string;
+  label: string;
+  topic: string;
+  prompt: string;
+  options: LiveQuizAnswerOption[];
+};
+
 export type LiveQuizSessionAnalytics = {
   classPerformance: {
     averageScore: number;
@@ -59,6 +67,7 @@ export type LiveQuizSessionAnalytics = {
   studentResults: LiveQuizStudentResult[];
   commonWrongQuestions: LiveQuizQuestionInsight[];
   easiestQuestions: LiveQuizQuestionInsight[];
+  quizQuestions: LiveQuizQuizQuestion[];
 };
 
 export type LiveQuizSession = {
@@ -309,6 +318,60 @@ export const liveQuizSessions: LiveQuizSession[] = [
           questionText: 'Simplify derivative expression after expansion.',
           correctRate: 79,
           mostCommonWrongOption: 'A',
+        },
+      ],
+      quizQuestions: [
+        {
+          id: 'quiz-q1',
+          label: 'Q1',
+          topic: 'Differentiation - Chain Rule',
+          prompt: 'Find the derivative of f(x) = (3x^2 + 2x)^5',
+          options: [
+            { id: 'A', text: "f'(x) = 5(3x^2 + 2x)^5(6x + 2)" },
+            {
+              id: 'B',
+              text: "f'(x) = 5(3x^2 + 2x)^4(6x + 2)",
+              isCorrect: true,
+            },
+            { id: 'C', text: "f'(x) = (3x^2 + 2x)^4(6x + 2)" },
+            { id: 'D', text: "f'(x) = 5(3x^2 + 2x)^4" },
+          ],
+        },
+        {
+          id: 'quiz-q2',
+          label: 'Q2',
+          topic: 'Differentiation - Product Rule',
+          prompt: 'Differentiate f(x) = (x^2 + 1)(3x - 4).',
+          options: [
+            { id: 'A', text: "f'(x) = 2x(3x - 4) + 3(x^2 + 1)", isCorrect: true },
+            { id: 'B', text: "f'(x) = (2x + 1)(3x - 4)" },
+            { id: 'C', text: "f'(x) = 2x(3x - 4)" },
+            { id: 'D', text: "f'(x) = 3(x^2 + 1)" },
+          ],
+        },
+        {
+          id: 'quiz-q3',
+          label: 'Q3',
+          topic: 'Differentiation - Implicit',
+          prompt: 'Given x^2 + y^2 = 25, find dy/dx.',
+          options: [
+            { id: 'A', text: 'dy/dx = -x/y', isCorrect: true },
+            { id: 'B', text: 'dy/dx = x/y' },
+            { id: 'C', text: 'dy/dx = -y/x' },
+            { id: 'D', text: 'dy/dx = y/x' },
+          ],
+        },
+        {
+          id: 'quiz-q4',
+          label: 'Q4',
+          topic: 'Differentiation - Simplification',
+          prompt: 'Simplify: 5(3x^2 + 2x)^4(6x + 2).',
+          options: [
+            { id: 'A', text: '10(3x^2 + 2x)^4(3x + 1)' },
+            { id: 'B', text: '5(3x + 1)^4(6x + 2)' },
+            { id: 'C', text: '10(3x^2 + 2x)^4(3x + 1)', isCorrect: true },
+            { id: 'D', text: '30x(3x^2 + 2x)^4' },
+          ],
         },
       ],
     },

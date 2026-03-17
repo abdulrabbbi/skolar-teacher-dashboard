@@ -1,105 +1,9 @@
-// /* eslint-disable @typescript-eslint/no-unused-vars */
-// import { Copy, Download, Eye } from "lucide-react";
-// import Badge, { type BadgeVariant } from "../../../shared/components/ui/Badge";
-// import Button from "../../../shared/components/ui/Button";
-// import Card from "../../../shared/components/ui/Card";
-// import type {
-//   TaskDifficulty,
-//   TaskHistoryItemData,
-//   TaskHistoryStatus,
-// } from "../data/taskHistory.mock";
-
-// export type TaskHistoryItemProps = {
-//   item: TaskHistoryItemData;
-// };
-
-// const statusVariant: Record<TaskHistoryStatus, BadgeVariant> = {
-//   Completed: "success",
-//   "In Progress": "warning",
-//   Queued: "neutral",
-// };
-
-// const difficultyVariant: Record<TaskDifficulty, BadgeVariant> = {
-//   Easy: "success",
-//   Medium: "warning",
-//   Hard: "danger",
-//   Mixed: "neutral",
-// };
-
-// export default function TaskHistoryItem({ item }: TaskHistoryItemProps) {
-
-//   return (
-//     <Card
-//       className="
-//         group
-//         flex flex-col gap-4 p-4
-//         sm:flex-row sm:items-center sm:justify-between
-//         transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl
-//         transition-all duration-200 hover:bg-slate-50 hover:shadow-sm
-//       "
-//     >
-//       {/* LEFT CONTENT */}
-//       <div className="space-y-2">
-//         <div className="flex flex-wrap items-center gap-2">
-//           <h3 className="text-sm font-semibold text-slate-900 transition-colors duration-200 group-hover:text-slate-700">
-//             {item.title}
-//           </h3>
-
-//           <Badge variant={statusVariant[item.status]}>
-//             {item.status}
-//           </Badge>
-
-//           <Badge variant={difficultyVariant[item.difficulty]}>
-//             {item.difficulty}
-//           </Badge>
-//         </div>
-
-//         <div className="text-xs text-slate-500">
-//           {item.subject} | {item.code} | {item.duration} | {item.marks} |{" "}
-//           {item.students} students | {item.createdAt}
-//         </div>
-//       </div>
-
-//       {/* ACTION BUTTONS */}
-//       <div className="flex flex-wrap gap-2">
-//         <Button
-//           size="sm"
-//           variant="outline"
-//           className="transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
-//         >
-//           <Eye className="h-4 w-4" />
-//           View
-//         </Button>
-
-//         <Button
-//           size="sm"
-//           variant="outline"
-//           className="transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
-//         >
-//           <Copy className="h-4 w-4" />
-//           Duplicate
-//         </Button>
-
-//         <Button
-//           size="sm"
-//           variant="outline"
-//           className="transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
-//         >
-//           <Download className="h-4 w-4" />
-//           Download
-//         </Button>
-//       </div>
-//     </Card>
-//   );
-// }
-
-
-
 import { useState } from "react";
 import { Copy, Download, Eye, CalendarDays, Clock, FileText, Users } from "lucide-react";
 import Badge, { type BadgeVariant } from "../../../shared/components/ui/Badge";
 import Button from "../../../shared/components/ui/Button";
 import Card from "../../../shared/components/ui/Card";
+import { openPrintToPdfWindow } from "../../../shared/lib/printToPdf";
 import type {
   TaskDifficulty,
   TaskHistoryItemData,
@@ -108,12 +12,14 @@ import type {
 
 export type TaskHistoryItemProps = {
   item: TaskHistoryItemData;
+  onChangeStatus?: (id: string, status: TaskHistoryStatus) => void;
 };
 
 const statusVariant: Record<TaskHistoryStatus, BadgeVariant> = {
   Completed: "success",
   "In Progress": "warning",
-  Queued: "neutral",
+  Draft: "neutral",
+  Assigned: "info",
 };
 
 const difficultyVariant: Record<TaskDifficulty, BadgeVariant> = {
@@ -140,7 +46,10 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#39;");
 }
 
-export default function TaskHistoryItem({ item }: TaskHistoryItemProps) {
+export default function TaskHistoryItem({
+  item,
+  onChangeStatus,
+}: TaskHistoryItemProps) {
   const createdText = withCreatedPrefix(item.createdAt);
   const [actionMessage, setActionMessage] = useState("");
 
@@ -203,16 +112,36 @@ export default function TaskHistoryItem({ item }: TaskHistoryItemProps) {
   };
 
   const handleDownload = () => {
-    const blob = new Blob([taskSummary], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = `${item.title.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}.txt`;
-    document.body.append(anchor);
-    anchor.click();
-    anchor.remove();
-    URL.revokeObjectURL(url);
-    setActionMessage("Download started");
+    const bodyHtml = `
+      <div class="meta">
+        <p>
+          <span class="pill">${escapeHtml(item.status)}</span>
+          <span class="pill">${escapeHtml(item.difficulty)}</span>
+          <span class="pill">${escapeHtml(item.code)}</span>
+        </p>
+        <p><strong>Subject:</strong> ${escapeHtml(item.subject)}</p>
+        <p><strong>Created:</strong> ${escapeHtml(item.createdAt)}</p>
+        <p><strong>Duration:</strong> ${escapeHtml(item.duration)} &nbsp; <strong>Marks:</strong> ${escapeHtml(item.marks)} &nbsp; <strong>Students:</strong> ${item.students}</p>
+      </div>
+      <div class="hr"></div>
+      <h2>Task Summary</h2>
+      <pre style="white-space: pre-wrap; font-size: 12.5px; color: #334155;">${escapeHtml(
+        taskSummary,
+      )}</pre>
+    `;
+
+    openPrintToPdfWindow({
+      title: item.title,
+      subtitle: "Printable view — use your browser “Save as PDF” to download.",
+      bodyHtml,
+    });
+
+    setActionMessage("Opened printable PDF");
+  };
+
+  const handleStatusChange = (next: TaskHistoryStatus) => {
+    onChangeStatus?.(item.id, next);
+    setActionMessage(`Status: ${next}`);
   };
 
   return (
@@ -295,8 +224,28 @@ export default function TaskHistoryItem({ item }: TaskHistoryItemProps) {
           className="transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
         >
           <Download className="h-4 w-4" />
-          Download
+          Download PDF
         </Button>
+
+        <label className="inline-flex items-center">
+          <span className="sr-only">Change status</span>
+          <select
+            value={item.status}
+            onChange={(e) => handleStatusChange(e.target.value as TaskHistoryStatus)}
+            className="
+              h-8 rounded-md border border-slate-300 bg-white
+              px-3 text-xs font-semibold text-slate-700
+              transition hover:bg-slate-50
+              focus:outline-none focus:ring-2 focus:ring-slate-200
+            "
+            aria-label="Change task status"
+          >
+            <option value="In Progress">In Progress</option>
+            <option value="Draft">Draft</option>
+            <option value="Assigned">Assigned</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </label>
       </div>
 
       {actionMessage ? (
