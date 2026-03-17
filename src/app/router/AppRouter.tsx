@@ -15,6 +15,7 @@ import ClassDetailPage from '../../features/classes/pages/ClassDetailPage';
 import MyClassesPage from '../../features/classes/pages/MyClassesPage';
 import CrossMarkingPage from '../../features/crossMarking/pages/CrossMarkingPage';
 import ModerationRoomPage from '../../features/crossMarking/pages/ModerationRoomPage';
+import SubmissionDetailPage from '../../features/crossMarking/pages/SubmissionDetailPage';
 import DashboardPage from '../../features/dashboard/pages/DashboardPage';
 import UpcomingAssessmentsPage from '../../features/dashboard/pages/UpcomingAssessmentsPage';
 import GamesPage from '../../features/games/pages/GamesPage';
@@ -67,6 +68,10 @@ export default function AppRouter() {
           <Route
             path="cross-marking/moderation-room"
             element={<ModerationRoomPage />}
+          />
+          <Route
+            path="cross-marking/submission/:submissionId"
+            element={<SubmissionDetailPage />}
           />
 
           <Route path="task-compiler" element={<TaskCompilerPage />}>

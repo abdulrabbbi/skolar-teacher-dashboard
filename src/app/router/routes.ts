@@ -186,6 +186,7 @@ export const ROUTES = {
   games: buildTeacherRoute("games"),
   crossMarking: buildTeacherRoute("cross-marking"),
   crossMarkingModerationRoom: buildTeacherRoute("cross-marking/moderation-room"),
+  crossMarkingSubmission: (id: string) => buildTeacherRoute(`cross-marking/submission/${id}`),
   taskCompiler: buildTeacherRoute("task-compiler"),
   liveQuiz: buildTeacherRoute("live-quiz"),
   liveQuizSession: (id: string) => buildTeacherRoute(`live-quiz/session/${id}`),

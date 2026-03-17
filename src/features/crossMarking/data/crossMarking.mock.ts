@@ -54,6 +54,7 @@ export type SubmissionRow = {
 export type StudentResponseItem = {
   id: string;
   question: string;
+  questionText?: string;
   marks: number;
   response: string;
 };
@@ -219,14 +220,23 @@ const studentResponsesMap: Record<string, StudentResponseItem[]> = {
     {
       id: 's1-q1',
       question: 'Question 1',
+      questionText: 'Find the derivative of f(x) = x³ + 2x² – 5x + 1',
       marks: 5,
-      response: 'Correct derivative using power rule.',
+      response: "f'(x) = 3x² + 4x – 5",
     },
     {
       id: 's1-q2',
       question: 'Question 2',
+      questionText: 'Use the chain rule to differentiate g(x) = (2x² + 3x)⁵',
       marks: 8,
-      response: 'Chain rule applied correctly.',
+      response: "g'(x) = 5(2x² + 3x)⁴ × (4x + 3)\n\nWorking:\nLet u = 2x² + 3x\nThen g(x) = u⁵\n\nBy chain rule:\ng'(x) = 5u⁴ × du/dx\ng'(x) = 5(2x² + 3x)⁴ × (4x + 3)",
+    },
+    {
+      id: 's1-q3',
+      question: 'Question 3',
+      questionText: 'Evaluate the definite integral ∫₀² (3x² + 2x) dx',
+      marks: 7,
+      response: "∫₀² (3x² + 2x) dx = [x³ + x²]₀²\n= (2³ + 2²) – (0³ + 0²)\n= (8 + 4) – 0\n= 12",
     },
   ],
 
@@ -234,14 +244,16 @@ const studentResponsesMap: Record<string, StudentResponseItem[]> = {
     {
       id: 's2-q1',
       question: 'Question 1',
+      questionText: 'Find the derivative of f(x) = x³ + 2x² – 5x + 1',
       marks: 3,
-      response: 'Missed constant term in differentiation.',
+      response: "f'(x) = 3x² + 4x",
     },
     {
       id: 's2-q2',
       question: 'Question 2',
+      questionText: 'Use the chain rule to differentiate g(x) = (2x² + 3x)⁵',
       marks: 6,
-      response: 'Correct idea but algebra mistake.',
+      response: "g'(x) = 5(2x² + 3x)⁴ × (4x + 3)\n\nWorking:\nLet u = 2x² + 3x\ng'(x) = 5u⁴ × (4x + 2)",
     },
   ],
 
@@ -249,8 +261,9 @@ const studentResponsesMap: Record<string, StudentResponseItem[]> = {
     {
       id: 's3-q1',
       question: 'Question 1',
+      questionText: 'Find the derivative of f(x) = x³ + 2x² – 5x + 1',
       marks: 4,
-      response: 'Minor sign error.',
+      response: "f'(x) = 3x² + 4x + 5",
     },
   ],
 
@@ -258,8 +271,9 @@ const studentResponsesMap: Record<string, StudentResponseItem[]> = {
     {
       id: 's4-q1',
       question: 'Question 1',
+      questionText: 'Find the derivative of f(x) = x³ + 2x² – 5x + 1',
       marks: 5,
-      response: 'Perfect solution with clear working.',
+      response: "f'(x) = 3x² + 4x – 5\n\nUsing the power rule:\nd/dx[x³] = 3x²\nd/dx[2x²] = 4x\nd/dx[–5x] = –5\nd/dx[1] = 0",
     },
   ],
 
@@ -267,8 +281,9 @@ const studentResponsesMap: Record<string, StudentResponseItem[]> = {
     {
       id: 's5-q1',
       question: 'Question 1',
+      questionText: 'Find the derivative of f(x) = x³ + 2x² – 5x + 1',
       marks: 2,
-      response: 'Incorrect differentiation rule used.',
+      response: "f'(x) = x² + 2x – 5",
     },
   ],
 };

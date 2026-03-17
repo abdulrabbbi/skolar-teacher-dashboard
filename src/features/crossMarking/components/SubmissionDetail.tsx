@@ -160,9 +160,11 @@ export default function SubmissionDetail({
               {detail.id.replace("submission-", "Submission #")}
             </h2>
             <p className="text-sm text-slate-500">{displayAssessment}</p>
-            <p className="mt-1 text-sm font-medium text-slate-700">
-              Student: {displayStudentName}
-            </p>
+            {!blindMode && (
+              <p className="mt-1 text-sm font-medium text-slate-700">
+                Student: {detail.studentName}
+              </p>
+            )}
           </div>
 
           <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
