@@ -81,7 +81,7 @@ export default function CrossMarkingPage() {
   };
 
   const handleSelectSubmission = (row: SubmissionRow) => {
-    navigate(ROUTES.crossMarkingSubmission(row.id));
+    navigate(ROUTES.crossMarkingSubmission(row.id), { state: { blindMode } });
   };
 
   return (

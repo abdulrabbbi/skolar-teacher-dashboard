@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Card from "../../../shared/components/ui/Card";
 import SubmissionDetail from "../components/SubmissionDetail";
 import { feedbackPlaceholder, submissionDetails } from "../data/crossMarking.mock";
@@ -7,7 +7,10 @@ import { feedbackPlaceholder, submissionDetails } from "../data/crossMarking.moc
 export default function SubmissionDetailPage() {
   const { submissionId } = useParams<{ submissionId: string }>();
   const navigate = useNavigate();
-  const [blindMode, setBlindMode] = useState(false);
+  const location = useLocation();
+  const [blindMode, setBlindMode] = useState<boolean>(
+    (location.state as { blindMode?: boolean } | null)?.blindMode ?? false,
+  );
 
   const detail = submissionDetails.find((d) => d.id === submissionId) ?? null;
 
