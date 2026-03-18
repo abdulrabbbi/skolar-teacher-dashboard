@@ -365,8 +365,8 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                   <SearchInput
                     placeholder="Search students..."
                     className="
-                      h-[48px] w-[120px] rounded-[16px] border border-transparent
-                      bg-[#F3F4F6] pl-14 pr-0 text-[15px] text-slate-700
+                      h-[48px] w-full rounded-full border border-transparent
+                      bg-[#F3F4F6] pl-14 pr-4 text-[15px] text-slate-700
                       shadow-none outline-none placeholder:text-[#8C93A8]
                       focus:border-[#D9DCE3] focus:bg-white focus:ring-0
                     "
