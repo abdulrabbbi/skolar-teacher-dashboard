@@ -1,4 +1,4 @@
-import { AlertTriangle, CheckCircle2, ArrowRight, Users } from "lucide-react";
+import { AlertTriangle, ArrowRight, CheckCircle2, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { ROUTES } from "../../../app/router/routes";
@@ -16,7 +16,7 @@ export default function ClassesOverview({ classes }: ClassesOverviewProps) {
   };
 
   return (
-    <section>
+    <section className="min-w-0">
       <h2 className="text-[20px] font-semibold leading-none text-[#1E2547] sm:text-[17px]">
         Classes Overview
       </h2>
@@ -35,7 +35,7 @@ export default function ClassesOverview({ classes }: ClassesOverviewProps) {
               }
             }}
             className="
-              group relative cursor-pointer rounded-[22px]
+              group relative min-w-0 cursor-pointer rounded-[22px]
               border border-emerald-200/70 bg-white/40
               bg-gradient-to-br from-white/75 via-white/40 to-emerald-100/20
               px-5 py-5 backdrop-blur-md backdrop-saturate-150
@@ -47,31 +47,33 @@ export default function ClassesOverview({ classes }: ClassesOverviewProps) {
               sm:px-6 sm:py-6
             "
           >
-            <div className="pr-10">
-              <h3 className="truncate text-[20px] font-semibold leading-tight text-[#111111] sm:text-[19px]">
-                {item.name}
-              </h3>
+            <div className="min-w-0">
+              <div className="flex items-start justify-between gap-4">
+                <h3 className="truncate text-[20px] font-semibold leading-tight text-[#111111] sm:text-[19px]">
+                  {item.name}
+                </h3>
+
+                <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center">
+                  <ArrowRight className="h-6 w-6 text-[#7A8094] transition-transform duration-200 group-hover:translate-x-1" />
+                </div>
+              </div>
 
               <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 text-[15px] xl:flex-nowrap xl:gap-x-6">
-                <div className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap text-[#202020]">
+                <div className="inline-flex min-w-0 shrink-0 items-center gap-2 whitespace-nowrap text-[#202020]">
                   <Users className="h-[18px] w-[18px] shrink-0 text-[#7A8094]" />
                   <span>{item.total} students</span>
                 </div>
 
-                <div className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap font-medium text-[#00B96B]">
+                <div className="inline-flex min-w-0 shrink-0 items-center gap-2 whitespace-nowrap font-medium text-[#00B96B]">
                   <CheckCircle2 className="h-[18px] w-[18px] shrink-0" />
                   <span>{item.onTrack} on track</span>
                 </div>
 
-                <div className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap font-medium text-[#F28C1B]">
+                <div className="inline-flex min-w-0 shrink-0 items-center gap-2 whitespace-nowrap font-medium text-[#F28C1B]">
                   <AlertTriangle className="h-[18px] w-[18px] shrink-0" />
                   <span>{item.atRisk} at risk</span>
                 </div>
               </div>
-            </div>
-
-            <div className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center sm:right-6 sm:top-6">
-              <ArrowRight className="h-6 w-6 text-[#7A8094] transition-transform duration-200 group-hover:translate-x-1" />
             </div>
           </div>
         ))}
