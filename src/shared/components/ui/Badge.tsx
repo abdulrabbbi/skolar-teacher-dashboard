@@ -11,8 +11,8 @@ const variantStyles: Record<BadgeVariant, string> = {
   //  Marked (green) — figma style
   success: "bg-[#00B96B1A] text-[#00B96B]",
 
-  //  Moderation (blue) — figma style
-  warning: "bg-blue-100 text-blue-700",
+  //  Warning (orange) — figma style
+  warning: "bg-orange-100 text-orange-600",
 
   //  Keep danger for real errors if used elsewhere
   danger: "bg-rose-100 text-rose-700",

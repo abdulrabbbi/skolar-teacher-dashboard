@@ -1,15 +1,12 @@
 import * as React from "react";
 import { createPortal } from "react-dom";
-import { X } from "lucide-react";
+import { Calendar, X } from "lucide-react";
+
+import EventFormContent, { type EventFormValues } from "./EventFormContent";
+import IconPickerModal from "./IconPickerModal";
 import type { EventType } from "../data/calendar.mock";
 
-export type AddEventFormValues = {
-  type: EventType;
-  title: string;
-  date: string;
-  time: string;
-  className: string;
-};
+export type AddEventFormValues = EventFormValues;
 
 type Props = {
   isOpen: boolean;
@@ -19,13 +16,29 @@ type Props = {
   initialValues?: Partial<AddEventFormValues> | null;
 };
 
-const EVENT_TYPES: EventType[] = ["Class", "Exam", "Deadline"];
+function todayDateTimeLocal(hour: string) {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}T${hour}`;
+}
 
-function toISODate(date: Date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+function buildDefaults(initial?: Partial<AddEventFormValues> | null): AddEventFormValues {
+  return {
+    eventMode: initial?.eventMode ?? "event",
+    type: (initial?.type as EventType) ?? "Class",
+    title: initial?.title ?? "",
+    className: initial?.className ?? "",
+    icon: initial?.icon ?? "AtSign",
+    color: initial?.color ?? "#1363FF",
+    description: initial?.description ?? "",
+    startTime: initial?.startTime ?? todayDateTimeLocal("09:00"),
+    endTime: initial?.endTime ?? todayDateTimeLocal("10:00"),
+    recurring: initial?.recurring ?? false,
+    reminders: initial?.reminders ?? [],
+    tags: initial?.tags ?? [],
+  };
 }
 
 export default function AddEventModal({
@@ -35,36 +48,34 @@ export default function AddEventModal({
   mode = "add",
   initialValues,
 }: Props) {
-  const [type, setType] = React.useState<EventType>("Class");
-  const [title, setTitle] = React.useState("");
-  const [date, setDate] = React.useState(toISODate(new Date()));
-  const [time, setTime] = React.useState("");
-  const [className, setClassName] = React.useState("");
+  const [values, setValues] = React.useState<AddEventFormValues>(() =>
+    buildDefaults(initialValues),
+  );
+  const [iconPickerOpen, setIconPickerOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isOpen) setValues(buildDefaults(initialValues));
+  }, [isOpen, initialValues]);
 
   React.useEffect(() => {
     if (!isOpen) return;
-
-    setType((initialValues?.type as EventType) ?? "Class");
-    setTitle(initialValues?.title ?? "");
-    setDate(initialValues?.date ?? toISODate(new Date()));
-    setTime(initialValues?.time ?? "");
-    setClassName(initialValues?.className ?? "");
-  }, [initialValues, isOpen]);
-
-  React.useEffect(() => {
-    if (!isOpen) return;
-
-    const previousOverflow = document.body.style.overflow;
+    const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-
     return () => {
-      document.body.style.overflow = previousOverflow;
+      document.body.style.overflow = prev;
     };
   }, [isOpen]);
 
   if (!isOpen) return null;
 
   const isEditing = mode === "edit";
+
+  function handleChange<K extends keyof AddEventFormValues>(
+    field: K,
+    value: AddEventFormValues[K],
+  ) {
+    setValues((prev) => ({ ...prev, [field]: value }));
+  }
 
   return createPortal(
     <div className="fixed inset-0 z-[9999]">
@@ -75,128 +86,69 @@ export default function AddEventModal({
 
       <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-6">
         <div className="flex max-h-[90vh] w-full max-w-[500px] flex-col overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-2xl">
-          <div className="flex items-start justify-between px-5 pt-5">
-            <div>
-              <h2 className="text-[18px] font-semibold text-slate-900">
-                {isEditing ? "Edit Event" : "Add Event"}
-              </h2>
-              <p className="mt-1 text-sm text-slate-500">
-                {isEditing
-                  ? "Update the event details for your calendar."
-                  : "Add a new event to your calendar."}
-              </p>
+          {/* Header */}
+          <div className="flex items-start justify-between px-5 pt-5 pb-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-[#1363FF]">
+                <Calendar className="h-5 w-5" />
+              </div>
+              <div>
+                <h2 className="text-[17px] font-semibold text-slate-900">
+                  {isEditing ? "Edit Event" : "Create Event"}
+                </h2>
+                <p className="text-xs text-slate-500">
+                  {isEditing
+                    ? "Update the details for your calendar event."
+                    : "Schedule a new event on your calendar"}
+                </p>
+              </div>
             </div>
 
             <button
               type="button"
               onClick={onClose}
-              className="grid h-10 w-10 place-items-center rounded-2xl border border-slate-200 text-slate-700 transition hover:bg-slate-50"
+              className="grid h-8 w-8 place-items-center rounded-xl text-slate-500 hover:bg-slate-100"
             >
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4" />
             </button>
           </div>
 
+          {/* Form */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
-
-              onSubmit({
-                type,
-                title: title.trim(),
-                date,
-                time,
-                className: className.trim(),
-              });
+              onSubmit(values);
             }}
-            className="mt-4 flex min-h-0 flex-1 flex-col"
+            className="flex min-h-0 flex-1 flex-col"
           >
-            <div className="flex-1 space-y-4 overflow-y-auto px-5 pb-4">
-              <Field label="Type">
-                <select
-                  value={type}
-                  onChange={(e) => setType(e.target.value as EventType)}
-                  className="h-11 w-full rounded-2xl border border-slate-200 px-4 text-sm outline-none transition focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
-                >
-                  {EVENT_TYPES.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-
-              <Field label="Class">
-                <input
-                  value={className}
-                  onChange={(e) => setClassName(e.target.value)}
-                  placeholder="Class Name"
-                  className="h-11 w-full rounded-2xl border border-slate-200 px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
-                />
-              </Field>
-
-              <Field label="Title">
-                <input
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Event Title"
-                  className="h-11 w-full rounded-2xl border border-slate-200 px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
-                />
-              </Field>
-
-              <Field label="Date">
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="h-11 w-full rounded-2xl border border-slate-200 px-4 text-sm outline-none transition focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
-                />
-              </Field>
-
-              <Field label="Time">
-                <input
-                  type="time"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                  className="h-11 w-full rounded-2xl border border-slate-200 px-4 text-sm outline-none transition focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100"
-                />
-              </Field>
+            <div className="flex-1 overflow-y-auto px-5 pb-4">
+              <EventFormContent
+                values={values}
+                onChange={handleChange}
+                onOpenIconPicker={() => setIconPickerOpen(true)}
+              />
             </div>
 
-            <div className="grid grid-cols-1 gap-3 border-t border-slate-100 px-5 py-4 sm:grid-cols-2">
-              <button
-                type="button"
-                onClick={onClose}
-                className="h-11 rounded-2xl border border-slate-200 px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
-              >
-                Cancel
-              </button>
-
+            {/* Footer */}
+            <div className="flex items-center justify-end border-t border-slate-100 px-5 py-4">
               <button
                 type="submit"
-                className="h-11 rounded-2xl bg-[#00B96B] px-4 text-sm font-semibold text-white transition hover:opacity-95"
+                className="h-10 min-w-[80px] rounded-full bg-[#1363FF] px-6 text-sm font-semibold text-white transition hover:opacity-90"
               >
-                {isEditing ? "Save Changes" : "Add Event"}
+                {isEditing ? "Save" : "Add"}
               </button>
             </div>
           </form>
         </div>
       </div>
+
+      <IconPickerModal
+        isOpen={iconPickerOpen}
+        selectedIcon={values.icon}
+        onConfirm={(icon) => handleChange("icon", icon)}
+        onClose={() => setIconPickerOpen(false)}
+      />
     </div>,
     document.body,
-  );
-}
-
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <label className="block">
-      <div className="mb-2 text-sm font-medium text-slate-600">{label}</div>
-      {children}
-    </label>
   );
 }

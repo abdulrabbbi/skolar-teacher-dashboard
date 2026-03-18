@@ -26,10 +26,10 @@ export type StudentsTableProps = {
 
 type Filter = "all" | "onTrack" | "atRisk";
 
-const statusVariant: Record<StudentStatus, "success" | "danger"> = {
-  "On Track": "success",
-  "At Risk": "danger",
-};
+function statusVariant(status: StudentStatus, accuracy: number): "success" | "warning" {
+  if (status === "At Risk") return "warning";
+  return accuracy >= 75 ? "success" : "warning";
+}
 
 function clamp(n: number, min = 0, max = 100) {
   return Math.min(max, Math.max(min, n));
@@ -80,18 +80,18 @@ function BigMeter({ label, value }: { label: string; value: number }) {
   );
 }
 
-function StatusPill({ status }: { status: StudentStatus }) {
-  const isOnTrack = status === "On Track";
+function StatusPill({ status, accuracy }: { status: StudentStatus; accuracy: number }) {
+  const isGreenOnTrack = status === "On Track" && accuracy >= 75;
 
   return (
     <Badge
-      variant={statusVariant[status]}
+      variant={statusVariant(status, accuracy)}
       className="
         inline-flex items-center gap-1.5 whitespace-nowrap
         rounded-full px-2.5 py-1 text-xs font-medium
       "
     >
-      {isOnTrack ? (
+      {isGreenOnTrack ? (
         <CheckCircle2 className="h-3.5 w-3.5" />
       ) : (
         <AlertTriangle className="h-3.5 w-3.5" />
@@ -172,7 +172,7 @@ function StudentAnalyticsPanel({
                 </div>
 
                 <div className="mt-4 flex flex-wrap items-center gap-2">
-                  <StatusPill status={student.status} />
+                  <StatusPill status={student.status} accuracy={student.accuracy} />
                   <Badge variant="neutral" className="rounded-full px-2.5 py-1 text-xs">
                     {student.questions} questions answered
                   </Badge>
@@ -365,7 +365,7 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                   <SearchInput
                     placeholder="Search students..."
                     className="
-                      h-[48px] w-full rounded-[16px] border border-transparent
+                      h-[48px] w-[120px] rounded-[16px] border border-transparent
                       bg-[#F3F4F6] pl-14 pr-0 text-[15px] text-slate-700
                       shadow-none outline-none placeholder:text-[#8C93A8]
                       focus:border-[#D9DCE3] focus:bg-white focus:ring-0
@@ -446,15 +446,15 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                   </td>
 
                   <td className="whitespace-nowrap px-4 py-3">
-                    <StatusPill status={student.status} />
+                    <StatusPill status={student.status} accuracy={student.accuracy} />
                   </td>
 
                   <td className="whitespace-nowrap px-4 py-3">
                     <InlineMeter value={student.accuracy} />
                   </td>
 
-                  <td className="whitespace-nowrap px-4 py-3">
-                    <InlineMeter value={student.confidence} />
+                  <td className="whitespace-nowrap px-4 py-3 tabular-nums text-sm text-slate-700">
+                    {student.confidence}%
                   </td>
 
                   <td className="whitespace-nowrap px-4 py-3 tabular-nums text-sm text-slate-700">

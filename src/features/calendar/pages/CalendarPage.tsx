@@ -344,14 +344,16 @@ export default function CalendarPage() {
 
   const addEventInitialValues = useMemo<Partial<AddEventFormValues> | null>(() => {
     if (editingMonthEvent) {
+      const dateISO = resolveCalendarEventDateISO(editingMonthEvent, monthISO);
+      const timeVal = toTimeInputValue((editingMonthEvent as any).time) || "09:00";
       return {
         type: (editingMonthEvent as any).type as EventType,
         title: resolveCalendarEventTitle(
           editingMonthEvent,
           String((editingMonthEvent as any).type ?? "Event"),
         ),
-        date: resolveCalendarEventDateISO(editingMonthEvent, monthISO),
-        time: toTimeInputValue((editingMonthEvent as any).time),
+        startTime: `${dateISO}T${timeVal}`,
+        endTime: `${dateISO}T${timeVal}`,
         className: resolveCalendarEventClassName(editingMonthEvent),
       };
     }
@@ -360,8 +362,8 @@ export default function CalendarPage() {
       return {
         type: "Class",
         title: "",
-        date: selectedDateISO,
-        time: "",
+        startTime: `${selectedDateISO}T09:00`,
+        endTime: `${selectedDateISO}T10:00`,
         className: "",
       };
     }
@@ -498,9 +500,11 @@ export default function CalendarPage() {
   };
 
   const handleSubmitEvent = (values: AddEventFormValues) => {
-    const eventDate = fromISODate(values.date);
+    const dateStr = values.startTime ? values.startTime.split("T")[0] : toISODate(new Date());
+    const timeStr = values.startTime ? (values.startTime.split("T")[1]?.substring(0, 5) ?? "") : "";
+    const eventDate = fromISODate(dateStr);
     const eventTitle = values.title.trim() || values.type;
-    const displayTime = formatTime(values.time);
+    const displayTime = formatTime(timeStr);
 
     if (editingMonthEvent) {
       const eventId = String((editingMonthEvent as any).id ?? "");
@@ -514,7 +518,7 @@ export default function CalendarPage() {
             ...event,
             type: values.type,
             title: eventTitle,
-            dateISO: values.date,
+            dateISO: dateStr,
             ...(displayTime === "All Day" ? { time: undefined } : { time: displayTime }),
             ...(values.className ? { className: values.className } : {}),
           } as CalendarEvent;
@@ -534,7 +538,7 @@ export default function CalendarPage() {
                   time: `${formatMonthDay(eventDate)} - ${displayTime}`,
                   type: values.type,
                   className: values.className || undefined,
-                  dateISO: values.date,
+                  dateISO: dateStr,
                 }
               : item,
           ),
@@ -552,7 +556,7 @@ export default function CalendarPage() {
 
           return {
             ...cleaned,
-            [values.date]: [...(cleaned[values.date] ?? []), updatedWeeklyEvent],
+            [dateStr]: [...(cleaned[dateStr] ?? []), updatedWeeklyEvent],
           };
         });
       }
@@ -570,7 +574,7 @@ export default function CalendarPage() {
       ...prev,
       {
         id: `${baseId}-month`,
-        dateISO: values.date,
+        dateISO: dateStr,
         title: eventTitle,
         type: values.type,
         ...(displayTime === "All Day" ? {} : { time: displayTime }),
@@ -587,7 +591,7 @@ export default function CalendarPage() {
           time: `${formatMonthDay(eventDate)} - ${displayTime}`,
           type: values.type,
           className: values.className || undefined,
-          dateISO: values.date,
+          dateISO: dateStr,
         },
       ];
 
@@ -604,7 +608,7 @@ export default function CalendarPage() {
 
     setCustomWeeklyByDate((prev) => ({
       ...prev,
-      [values.date]: [...(prev[values.date] ?? []), weeklyEvent],
+      [dateStr]: [...(prev[dateStr] ?? []), weeklyEvent],
     }));
 
     setWeeklyCompletion((prev) => ({
