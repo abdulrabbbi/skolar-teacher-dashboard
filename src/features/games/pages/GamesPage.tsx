@@ -2,19 +2,21 @@ import { Link } from "react-router-dom";
 import { Bell, ChevronLeft, Sparkles, Trophy, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "../../../shared/lib/cn";
+import RiveMascot from "../../../shared/components/RiveMascot";
+import { useHeroParallax } from "../../../shared/hooks/useHeroParallax";
 
 export default function GamesPage() {
-  const scaryPng = new URL(
-    "../../../assets/images/scary.png",
-    import.meta.url,
-  ).toString();
+  const { stageX, stageY, stageRotate, mascotX, mascotY } = useHeroParallax();
 
   return (
     <div className="w-full min-h-[90vh]">
       <div className="relative min-h-[90vh] overflow-hidden rounded-[28px] border border-slate-200 bg-white">
-        <div
+        <motion.div
           className="relative min-h-[90vh] rounded-[28px]"
           style={{
+            x: stageX,
+            y: stageY,
+            rotate: stageRotate,
             background:
               "linear-gradient(135deg, #4cdc33 0%, #017517 55%, #035c07 100%)",
           }}
@@ -140,14 +142,18 @@ export default function GamesPage() {
 
               {/* RIGHT VISUAL - MOBILE */}
               <div className="relative mt-10 flex justify-center lg:hidden">
-                <motion.img
-                  src={scaryPng}
-                  alt="SKOLAR mascot"
-                  className="w-full max-w-[520px] select-none object-contain drop-shadow-[0_28px_65px_rgba(0,0,0,0.35)]"
-                  draggable={false}
-                  animate={{ y: [0, -8, 0], rotate: [0, 0.5, 0, -0.5, 0] }}
-                  transition={{ duration: 5.5, ease: "easeInOut", repeat: Infinity }}
-                />
+                <motion.div
+                  animate={{ y: [0, -12, 0], rotate: [-1, 1, -1] }}
+                  transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+                  style={{ x: mascotX, y: mascotY }}
+                  className="w-full max-w-[320px]"
+                >
+                  <RiveMascot
+                    src="/animations/octopus.riv"
+                    stateMachine="octopus"
+                    className="w-full aspect-square drop-shadow-[0_28px_65px_rgba(0,0,0,0.35)]"
+                  />
+                </motion.div>
               </div>
 
               {/* RIGHT VISUAL - DESKTOP CUSTOM POSITION */}
@@ -155,41 +161,30 @@ export default function GamesPage() {
                 className="pointer-events-none absolute right-0 top-0 hidden h-full lg:block"
                 style={{ width: "54%" }}
               >
-                {/* mascot */}
                 <div
                   className="absolute bottom-0 right-[-36px] flex h-full items-end"
-                  style={{
-                    width: "720px",
-                    maxWidth: "none",
-                  }}
+                  style={{ width: "720px", maxWidth: "none" }}
                 >
-                  <motion.img
-                    src={scaryPng}
-                    alt="SKOLAR mascot"
-                    draggable={false}
-                    className="block select-none object-contain drop-shadow-[0_34px_80px_rgba(0,0,0,0.34)]"
-                    style={{
-                      width: "720px",
-                      maxWidth: "none",
-                    }}
-                    animate={{
-                      y: [0, -14, 0],
-                      x: [0, -6, 0],
-                      rotate: [0, 0.8, 0, -0.8, 0],
-                    }}
-                    transition={{
-                      duration: 6.8,
-                      ease: "easeInOut",
-                      repeat: Infinity,
-                    }}
-                  />
+                  <motion.div
+                    animate={{ y: [0, -14, 0], rotate: [-1, 1, -1] }}
+                    transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+                    style={{ x: mascotX, y: mascotY }}
+                    className="pointer-events-auto"
+                  >
+                    <RiveMascot
+                      src="/animations/octopus.riv"
+                      stateMachine="octopus"
+                      className="drop-shadow-[0_34px_80px_rgba(0,0,0,0.34)]"
+                      style={{ width: "720px", height: "720px" }}
+                    />
+                  </motion.div>
                 </div>
               </div>
             </div>
 
             <div className="h-6" />
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
