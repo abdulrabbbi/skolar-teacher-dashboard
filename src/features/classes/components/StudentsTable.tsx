@@ -115,7 +115,11 @@ function StudentAnalyticsPanel({
   if (typeof document === "undefined" || !student) return null;
 
   const mastery =
-    student.accuracy >= 80 ? "Strong mastery" : student.accuracy >= 60 ? "Developing" : "Needs intervention";
+    student.accuracy >= 80
+      ? "Strong mastery"
+      : student.accuracy >= 60
+        ? "Developing"
+        : "Needs intervention";
 
   const confidenceLabel =
     student.confidence >= 80
@@ -245,7 +249,7 @@ function StudentAnalyticsPanel({
                     <div>
                       <h4 className="text-sm font-semibold text-slate-900">Class summary</h4>
                       <p className="text-xs text-slate-500">
-                        Quick snapshot of this learner's class performance
+                        Quick snapshot of this learner&apos;s class performance
                       </p>
                     </div>
                   </div>
@@ -349,31 +353,38 @@ export default function StudentsTable({ students }: StudentsTableProps) {
     <>
       <section className="w-full space-y-4">
         <Card className="w-full p-0">
-          <div className="flex flex-col gap-3 border-b border-slate-200 px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <h4 className="text-base font-semibold text-slate-900">Students</h4>
+          <div className="flex flex-col gap-3 border-b border-slate-200 px-5 py-4 xl:flex-row xl:items-center xl:justify-between">
+            <div className="shrink-0">
+              <h4 className="text-[18px] font-semibold text-slate-900">Students</h4>
             </div>
 
-            <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
-              <div className="relative w-full sm:w-[340px]">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                <SearchInput
-                  placeholder="Search students..."
-                  className="pl-9"
-                  value={query}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setQuery(e.target.value)
-                  }
-                />
+            <div className="flex w-full flex-col gap-3 xl:flex-row xl:items-center xl:justify-end">
+              <div className="w-full min-w-0 xl:flex-1">
+                <div className="relative w-full">
+                  <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-[#8C93A8]" />
+                  <SearchInput
+                    placeholder="Search students..."
+                    className="
+                      h-[48px] w-full rounded-[16px] border border-transparent
+                      bg-[#F3F4F6] pl-14 pr-0 text-[15px] text-slate-700
+                      shadow-none outline-none placeholder:text-[#8C93A8]
+                      focus:border-[#D9DCE3] focus:bg-white focus:ring-0
+                    "
+                    value={query}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setQuery(e.target.value)
+                    }
+                  />
+                </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-center gap-3 xl:flex-nowrap">
                 <Button
                   type="button"
                   size="sm"
                   variant={filter === "all" ? "primary" : "outline"}
                   onClick={() => setFilter("all")}
-                  className="whitespace-nowrap"
+                  className="h-[48px] whitespace-nowrap rounded-[14px] px-5 text-[15px]"
                 >
                   All Students
                 </Button>
@@ -383,7 +394,7 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                   size="sm"
                   variant={filter === "onTrack" ? "primary" : "outline"}
                   onClick={() => setFilter("onTrack")}
-                  className="whitespace-nowrap"
+                  className="h-[48px] whitespace-nowrap rounded-[14px] px-5 text-[15px]"
                 >
                   On Track
                 </Button>
@@ -393,7 +404,7 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                   size="sm"
                   variant={filter === "atRisk" ? "primary" : "outline"}
                   onClick={() => setFilter("atRisk")}
-                  className="whitespace-nowrap"
+                  className="h-[48px] whitespace-nowrap rounded-[14px] px-5 text-[15px]"
                 >
                   At Risk
                 </Button>
@@ -498,4 +509,3 @@ export default function StudentsTable({ students }: StudentsTableProps) {
     </>
   );
 }
-
