@@ -141,10 +141,61 @@ export const areaOfStudyItems: AreaOfStudyItem[] = [
   },
 ];
 
+export const chemistryAreaOfStudyItems: AreaOfStudyItem[] = [
+  {
+    id: 'chemistry-unit-1-aos-1',
+    unit: 'Unit 1',
+    title: 'Area of Study 1 - Chemical foundations',
+    description: 'Moles, equations and quantitative chemistry',
+  },
+  {
+    id: 'chemistry-unit-1-aos-2',
+    unit: 'Unit 1',
+    title: 'Area of Study 2 - Structure and bonding',
+    description: 'Models of bonding and properties of materials',
+  },
+  {
+    id: 'chemistry-unit-2-aos-1',
+    unit: 'Unit 2',
+    title: 'Area of Study 1 - Water as a reaction medium',
+    description: 'Solubility, concentration and aqueous reactions',
+  },
+  {
+    id: 'chemistry-unit-2-aos-2',
+    unit: 'Unit 2',
+    title: 'Area of Study 2 - Practical and analytical techniques',
+    description: 'Volumetric analysis and data interpretation',
+  },
+  {
+    id: 'chemistry-unit-3-aos-1',
+    unit: 'Unit 3',
+    title: 'Area of Study 1 - Rates and equilibrium',
+    description: 'Reaction rates, yield and dynamic equilibrium',
+  },
+  {
+    id: 'chemistry-unit-3-aos-2',
+    unit: 'Unit 3',
+    title: 'Area of Study 2 - Electrochemistry',
+    description: 'Redox processes, galvanic cells and energy',
+  },
+  {
+    id: 'chemistry-unit-4-aos-1',
+    unit: 'Unit 4',
+    title: 'Area of Study 1 - Organic reaction pathways',
+    description: 'Functional groups, mechanisms and synthesis',
+  },
+  {
+    id: 'chemistry-unit-4-aos-2',
+    unit: 'Unit 4',
+    title: 'Area of Study 2 - Spectroscopy and analysis',
+    description: 'Structure elucidation using analytical techniques',
+  },
+];
+
 export const subjectAreas: Record<string, AreaOfStudyItem[]> = {
   methods: areaOfStudyItems,
   biology: areaOfStudyItems,
-  chemistry: areaOfStudyItems,
+  chemistry: chemistryAreaOfStudyItems,
   specialist: areaOfStudyItems,
   english: areaOfStudyItems,
 };

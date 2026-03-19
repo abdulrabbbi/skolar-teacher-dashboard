@@ -57,6 +57,86 @@ export const outcomes: OutcomeItem[] = [
     label: "Apply probability distributions to practical contexts",
     areaId: "methods-unit-4-aos-2",
   },
+  {
+    id: "chem-outcome-u1-aos1-1",
+    label: "Explain the mole concept and calculate chemical amount",
+    areaId: "chemistry-unit-1-aos-1",
+  },
+  {
+    id: "chem-outcome-u1-aos1-2",
+    label: "Balance equations and apply stoichiometry to reactions",
+    areaId: "chemistry-unit-1-aos-1",
+  },
+  {
+    id: "chem-outcome-u1-aos2-1",
+    label: "Compare ionic, covalent and metallic bonding models",
+    areaId: "chemistry-unit-1-aos-2",
+  },
+  {
+    id: "chem-outcome-u1-aos2-2",
+    label: "Relate bonding and structure to material properties",
+    areaId: "chemistry-unit-1-aos-2",
+  },
+  {
+    id: "chem-outcome-u2-aos1-1",
+    label: "Describe solubility and precipitation in aqueous systems",
+    areaId: "chemistry-unit-2-aos-1",
+  },
+  {
+    id: "chem-outcome-u2-aos1-2",
+    label: "Use concentration relationships in solution chemistry",
+    areaId: "chemistry-unit-2-aos-1",
+  },
+  {
+    id: "chem-outcome-u2-aos2-1",
+    label: "Apply titration principles to determine unknown concentration",
+    areaId: "chemistry-unit-2-aos-2",
+  },
+  {
+    id: "chem-outcome-u2-aos2-2",
+    label: "Evaluate practical data for accuracy, precision and validity",
+    areaId: "chemistry-unit-2-aos-2",
+  },
+  {
+    id: "chem-outcome-u3-aos1-1",
+    label: "Analyse factors affecting reaction rate and yield",
+    areaId: "chemistry-unit-3-aos-1",
+  },
+  {
+    id: "chem-outcome-u3-aos1-2",
+    label: "Interpret equilibrium systems using qualitative reasoning",
+    areaId: "chemistry-unit-3-aos-1",
+  },
+  {
+    id: "chem-outcome-u3-aos2-1",
+    label: "Identify redox processes and assign oxidation numbers",
+    areaId: "chemistry-unit-3-aos-2",
+  },
+  {
+    id: "chem-outcome-u3-aos2-2",
+    label: "Explain how electrochemical cells convert chemical to electrical energy",
+    areaId: "chemistry-unit-3-aos-2",
+  },
+  {
+    id: "chem-outcome-u4-aos1-1",
+    label: "Classify organic compounds by functional group and reactivity",
+    areaId: "chemistry-unit-4-aos-1",
+  },
+  {
+    id: "chem-outcome-u4-aos1-2",
+    label: "Propose multi-step syntheses using reaction pathways",
+    areaId: "chemistry-unit-4-aos-1",
+  },
+  {
+    id: "chem-outcome-u4-aos2-1",
+    label: "Interpret IR and NMR features to infer structure",
+    areaId: "chemistry-unit-4-aos-2",
+  },
+  {
+    id: "chem-outcome-u4-aos2-2",
+    label: "Use analytical evidence to justify structure identification",
+    areaId: "chemistry-unit-4-aos-2",
+  },
 ];
 
 export const keyKnowledge: KnowledgeItem[] = [
@@ -100,6 +180,86 @@ export const keyKnowledge: KnowledgeItem[] = [
     label: "Sampling methods and statistical inference",
     areaId: "methods-unit-4-aos-2",
   },
+  {
+    id: "chem-knowledge-u1-aos1-1",
+    label: "Molar mass, Avogadro's constant and the mole relationship",
+    areaId: "chemistry-unit-1-aos-1",
+  },
+  {
+    id: "chem-knowledge-u1-aos1-2",
+    label: "Stoichiometric coefficients and conservation of mass",
+    areaId: "chemistry-unit-1-aos-1",
+  },
+  {
+    id: "chem-knowledge-u1-aos2-1",
+    label: "Ionic lattices, covalent molecules and metallic bonding",
+    areaId: "chemistry-unit-1-aos-2",
+  },
+  {
+    id: "chem-knowledge-u1-aos2-2",
+    label: "Polarity, intermolecular forces and physical properties",
+    areaId: "chemistry-unit-1-aos-2",
+  },
+  {
+    id: "chem-knowledge-u2-aos1-1",
+    label: "Solution concentration measures and dilution calculations",
+    areaId: "chemistry-unit-2-aos-1",
+  },
+  {
+    id: "chem-knowledge-u2-aos1-2",
+    label: "Precipitation and net ionic equations in aqueous reactions",
+    areaId: "chemistry-unit-2-aos-1",
+  },
+  {
+    id: "chem-knowledge-u2-aos2-1",
+    label: "Standard solutions, indicators and titration curves",
+    areaId: "chemistry-unit-2-aos-2",
+  },
+  {
+    id: "chem-knowledge-u2-aos2-2",
+    label: "Uncertainty, significant figures and evaluating experimental error",
+    areaId: "chemistry-unit-2-aos-2",
+  },
+  {
+    id: "chem-knowledge-u3-aos1-1",
+    label: "Collision theory, catalysts and energy profile diagrams",
+    areaId: "chemistry-unit-3-aos-1",
+  },
+  {
+    id: "chem-knowledge-u3-aos1-2",
+    label: "Dynamic equilibrium and qualitative Le Châtelier responses",
+    areaId: "chemistry-unit-3-aos-1",
+  },
+  {
+    id: "chem-knowledge-u3-aos2-1",
+    label: "Oxidation states, half-equations and redox balancing",
+    areaId: "chemistry-unit-3-aos-2",
+  },
+  {
+    id: "chem-knowledge-u3-aos2-2",
+    label: "Galvanic cell components and direction of electron flow",
+    areaId: "chemistry-unit-3-aos-2",
+  },
+  {
+    id: "chem-knowledge-u4-aos1-1",
+    label: "Functional groups, nomenclature and reaction types",
+    areaId: "chemistry-unit-4-aos-1",
+  },
+  {
+    id: "chem-knowledge-u4-aos1-2",
+    label: "Reaction pathways and planning a synthesis sequence",
+    areaId: "chemistry-unit-4-aos-1",
+  },
+  {
+    id: "chem-knowledge-u4-aos2-1",
+    label: "IR absorption bands and proton environments in 1H NMR",
+    areaId: "chemistry-unit-4-aos-2",
+  },
+  {
+    id: "chem-knowledge-u4-aos2-2",
+    label: "Using multiple techniques to confirm identity and purity",
+    areaId: "chemistry-unit-4-aos-2",
+  },
 ];
 
 export const keySkills: SkillItem[] = [
@@ -142,6 +302,86 @@ export const keySkills: SkillItem[] = [
     id: "skill-u4-aos2-2",
     label: "Interpret statistical results in context",
     areaId: "methods-unit-4-aos-2",
+  },
+  {
+    id: "chem-skill-u1-aos1-1",
+    label: "Perform mole and mass calculations from chemical equations",
+    areaId: "chemistry-unit-1-aos-1",
+  },
+  {
+    id: "chem-skill-u1-aos1-2",
+    label: "Balance equations and identify limiting reagents",
+    areaId: "chemistry-unit-1-aos-1",
+  },
+  {
+    id: "chem-skill-u1-aos2-1",
+    label: "Use bonding models to predict structure and properties",
+    areaId: "chemistry-unit-1-aos-2",
+  },
+  {
+    id: "chem-skill-u1-aos2-2",
+    label: "Interpret diagrams of lattices and molecular structures",
+    areaId: "chemistry-unit-1-aos-2",
+  },
+  {
+    id: "chem-skill-u2-aos1-1",
+    label: "Calculate solution concentrations and perform dilutions",
+    areaId: "chemistry-unit-2-aos-1",
+  },
+  {
+    id: "chem-skill-u2-aos1-2",
+    label: "Write net ionic equations for precipitation reactions",
+    areaId: "chemistry-unit-2-aos-1",
+  },
+  {
+    id: "chem-skill-u2-aos2-1",
+    label: "Process titration data to determine an unknown concentration",
+    areaId: "chemistry-unit-2-aos-2",
+  },
+  {
+    id: "chem-skill-u2-aos2-2",
+    label: "Assess data quality using uncertainty and error analysis",
+    areaId: "chemistry-unit-2-aos-2",
+  },
+  {
+    id: "chem-skill-u3-aos1-1",
+    label: "Use rate data to compare conditions and infer trends",
+    areaId: "chemistry-unit-3-aos-1",
+  },
+  {
+    id: "chem-skill-u3-aos1-2",
+    label: "Predict equilibrium shifts from system changes",
+    areaId: "chemistry-unit-3-aos-1",
+  },
+  {
+    id: "chem-skill-u3-aos2-1",
+    label: "Balance redox equations using half-equation method",
+    areaId: "chemistry-unit-3-aos-2",
+  },
+  {
+    id: "chem-skill-u3-aos2-2",
+    label: "Identify anode/cathode and electron flow in cells",
+    areaId: "chemistry-unit-3-aos-2",
+  },
+  {
+    id: "chem-skill-u4-aos1-1",
+    label: "Map functional group interconversions in a synthesis plan",
+    areaId: "chemistry-unit-4-aos-1",
+  },
+  {
+    id: "chem-skill-u4-aos1-2",
+    label: "Draw structures and name products using conventions",
+    areaId: "chemistry-unit-4-aos-1",
+  },
+  {
+    id: "chem-skill-u4-aos2-1",
+    label: "Match IR and NMR features to structural fragments",
+    areaId: "chemistry-unit-4-aos-2",
+  },
+  {
+    id: "chem-skill-u4-aos2-2",
+    label: "Combine evidence from multiple spectra to justify a structure",
+    areaId: "chemistry-unit-4-aos-2",
   },
 ];
 

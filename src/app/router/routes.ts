@@ -192,6 +192,8 @@ export const ROUTES = {
   liveQuizSession: (id: string) => buildTeacherRoute(`live-quiz/session/${id}`),
   liveQuizSessionAnalytics: (id: string) =>
     buildTeacherRoute(`live-quiz/session/${id}/analytics`),
+  liveQuizSessionMisconceptions: (id: string) =>
+    buildTeacherRoute(`live-quiz/session/${id}/misconceptions`),
   contentLibrary: buildTeacherRoute("content-library"),
   curriculum: buildTeacherRoute("curriculum"),
   settings: buildTeacherRoute("settings"),

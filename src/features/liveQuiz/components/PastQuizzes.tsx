@@ -17,6 +17,7 @@ import { History } from "lucide-react";
 
 export type PastQuizzesProps = {
   quizzes: PastQuiz[];
+  onRelaunch?: (quizId: string) => void;
 };
 
 const difficultyVariant: Record<
@@ -29,7 +30,7 @@ const difficultyVariant: Record<
   Mixed: "neutral",
 };
 
-export default function PastQuizzes({ quizzes }: PastQuizzesProps) {
+export default function PastQuizzes({ quizzes, onRelaunch }: PastQuizzesProps) {
   return (
     <section>
       <Card className="p-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
@@ -138,6 +139,8 @@ export default function PastQuizzes({ quizzes }: PastQuizzesProps) {
                     variant="success"
                     size="sm"
                     className="flex items-center gap-1 transition-all duration-200 hover:-translate-y-0.5"
+                    onClick={() => onRelaunch?.(quiz.id)}
+                    disabled={!onRelaunch}
                   >
                     <Play className="h-4 w-4" />
                     Relaunch

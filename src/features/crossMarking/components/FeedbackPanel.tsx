@@ -14,11 +14,11 @@ export default function FeedbackPanel({
   studentName,
   submissionId,
 }: FeedbackPanelProps) {
-  const displayStudentName = studentName?.trim() || "John Doe";
+  const displayStudentName = studentName?.trim() || "";
 
   const storageKey = useMemo(
-    () => `crossMarking:feedbackDraft:${submissionId ?? displayStudentName}`,
-    [displayStudentName, submissionId],
+    () => `crossMarking:feedbackDraft:${submissionId ?? "unknown"}`,
+    [submissionId],
   );
 
   const [feedback, setFeedback] = useState("");
@@ -57,9 +57,11 @@ export default function FeedbackPanel({
               Feedback to Student
             </h3>
           </div>
-          <p className="mt-1 text-sm font-medium text-slate-700">
-            Student: {displayStudentName}
-          </p>
+          {displayStudentName ? (
+            <p className="mt-1 text-sm font-medium text-slate-700">
+              Student: {displayStudentName}
+            </p>
+          ) : null}
 
           <p className="text-[16px] leading-8 text-[#6B6F80]">
             Provide personalised comments and guidance

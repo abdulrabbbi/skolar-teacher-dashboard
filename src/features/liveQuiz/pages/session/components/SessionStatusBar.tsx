@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, type ReactNode } from 'react';
-import { ArrowRight, Clock, Pause, Users, XCircle } from 'lucide-react';
+import { Clock, Pause, Users, XCircle } from 'lucide-react';
 import Card from '../../../../../shared/components/ui/Card';
 import Button from '../../../../../shared/components/ui/Button';
 import { cn } from '../../../../../shared/lib/cn';
@@ -39,6 +39,20 @@ function StatBlock({
         </p>
       </div>
     </div>
+  );
+}
+
+function NextQuestionIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <rect x="3" y="4" width="2.5" height="16" rx="1" />
+      <path d="M10 6.2v11.6c0 .9 1 1.5 1.8 1l9.4-5.8c.8-.5.8-1.6 0-2.1l-9.4-5.8c-.8-.5-1.8.1-1.8 1.1z" />
+    </svg>
   );
 }
 
@@ -161,7 +175,7 @@ export default function SessionStatusBar({
             onClick={handleNextQuestion}
             disabled={!canGoToNext}
           >
-            <ArrowRight className="h-4 w-4" />
+            <NextQuestionIcon className="h-4 w-4" />
             Next Question
           </Button>
 

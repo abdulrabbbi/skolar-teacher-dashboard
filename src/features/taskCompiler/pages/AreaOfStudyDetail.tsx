@@ -11,187 +11,13 @@ import {
 } from "../utils/taskCompilerSelectors";
 import { getAreaDetailContent } from "../data/areaOfStudyDetail.mock";
 
-type Difficulty = "Easy" | "Medium" | "Hard" | "Mixed";
-
-function toggleId(list: string[], id: string) {
-  return list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
-}
-
-function escapeHtml(value: string) {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-function CountPill({ value }: { value: number }) {
-  return (
-    <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-[#00B96B1A] px-2 text-xs font-semibold text-[#00B96B]">
-      {value}
-    </span>
-  );
-}
-
-function SelectableListCard({
-  title,
-  subtitle,
-  items,
-  selected,
-  onToggle,
-}: {
-  title: string;
-  subtitle: string;
-  items: { id: string; label: string }[];
-  selected: string[];
-  onToggle: (id: string) => void;
-}) {
-  return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5">
-      <div className="space-y-1">
-        <p className="text-sm font-semibold text-slate-900">{title}</p>
-        <p className="text-sm text-slate-500">{subtitle}</p>
-      </div>
-
-      <div className="mt-4 space-y-3">
-        {items.map((it) => {
-          const checked = selected.includes(it.id);
-          return (
-            <label key={it.id} className="flex items-start gap-3">
-              <input
-                type="checkbox"
-                checked={checked}
-                onChange={() => onToggle(it.id)}
-                className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#00B96B] accent-[#00B96B]"
-              />
-              <span className="text-sm text-slate-700">{it.label}</span>
-            </label>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function ContentSummaryCard({
-  outcomes,
-  knowledge,
-  skills,
-}: {
-  outcomes: number;
-  knowledge: number;
-  skills: number;
-}) {
-  return (
-    <div className="rounded-2xl border border-[#00B96B] bg-[#00B96B1A] p-5">
-      <p className="text-sm font-semibold text-slate-900">Content Summary</p>
-
-      <div className="mt-4 space-y-3 text-sm text-slate-600">
-        <div className="flex items-center justify-between">
-          <span>Outcomes selected:</span>
-          <CountPill value={outcomes} />
-        </div>
-        <div className="flex items-center justify-between">
-          <span>Key knowledge selected:</span>
-          <CountPill value={knowledge} />
-        </div>
-        <div className="flex items-center justify-between">
-          <span>Key skills selected:</span>
-          <CountPill value={skills} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function TaskSettingsCard({
-  duration,
-  setDuration,
-  difficulty,
-  setDifficulty,
-  includeMarkingGuide,
-  setIncludeMarkingGuide,
-}: {
-  duration: string;
-  setDuration: (v: string) => void;
-  difficulty: Difficulty;
-  setDifficulty: (v: Difficulty) => void;
-  includeMarkingGuide: boolean;
-  setIncludeMarkingGuide: (v: boolean) => void;
-}) {
-  const difficulties: Difficulty[] = ["Easy", "Medium", "Hard", "Mixed"];
-
-  return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5">
-      <div className="space-y-1">
-        <p className="text-sm font-semibold text-slate-900">Task Settings</p>
-        <p className="text-sm text-slate-500">Configure your task parameters</p>
-      </div>
-
-      <div className="mt-4 space-y-4">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
-            Target Duration
-          </p>
-          <div className="mt-2">
-            <select
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-              className="w-full rounded-xl bg-gray-100 px-3 py-2 text-sm text-black"
-            >
-              <option value="15 minutes">15 minutes</option>
-              <option value="30 minutes">30 minutes</option>
-              <option value="45 minutes">45 minutes</option>
-              <option value="60 minutes">60 minutes</option>
-              <option value="90 minutes">90 minutes</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
-            Difficulty Level
-          </p>
-
-          <div className="mt-2 grid grid-cols-2 gap-2">
-            {difficulties.map((d) => {
-              const active = difficulty === d;
-              return (
-                <button
-                  key={d}
-                  type="button"
-                  onClick={() => setDifficulty(d)}
-                  className={cn(
-                    "rounded-xl border px-3 py-2 text-sm font-medium transition",
-                    active
-                      ? "border-[#00B96B] bg-[#00B96B] text-white"
-                      : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50",
-                  )}
-                >
-                  {d}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <label className="flex items-start gap-3">
-          <input
-            type="checkbox"
-            checked={includeMarkingGuide}
-            onChange={(e) => setIncludeMarkingGuide(e.target.checked)}
-            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#00B96B] accent-[#00B96B]"
-          />
-          <div>
-            <p className="text-sm font-medium text-slate-900">Include Marking Guide</p>
-            <p className="text-xs text-slate-500">Generate detailed marking criteria</p>
-          </div>
-        </label>
-      </div>
-    </div>
-  );
-}
+import AreaPickerModal from "./areaOfStudyDetail/AreaPickerModal";
+import ContentSummaryCard from "./areaOfStudyDetail/ContentSummaryCard";
+import { printSelectedContentTask } from "./areaOfStudyDetail/printSelectedContentTask";
+import SelectableListCard from "./areaOfStudyDetail/SelectableListCard";
+import TaskSettingsCard from "./areaOfStudyDetail/TaskSettingsCard";
+import type { Difficulty } from "./areaOfStudyDetail/types";
+import { isNonEmptyString, toggleId } from "./areaOfStudyDetail/utils";
 
 export default function AreaOfStudyDetail() {
   const navigate = useNavigate();
@@ -201,6 +27,11 @@ export default function AreaOfStudyDetail() {
   const subject = getSubjectById(subjectId);
   const area = subject ? getAreaById(subject.id, areaId) : null;
 
+  const areasForSubject = useMemo(() => {
+    if (!subject) return [];
+    return getAreasForSubject(subject.id);
+  }, [subject]);
+
   const includedAreaIds = useMemo(() => {
     const raw = searchParams.get("areas") ?? "";
     const fromQuery = raw
@@ -208,7 +39,7 @@ export default function AreaOfStudyDetail() {
       .map((value) => value.trim())
       .filter(Boolean);
 
-    const ids = [...fromQuery, areaId].filter(Boolean);
+    const ids = [...fromQuery, areaId].filter(isNonEmptyString);
     return Array.from(new Set(ids));
   }, [areaId, searchParams]);
 
@@ -219,17 +50,56 @@ export default function AreaOfStudyDetail() {
       .filter((value) => value != null);
   }, [includedAreaIds, subject]);
 
+  const pickerAreas = useMemo(() => {
+    if (!subject) return [];
+
+    const byId = new Map<string, (typeof areasForSubject)[number]>();
+    for (const item of includedAreas) byId.set(item.id, item);
+    for (const item of areasForSubject) byId.set(item.id, item);
+    return [...byId.values()];
+  }, [areasForSubject, includedAreas, subject]);
+
+  const [isAreaPickerOpen, setIsAreaPickerOpen] = useState(false);
+  const [draftAreaIds, setDraftAreaIds] = useState<string[]>([]);
+
+  const handleApplyAreas = () => {
+    if (!subjectId || !areaId) return;
+
+    const nextIds = Array.from(
+      new Set([...draftAreaIds, areaId].filter(isNonEmptyString)),
+    );
+    const otherIds = nextIds.filter((id) => id !== areaId);
+
+    const params = new URLSearchParams(searchParams);
+    params.delete("multi");
+
+    if (otherIds.length > 0) {
+      params.set("areas", otherIds.join(","));
+    } else {
+      params.delete("areas");
+    }
+
+    const qs = params.toString();
+    navigate(
+      `/teacher/task-compiler/by-subject/${subjectId}/areas/${areaId}${qs ? `?${qs}` : ""}`,
+      { replace: true },
+    );
+
+    setSelectedOutcomes([]);
+    setSelectedKnowledge([]);
+    setSelectedSkills([]);
+    setIsAreaPickerOpen(false);
+  };
+
   const areaMetaById = useMemo(() => {
-    if (!subject) return {};
-    const list = getAreasForSubject(subject.id);
-    return list.reduce<Record<string, { title: string; unit: string }>>(
+    return pickerAreas.reduce<Record<string, { title: string; unit: string }>>(
       (map, item) => {
         map[item.id] = { title: item.title, unit: item.unit };
         return map;
       },
       {},
     );
-  }, [subject]);
+  }, [pickerAreas]);
 
   const content = useMemo(() => {
     const many = includedAreas.length > 1;
@@ -284,6 +154,7 @@ export default function AreaOfStudyDetail() {
     selectedOutcomes.length + selectedKnowledge.length + selectedSkills.length;
 
   const canGenerate = totalSelected > 0;
+  const canContinue = canGenerate;
 
   const handleGeneratePrintableTask = () => {
     if (!canGenerate) {
@@ -300,91 +171,38 @@ export default function AreaOfStudyDetail() {
       .filter((item) => selectedSkills.includes(item.id))
       .map((item) => item.label);
 
-    const toListItems = (items: string[]) =>
-      items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+    printSelectedContentTask({
+      subjectTitle: subject?.title ?? "Task Compiler",
+      areaTitle: area?.title ?? "Printable Task",
+      areaUnitLabel: area?.unit ?? "Area",
+      includedAreas: includedAreas.map((a) => ({ unit: a.unit, title: a.title })),
+      duration,
+      difficulty,
+      includeMarkingGuide,
+      selectedOutcomeLabels,
+      selectedKnowledgeLabels,
+      selectedSkillLabels,
+    });
+  };
 
-    const printWindow = window.open("", "_blank", "noopener,noreferrer");
-    if (!printWindow) {
-      return;
-    }
+  const handleContinueToQuestionTypes = () => {
+    if (!canContinue || !subjectId || !areaId) return;
 
-    const titleText =
-      includedAreas.length > 1
-        ? `${subject?.title ?? "Task Compiler"} — Multi-area task`
-        : area?.title ?? "Printable Task";
-
-    const printableMarkup = `<!doctype html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>${escapeHtml(titleText)}</title>
-    <style>
-      body { font-family: Arial, sans-serif; margin: 32px; color: #0f172a; }
-      h1 { margin: 0 0 8px; font-size: 24px; }
-      h2 { margin: 24px 0 10px; font-size: 18px; }
-      p { margin: 0 0 8px; color: #334155; }
-      ul { margin: 0; padding-left: 20px; }
-      li { margin: 6px 0; line-height: 1.4; }
-      .meta { margin-top: 12px; display: grid; gap: 6px; }
-      .guide { margin-top: 24px; border-top: 1px solid #cbd5e1; padding-top: 16px; }
-      .line { border-bottom: 1px solid #cbd5e1; height: 28px; margin: 8px 0; }
-      @media print { body { margin: 14mm; } }
-    </style>
-  </head>
-  <body>
-    <h1>${escapeHtml(titleText)}</h1>
-    <p>${escapeHtml(subject?.title ?? "Task Compiler")}</p>
-    ${
-      includedAreas.length > 1
-        ? `<p><strong>Areas of Study:</strong> ${escapeHtml(
-            includedAreas.map((a) => `${a.unit} — ${a.title}`).join(", "),
-          )}</p>`
-        : `<p>${escapeHtml(area?.unit ?? "Area")}</p>`
-    }
-
-    <div class="meta">
-      <p><strong>Target Duration:</strong> ${escapeHtml(duration)}</p>
-      <p><strong>Difficulty:</strong> ${escapeHtml(difficulty)}</p>
-      <p><strong>Include Marking Guide:</strong> ${
-        includeMarkingGuide ? "Yes" : "No"
-      }</p>
-    </div>
-
-    ${
-      selectedOutcomeLabels.length > 0
-        ? `<h2>Outcomes</h2><ul>${toListItems(selectedOutcomeLabels)}</ul>`
-        : ""
-    }
-    ${
-      selectedKnowledgeLabels.length > 0
-        ? `<h2>Key Knowledge</h2><ul>${toListItems(selectedKnowledgeLabels)}</ul>`
-        : ""
-    }
-    ${
-      selectedSkillLabels.length > 0
-        ? `<h2>Key Skills</h2><ul>${toListItems(selectedSkillLabels)}</ul>`
-        : ""
-    }
-
-    ${
-      includeMarkingGuide
-        ? `<div class="guide">
-            <h2>Marking Guide</h2>
-            <p>Use the lines below for criteria and scoring notes.</p>
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-          </div>`
-        : ""
-    }
-  </body>
-</html>`;
-
-    printWindow.document.open();
-    printWindow.document.write(printableMarkup);
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
+    const qs = searchParams.toString();
+    navigate(
+      `/teacher/task-compiler/by-subject/${subjectId}/areas/${areaId}/question-types${qs ? `?${qs}` : ""}`,
+      {
+        state: {
+          includedAreaIds,
+          selectedOutcomes,
+          selectedKnowledge,
+          selectedSkills,
+          duration,
+          difficulty,
+          includeMarkingGuide,
+        },
+      },
+    );
   };
 
   return (
@@ -398,6 +216,16 @@ export default function AreaOfStudyDetail() {
         <ArrowLeft className="h-4 w-4" />
         Back to Areas
       </button>
+
+      <AreaPickerModal
+        open={isAreaPickerOpen}
+        areas={pickerAreas}
+        currentAreaId={areaId}
+        draftAreaIds={draftAreaIds}
+        setDraftAreaIds={setDraftAreaIds}
+        onClose={() => setIsAreaPickerOpen(false)}
+        onApply={handleApplyAreas}
+      />
 
       {subject && area ? (
         <>
@@ -480,12 +308,8 @@ export default function AreaOfStudyDetail() {
                 <button
                   type="button"
                   onClick={() => {
-                    const params = new URLSearchParams();
-                    params.set("multi", "1");
-                    params.set("areas", includedAreaIds.join(","));
-                    navigate(
-                      `/teacher/task-compiler/by-subject/${subject.id}?${params.toString()}`,
-                    );
+                    setDraftAreaIds(includedAreaIds);
+                    setIsAreaPickerOpen(true);
                   }}
                   className="
                     mb-3 w-full rounded-xl border border-slate-200 bg-white
@@ -508,6 +332,20 @@ export default function AreaOfStudyDetail() {
                   )}
                 >
                   Generate Printable Task
+                </button>
+
+                <button
+                  type="button"
+                  disabled={!canContinue}
+                  onClick={handleContinueToQuestionTypes}
+                  className={cn(
+                    "mt-3 w-full rounded-xl px-4 py-3 text-sm font-semibold transition",
+                    canContinue
+                      ? "bg-blue-600 text-white hover:bg-blue-700"
+                      : "bg-blue-600/60 text-white cursor-not-allowed",
+                  )}
+                >
+                  Next: Choose Question Types
                 </button>
 
                 <p className="mt-3 text-center text-xs text-slate-400">

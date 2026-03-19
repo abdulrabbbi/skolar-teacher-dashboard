@@ -22,6 +22,7 @@ import GamesPage from '../../features/games/pages/GamesPage';
 import LiveQuizPage from '../../features/liveQuiz/pages/LiveQuizPage';
 import LiveQuizSessionPage from '../../features/liveQuiz/pages/session/LiveQuizSessionPage';
 import LiveQuizSessionAnalyticsPage from '../../features/liveQuiz/pages/session/LiveQuizSessionAnalyticsPage';
+import LiveQuizMisconceptionsAnalyticsPage from '../../features/liveQuiz/pages/session/LiveQuizMisconceptionsAnalyticsPage';
 import SettingsPage from '../../features/settings/pages/SettingsPage';
 import AreaOfStudyDetail from '../../features/taskCompiler/pages/AreaOfStudyDetail';
 import GenerateQuickContentPage from '../../features/taskCompiler/pages/GenerateQuickContentPage';
@@ -29,9 +30,13 @@ import SubjectAreasPage from '../../features/taskCompiler/pages/SubjectAreasPage
 import SubjectSelectPage from '../../features/taskCompiler/pages/SubjectSelectPage';
 import TaskCompilerPage from '../../features/taskCompiler/pages/TaskCompilerPage';
 import TaskHistoryPage from '../../features/taskCompiler/pages/TaskHistoryPage';
+import QuestionTypesPage from '../../features/taskCompiler/pages/QuestionTypesPage';
 import ContentLibraryPage from '../../features/contentLibrary/pages/ContentLibraryPage';
 import CurriculumPage from '../../features/curriculum/pages/CurriculumPage';
 import CurriculumDetailPage from '../../features/curriculum/pages/CurriculumDetailPage';
+import StudentLayout from '../layouts/StudentLayout';
+import StudentLiveQuizJoinPage from '../../features/liveQuiz/pages/student/StudentLiveQuizJoinPage';
+import StudentLiveQuizSessionPage from '../../features/liveQuiz/pages/student/StudentLiveQuizSessionPage';
 
 export default function AppRouter() {
   return (
@@ -82,6 +87,10 @@ export default function AppRouter() {
               path="by-subject/:subjectId/areas/:areaId"
               element={<AreaOfStudyDetail />}
             />
+            <Route
+              path="by-subject/:subjectId/areas/:areaId/question-types"
+              element={<QuestionTypesPage />}
+            />
             <Route path="quick-content" element={<GenerateQuickContentPage />} />
             <Route path="history" element={<TaskHistoryPage />} />
           </Route>
@@ -94,12 +103,24 @@ export default function AppRouter() {
             path="live-quiz/session/:quizId/analytics"
             element={<LiveQuizSessionAnalyticsPage />}
           />
+          <Route
+            path="live-quiz/session/:quizId/misconceptions"
+            element={<LiveQuizMisconceptionsAnalyticsPage />}
+          />
 
           <Route path="content-library" element={<ContentLibraryPage />} />
           <Route path="curriculum" element={<CurriculumPage />} />
           <Route
             path="curriculum/:subjectId/:unitId"
             element={<CurriculumDetailPage />}
+          />
+        </Route>
+
+        <Route path="/student" element={<StudentLayout />}>
+          <Route path="live-quiz" element={<StudentLiveQuizJoinPage />} />
+          <Route
+            path="live-quiz/session/:joinCode"
+            element={<StudentLiveQuizSessionPage />}
           />
         </Route>
 

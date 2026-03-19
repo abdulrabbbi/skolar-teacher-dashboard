@@ -19,18 +19,32 @@ import {
   type SubmissionRow,
 } from "../data/crossMarking.mock";
 
+const BLIND_MODE_STORAGE_KEY = "crossMarking:blindMode";
+
 export default function CrossMarkingPage() {
   const navigate = useNavigate();
   const [isAddToCrossMarkOpen, setIsAddToCrossMarkOpen] = useState(false);
 
   const [rows, setRows] = useState<SubmissionRow[]>(submissions);
 
-  const [blindMode, setBlindMode] = useState(false);
+  const [blindMode, setBlindMode] = useState(() => {
+    try {
+      return localStorage.getItem(BLIND_MODE_STORAGE_KEY) === "1";
+    } catch {
+      return false;
+    }
+  });
   const [blindIds, setBlindIds] = useState<string[] | null>(null);
 
   const handleToggleBlindMode = () => {
     setBlindMode((previous) => {
       const next = !previous;
+
+      try {
+        localStorage.setItem(BLIND_MODE_STORAGE_KEY, next ? "1" : "0");
+      } catch {
+        // ignore
+      }
 
       if (next) {
         const ids = rows.map((row) => row.id);
@@ -81,7 +95,14 @@ export default function CrossMarkingPage() {
   };
 
   const handleSelectSubmission = (row: SubmissionRow) => {
-    navigate(ROUTES.crossMarkingSubmission(row.id), { state: { blindMode } });
+    const blindStudentLabel =
+      blindMode && blindOrderById
+        ? `Student #${(blindOrderById[row.id] ?? 0) + 1}`
+        : undefined;
+
+    navigate(ROUTES.crossMarkingSubmission(row.id), {
+      state: { blindMode, blindStudentLabel },
+    });
   };
 
   return (

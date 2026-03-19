@@ -18,15 +18,22 @@ import {
 } from '../data/contentLibrary.mock';
 import { getContentResourceDetail } from '../data/contentResourceDetail.mock';
 import type { ContentResource } from '../types/contentLibrary.types';
-import { formatResourceDate, filterContentResources, getVisibleResources, hasMoreResources } from '../utils/contentLibrary.utils';
+import {
+  filterContentResources,
+  formatResourceDate,
+  getVisibleResources,
+  hasMoreResources,
+} from '../utils/contentLibrary.utils';
 
 const PAGE_SIZE = 6;
 
 export default function ContentLibraryPage() {
   const [filters, setFilters] = useState(defaultContentLibraryFilters);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-  const [resources, setResources] = useState<ContentResource[]>(contentResourcesMock);
-  const [selectedResource, setSelectedResource] = useState<ContentResource | null>(null);
+  const [resources, setResources] =
+    useState<ContentResource[]>(contentResourcesMock);
+  const [selectedResource, setSelectedResource] =
+    useState<ContentResource | null>(null);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
 
   const filteredResources = useMemo(
@@ -119,16 +126,32 @@ export default function ContentLibraryPage() {
           .map((q) => {
             const options = q.options?.length
               ? `<div class="opt">${q.options
-                  .map((opt) => `• ${escapeHtml(opt)}`)
+                  .map((opt) => `&bull; ${escapeHtml(opt)}`)
                   .join('<br/>')}</div>`
               : '';
+
+            const correctOption =
+              q.type === 'multipleChoice' &&
+              q.options?.length &&
+              typeof q.correctOptionIndex === 'number' &&
+              q.correctOptionIndex >= 0 &&
+              q.correctOptionIndex < q.options.length
+                ? `<div class="opt"><strong>Correct option:</strong> ${String.fromCharCode(65 + q.correctOptionIndex)}</div>`
+                : '';
+
+            const answerGuide = q.answerGuide
+              ? `<div class="opt"><strong>Answer guide:</strong><br/>${escapeHtml(
+                  q.answerGuide,
+                ).replaceAll('\n', '<br/>')}</div>`
+              : '';
+
             return `<li><div><strong>${escapeHtml(
               q.type === 'multipleChoice'
                 ? 'Multiple Choice'
                 : q.type === 'shortAnswer'
                   ? 'Short Answer'
                   : 'Extended Response',
-            )}:</strong> ${escapeHtml(q.prompt)}</div>${options}</li>`;
+            )}:</strong> ${escapeHtml(q.prompt)}</div>${options}${correctOption}${answerGuide}</li>`;
           })
           .join('')}
       </ol>
@@ -136,7 +159,7 @@ export default function ContentLibraryPage() {
 
     openPrintToPdfWindow({
       title: resource.title,
-      subtitle: 'Printable view — use your browser “Save as PDF” to download.',
+      subtitle: 'Printable view — use your browser "Save as PDF" to download.',
       bodyHtml: `${metaHtml}${mediaHtml}${questionsHtml}`,
     });
 
@@ -145,27 +168,18 @@ export default function ContentLibraryPage() {
 
   return (
     <div className="space-y-6">
-      <Card
-        hover={false}
-        className="rounded-2xl border-slate-200/60 p-5 sm:p-6"
-      >
+      <Card hover={false} className="rounded-2xl border-slate-200/60 p-5 sm:p-6">
         <PageHeader
           title="Content Library"
           subtitle="Browse worksheets, quizzes and resources shared across subjects"
         />
       </Card>
 
-      <Card
-        hover={false}
-        className="rounded-2xl border-slate-200/60 p-5 sm:p-6"
-      >
+      <Card hover={false} className="rounded-2xl border-slate-200/60 p-5 sm:p-6">
         <ContentLibraryFilters filters={filters} onFiltersChange={setFilters} />
       </Card>
 
-      <Card
-        hover={false}
-        className="rounded-2xl border-slate-200/60 p-4 sm:p-5"
-      >
+      <Card hover={false} className="rounded-2xl border-slate-200/60 p-4 sm:p-5">
         <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
           Subject Colour Guide
         </p>
@@ -228,3 +242,4 @@ export default function ContentLibraryPage() {
     </div>
   );
 }
+

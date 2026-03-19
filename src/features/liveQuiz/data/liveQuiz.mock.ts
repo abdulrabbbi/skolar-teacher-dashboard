@@ -192,10 +192,42 @@ export const pastQuizzes: PastQuiz[] = [
 
 export const classOptions: LiveQuizSelectOption[] = [
   { id: "class-placeholder", label: "Choose a class", value: "" },
+  { id: "class-12-methods", label: "Year 12 Methods", value: "Year 12 Methods" },
+  { id: "class-11-chem", label: "Year 11 Chemistry", value: "Year 11 Chemistry" },
 ];
 
 export const topicOptions: LiveQuizSelectOption[] = [
   { id: "topic-placeholder", label: "Choose a topic", value: "" },
+  {
+    id: "methods-unit-3-aos-1",
+    label: "Unit 3 • AOS 1 — Functions and graphs",
+    value: "methods-unit-3-aos-1",
+  },
+  {
+    id: "methods-unit-3-aos-2",
+    label: "Unit 3 • AOS 2 — Algebra",
+    value: "methods-unit-3-aos-2",
+  },
+  {
+    id: "methods-unit-4-aos-1",
+    label: "Unit 4 • AOS 1 — Calculus",
+    value: "methods-unit-4-aos-1",
+  },
+  {
+    id: "methods-unit-4-aos-2",
+    label: "Unit 4 • AOS 2 — Probability and statistics",
+    value: "methods-unit-4-aos-2",
+  },
+  {
+    id: "chemistry-unit-3-aos-1",
+    label: "Chemistry Unit 3 • AOS 1 — Rates and equilibrium",
+    value: "chemistry-unit-3-aos-1",
+  },
+  {
+    id: "chemistry-unit-3-aos-2",
+    label: "Chemistry Unit 3 • AOS 2 — Electrochemistry",
+    value: "chemistry-unit-3-aos-2",
+  },
 ];
 
 export const questionCountOptions: LiveQuizSelectOption[] = [

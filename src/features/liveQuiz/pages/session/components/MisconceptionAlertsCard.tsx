@@ -6,10 +6,12 @@ import { ROUTES } from "../../../../../app/router/routes";
 import type { LiveQuizMisconception } from "../../../data/liveQuizSession.mock";
 
 export type MisconceptionAlertsCardProps = {
+  quizId: string;
   items: LiveQuizMisconception[];
 };
 
 export default function MisconceptionAlertsCard({
+  quizId,
   items,
 }: MisconceptionAlertsCardProps) {
   const navigate = useNavigate();
@@ -19,12 +21,7 @@ export default function MisconceptionAlertsCard({
       return;
     }
 
-    navigate(ROUTES.analytics, {
-      state: {
-        source: "live-quiz-session",
-        focus: "misconceptions",
-      },
-    });
+    navigate(ROUTES.liveQuizSessionMisconceptions(quizId));
   };
 
   return (

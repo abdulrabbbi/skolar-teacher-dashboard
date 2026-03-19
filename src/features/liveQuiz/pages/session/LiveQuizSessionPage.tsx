@@ -58,7 +58,7 @@ export default function LiveQuizSessionPage() {
         </div>
 
         <div className="flex flex-col gap-6">
-          <MisconceptionAlertsCard items={session.misconceptions} />
+          <MisconceptionAlertsCard quizId={session.id} items={session.misconceptions} />
           <StudentsNotAnsweredCard students={session.studentsNotAnswered} />
           <QuickActionsCard actions={session.quickActions} />
         </div>

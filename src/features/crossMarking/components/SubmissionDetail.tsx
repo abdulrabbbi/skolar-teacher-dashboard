@@ -22,15 +22,12 @@ export default function SubmissionDetail({
   onBack,
   blindMode,
   onToggleBlindMode,
-  blindStudentLabel,
 }: SubmissionDetailProps) {
   const isProcessing =
     detail.questionMarking.length === 0 && detail.criteriaMarks.length === 0;
 
   const displayAssessment = detail.assessment.replace(/\bSAC\b/g, "QUIZ");
-  const displayStudentName = blindMode
-    ? blindStudentLabel ?? "Student"
-    : detail.studentName;
+  const displayStudentName = blindMode ? detail.studentName : null;
 
   const handleExportPdf = () => {
     const escapeHtml = (value: string) =>
@@ -83,7 +80,11 @@ export default function SubmissionDetail({
       subtitle: "Printable view — use your browser “Save as PDF” to download.",
       bodyHtml: `
         <div class="meta">
-          <p><span class="pill">${escapeHtml(displayAssessment)}</span><span class="pill">${escapeHtml(displayStudentName)}</span></p>
+          <p><span class="pill">${escapeHtml(displayAssessment)}</span>${
+            displayStudentName
+              ? `<span class="pill">${escapeHtml(displayStudentName)}</span>`
+              : ""
+          }</p>
           <p><strong>Pre-mark:</strong> ${detail.preMarkScore} / ${detail.preMarkMax} &nbsp; <strong>Total:</strong> ${detail.totalScore} / ${detail.totalMax}</p>
           <p><strong>Confidence:</strong> ${detail.confidence}%</p>
         </div>
@@ -118,7 +119,7 @@ export default function SubmissionDetail({
 
       <FeedbackPanel
         placeholder={feedbackPlaceholder}
-        studentName={displayStudentName}
+        studentName={displayStudentName ?? undefined}
         submissionId={detail.id}
       />
     </div>
@@ -160,11 +161,11 @@ export default function SubmissionDetail({
               {detail.id.replace("submission-", "Submission #")}
             </h2>
             <p className="text-sm text-slate-500">{displayAssessment}</p>
-            {!blindMode && (
+            {displayStudentName ? (
               <p className="mt-1 text-sm font-medium text-slate-700">
-                Student: {detail.studentName}
+                Student: {displayStudentName}
               </p>
-            )}
+            ) : null}
           </div>
 
           <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">

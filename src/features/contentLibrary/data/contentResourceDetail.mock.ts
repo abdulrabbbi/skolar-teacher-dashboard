@@ -16,6 +16,8 @@ export type ContentResourceQuestion = {
   prompt: string;
   type: "multipleChoice" | "shortAnswer" | "extendedResponse";
   options?: string[];
+  correctOptionIndex?: number;
+  answerGuide?: string;
 };
 
 export type ContentResourceDetail = {
@@ -49,19 +51,26 @@ const detailById: Record<string, ContentResourceDetail> = {
         id: "q1",
         type: "shortAnswer",
         prompt:
-          "Identify the writer’s contention and two persuasive techniques used to support it.",
+          "Identify the writer's contention and two persuasive techniques used to support it.",
+        answerGuide:
+          "Contention: Students should challenge misinformation.\nTechniques: emotive language + rhetorical questions (example responses acceptable).",
       },
       {
         id: "q2",
         type: "multipleChoice",
-        prompt: "Which tone best describes the writer’s attitude?",
+        prompt: "Which tone best describes the writer's attitude?",
         options: ["Empathetic", "Sarcastic", "Neutral", "Optimistic"],
+        correctOptionIndex: 0,
+        answerGuide:
+          "Empathetic — the writer acknowledges reader concerns while encouraging action.",
       },
       {
         id: "q3",
         type: "extendedResponse",
         prompt:
           "Write a paragraph analysing how language choices position the reader. Use evidence from the text.",
+        answerGuide:
+          "Look for: clear topic sentence, at least one quote/example, explanation of effect on reader, link back to contention.",
       },
     ],
   },
@@ -83,12 +92,16 @@ const detailById: Record<string, ContentResourceDetail> = {
         type: "shortAnswer",
         prompt:
           "Differentiate the function and find the gradient at the given point.",
+        answerGuide:
+          "Differentiate correctly using chain/product rules (as required), then substitute the point to evaluate the gradient.",
       },
       {
         id: "q2",
         type: "extendedResponse",
         prompt:
           "Set up and solve an optimisation problem using derivatives. Explain each step clearly.",
+        answerGuide:
+          "Define variables, build objective + constraint, differentiate, solve stationary points, verify (2nd derivative / endpoints), conclude in context.",
       },
     ],
   },
@@ -103,17 +116,23 @@ function fallbackQuestions(resource: ContentResource): ContentResourceQuestion[]
       id: `${resource.id}-q1`,
       type: "shortAnswer",
       prompt: `Based on this ${type.toLowerCase()}, summarise the key concept(s) from ${subject}.`,
+      answerGuide:
+        "Accept any concise summary that captures the main ideas and key terminology from the resource.",
     },
     {
       id: `${resource.id}-q2`,
       type: "extendedResponse",
       prompt:
         "Answer the following using full working / evidence. Explain your reasoning.",
+      answerGuide:
+        "Mark for method + reasoning. Students should show steps/evidence and justify conclusions.",
     },
   ];
 }
 
-export function getContentResourceDetail(resource: ContentResource): ContentResourceDetail {
+export function getContentResourceDetail(
+  resource: ContentResource,
+): ContentResourceDetail {
   const known = detailById[resource.id];
   if (known) return known;
 

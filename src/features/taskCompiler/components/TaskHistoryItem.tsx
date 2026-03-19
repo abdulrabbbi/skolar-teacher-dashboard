@@ -4,6 +4,7 @@ import Badge, { type BadgeVariant } from "../../../shared/components/ui/Badge";
 import Button from "../../../shared/components/ui/Button";
 import Card from "../../../shared/components/ui/Card";
 import { openPrintToPdfWindow } from "../../../shared/lib/printToPdf";
+import TaskHistoryDetailsModal from "./TaskHistoryDetailsModal";
 import type {
   TaskDifficulty,
   TaskHistoryItemData,
@@ -52,6 +53,7 @@ export default function TaskHistoryItem({
 }: TaskHistoryItemProps) {
   const createdText = withCreatedPrefix(item.createdAt);
   const [actionMessage, setActionMessage] = useState("");
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   const taskSummary = [
     `Title: ${item.title}`,
@@ -63,43 +65,19 @@ export default function TaskHistoryItem({
     `Duration: ${item.duration}`,
     `Marks: ${item.marks}`,
     `Students: ${item.students}`,
+    `Questions: ${item.questions.length}`,
+    "",
+    ...item.questions.flatMap((q, index) => [
+      `Q${index + 1} (${q.type}${typeof q.marks === "number" ? `, ${q.marks} marks` : ""}):`,
+      q.prompt,
+      "Answer guide:",
+      q.answerGuide,
+      "",
+    ]),
   ].join("\n");
 
   const handleView = () => {
-    const previewWindow = window.open("", "_blank", "noopener,noreferrer");
-    if (!previewWindow) {
-      return;
-    }
-
-    const html = `<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>${escapeHtml(item.title)}</title>
-    <style>
-      body { font-family: Arial, sans-serif; margin: 28px; color: #0f172a; }
-      h1 { margin: 0 0 8px; font-size: 24px; }
-      p { margin: 8px 0; color: #334155; }
-      .pill { display: inline-block; border: 1px solid #cbd5e1; border-radius: 999px; padding: 4px 10px; margin-right: 8px; font-size: 12px; }
-    </style>
-  </head>
-  <body>
-    <h1>${escapeHtml(item.title)}</h1>
-    <p>${escapeHtml(item.subject)} | ${escapeHtml(item.code)}</p>
-    <p>
-      <span class="pill">${escapeHtml(item.status)}</span>
-      <span class="pill">${escapeHtml(item.difficulty)}</span>
-    </p>
-    <p><strong>Created:</strong> ${escapeHtml(item.createdAt)}</p>
-    <p><strong>Duration:</strong> ${escapeHtml(item.duration)}</p>
-    <p><strong>Marks:</strong> ${escapeHtml(item.marks)}</p>
-    <p><strong>Students:</strong> ${item.students}</p>
-  </body>
-</html>`;
-
-    previewWindow.document.open();
-    previewWindow.document.write(html);
-    previewWindow.document.close();
+    setIsDetailsOpen(true);
   };
 
   const handleDuplicate = async () => {
@@ -112,6 +90,30 @@ export default function TaskHistoryItem({
   };
 
   const handleDownload = () => {
+    const questionsHtml =
+      item.questions.length > 0
+        ? `
+          <h2>Questions</h2>
+          <ol>
+            ${item.questions
+              .map((q) => {
+                const marksText =
+                  typeof q.marks === "number" ? ` <span class="pill">${q.marks} marks</span>` : "";
+
+                return `<li>
+                  <p><span class="pill">${escapeHtml(q.type)}</span>${marksText}</p>
+                  <p style="white-space: pre-wrap; color: #0f172a;">${escapeHtml(q.prompt)}</p>
+                  <p><strong>Answer guide:</strong></p>
+                  <p style="white-space: pre-wrap; font-size: 12.5px; color: #334155;">${escapeHtml(
+                    q.answerGuide,
+                  )}</p>
+                </li>`;
+              })
+              .join("")}
+          </ol>
+        `
+        : `<p><em>No questions saved for this task.</em></p>`;
+
     const bodyHtml = `
       <div class="meta">
         <p>
@@ -124,10 +126,7 @@ export default function TaskHistoryItem({
         <p><strong>Duration:</strong> ${escapeHtml(item.duration)} &nbsp; <strong>Marks:</strong> ${escapeHtml(item.marks)} &nbsp; <strong>Students:</strong> ${item.students}</p>
       </div>
       <div class="hr"></div>
-      <h2>Task Summary</h2>
-      <pre style="white-space: pre-wrap; font-size: 12.5px; color: #334155;">${escapeHtml(
-        taskSummary,
-      )}</pre>
+      ${questionsHtml}
     `;
 
     openPrintToPdfWindow({
@@ -145,7 +144,14 @@ export default function TaskHistoryItem({
   };
 
   return (
-    <Card
+    <>
+      <TaskHistoryDetailsModal
+        open={isDetailsOpen}
+        item={item}
+        onClose={() => setIsDetailsOpen(false)}
+      />
+
+      <Card
       className="
         group
         flex flex-col gap-4 p-4
@@ -251,6 +257,7 @@ export default function TaskHistoryItem({
       {actionMessage ? (
         <p className="text-xs text-slate-500 sm:hidden">{actionMessage}</p>
       ) : null}
-    </Card>
+      </Card>
+    </>
   );
 }

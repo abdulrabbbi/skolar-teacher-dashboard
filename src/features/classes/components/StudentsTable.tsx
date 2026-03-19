@@ -18,6 +18,7 @@ import Button from "../../../shared/components/ui/Button";
 import Card from "../../../shared/components/ui/Card";
 import SearchInput from "../../../shared/components/ui/SearchInput";
 import Table from "../../../shared/components/ui/Table";
+import { cn } from "../../../shared/lib/cn";
 import type { StudentRow, StudentStatus } from "../data/students.mock";
 
 export type StudentsTableProps = {
@@ -353,38 +354,48 @@ export default function StudentsTable({ students }: StudentsTableProps) {
     <>
       <section className="w-full space-y-4">
         <Card className="w-full p-0">
-          <div className="flex flex-col gap-3 border-b border-slate-200 px-5 py-4 xl:flex-row xl:items-center xl:justify-between">
-            <div className="shrink-0">
-              <h4 className="text-[18px] font-semibold text-slate-900">Students</h4>
-            </div>
+          <div className="border-b border-slate-200 px-6 py-5">
+            <div className="grid grid-cols-1 gap-4 xl:grid-cols-[220px_minmax(0,1fr)_auto] xl:items-center">
+              <div className="shrink-0">
+                <h4 className="text-[18px] font-semibold text-slate-900">
+                  Students
+                </h4>
+              </div>
 
-            <div className="flex w-full flex-col gap-3 xl:flex-row xl:items-center xl:justify-end">
-              <div className="w-full min-w-0 xl:flex-1">
-                <div className="relative w-full">
-                  <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-[#8C93A8]" />
-                  <SearchInput
-                    placeholder="Search students..."
-                    className="
-                      h-[48px] w-full rounded-full border border-transparent
-                      bg-[#F3F4F6] pl-14 pr-4 text-[15px] text-slate-700
-                      shadow-none outline-none placeholder:text-[#8C93A8]
-                      focus:border-[#D9DCE3] focus:bg-white focus:ring-0
-                    "
-                    value={query}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setQuery(e.target.value)
-                    }
-                  />
+              <div className="w-full">
+                <div className="mx-auto w-full max-w-[660px]">
+                  <div className="relative w-full">
+                    <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-[#98A2B3]" />
+                    <SearchInput
+                      placeholder="Search students..."
+                      className="
+                        h-11 w-full rounded-2xl
+                        border border-transparent bg-[#F2F4F7]
+                        pl-12 pr-4 text-[15px] text-[#344054]
+                        shadow-none outline-none placeholder:text-[#98A2B3]
+                        focus:border-[#E4E7EC] focus:bg-white focus:ring-0
+                      "
+                      value={query}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setQuery(e.target.value)
+                      }
+                    />
+                  </div>
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 xl:flex-nowrap">
+              <div className="flex flex-wrap items-center gap-4 xl:flex-nowrap xl:justify-end">
                 <Button
                   type="button"
                   size="sm"
-                  variant={filter === "all" ? "primary" : "outline"}
+                  variant="outline"
                   onClick={() => setFilter("all")}
-                  className="h-[48px] whitespace-nowrap rounded-[14px] px-5 text-[15px]"
+                  className={cn(
+                    "h-11 whitespace-nowrap rounded-xl px-8 text-[15px] font-semibold !shadow-none",
+                    filter === "all"
+                      ? "!border-transparent !bg-[#00B96B] !text-white hover:!bg-[#009f5c]"
+                      : "!border-[#D0D5DD] !bg-white !text-[#344054] hover:!bg-white",
+                  )}
                 >
                   All Students
                 </Button>
@@ -392,9 +403,14 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                 <Button
                   type="button"
                   size="sm"
-                  variant={filter === "onTrack" ? "primary" : "outline"}
+                  variant="outline"
                   onClick={() => setFilter("onTrack")}
-                  className="h-[48px] whitespace-nowrap rounded-[14px] px-5 text-[15px]"
+                  className={cn(
+                    "h-11 whitespace-nowrap rounded-xl px-8 text-[15px] font-semibold !shadow-none",
+                    filter === "onTrack"
+                      ? "!border-transparent !bg-[#00B96B] !text-white hover:!bg-[#009f5c]"
+                      : "!border-[#D0D5DD] !bg-white !text-[#344054] hover:!bg-white",
+                  )}
                 >
                   On Track
                 </Button>
@@ -402,9 +418,14 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                 <Button
                   type="button"
                   size="sm"
-                  variant={filter === "atRisk" ? "primary" : "outline"}
+                  variant="outline"
                   onClick={() => setFilter("atRisk")}
-                  className="h-[48px] whitespace-nowrap rounded-[14px] px-5 text-[15px]"
+                  className={cn(
+                    "h-11 whitespace-nowrap rounded-xl px-8 text-[15px] font-semibold !shadow-none",
+                    filter === "atRisk"
+                      ? "!border-transparent !bg-[#00B96B] !text-white hover:!bg-[#009f5c]"
+                      : "!border-[#D0D5DD] !bg-white !text-[#344054] hover:!bg-white",
+                  )}
                 >
                   At Risk
                 </Button>
