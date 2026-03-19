@@ -61,7 +61,7 @@ export default function SubmissionDetailPage() {
           try {
             localStorage.setItem(BLIND_MODE_STORAGE_KEY, next ? "1" : "0");
           } catch {
-            // ignore
+            // ignoresdsfas
           }
           return next;
         })
