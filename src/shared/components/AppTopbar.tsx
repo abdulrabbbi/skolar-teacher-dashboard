@@ -9,7 +9,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { useLocation, useNavigate } from "react-router-dom";
-import topbarIcon from "../../assets/images/topiconn.svg";
+import RiveMascot from "./RiveMascot";
 import {
   NotificationsPopover,
   type NotificationItem,
@@ -265,11 +265,11 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
             hover:bg-slate-50
           "
         >
-          <img
-            src={topbarIcon}
-            alt="Skolar logo"
-            className="h-10 w-10 shrink-0 object-contain transition-transform duration-300 ease-out group-hover:scale-150"
-            draggable={false}
+          <RiveMascot
+            src="/animations/octopus.riv"
+            stateMachine="octopus"
+            className="h-12 w-12 shrink-0 transition-transform duration-300 ease-out group-hover:scale-125"
+            style={{ cursor: "inherit" }}
           />
           <span className="text-lg font-extrabold tracking-wide text-slate-900 transition-transform duration-300 ease-out group-hover:-translate-y-[1px]">
             SKOLAR

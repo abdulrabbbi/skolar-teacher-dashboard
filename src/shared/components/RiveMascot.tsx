@@ -43,7 +43,7 @@ export default function RiveMascot({
 
   return (
     <div className={className} onClick={handleClick} style={{ cursor: "pointer", ...style }}>
-      <RiveComponent />
+      <RiveComponent style={{ width: "100%", height: "100%" }} />
     </div>
   );
 }

@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useRive, useStateMachineInput } from "@rive-app/react-canvas-lite";
-import { AuthCard } from "../components/AuthCard";
 import { OnboardingCarousel } from "../components/OnboardingCarousel";
 import { ONBOARDING_SLIDES } from "../data/auth.mock";
 
@@ -58,17 +57,11 @@ export function OnboardingPage() {
         whileTap={{ scale: 0.998 }}
         transition={{ duration: 0.25, ease: "easeOut" }}
       >
-        <AuthCard
-          className="
-            relative mx-auto w-full max-w-[620px]
-            rounded-[28px] sm:rounded-[34px]
-            p-0
-          "
-        >
+        <div className="relative mx-auto w-full max-w-[620px] p-0">
           <div className="relative flex flex-col p-5 sm:p-8 md:p-10">
             {/* Octopus */}
             <motion.div
-              className="absolute right-5 top-4 z-50 h-36 w-36 select-none sm:right-8 sm:top-4"
+              className="absolute right-5 top-4 z-50 h-36 w-36 select-none sm:right-6 sm:top-0"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1, y: [0, -6, 0], rotate: [-0.5, 0.5, -0.5] }}
               transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
@@ -131,7 +124,7 @@ export function OnboardingPage() {
               </button>
             </div>
           </div>
-        </AuthCard>
+        </div>
       </motion.div>
     </motion.div>
   );

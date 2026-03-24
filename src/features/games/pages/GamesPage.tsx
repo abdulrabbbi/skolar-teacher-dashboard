@@ -5,6 +5,49 @@ import { cn } from "../../../shared/lib/cn";
 import RiveMascot from "../../../shared/components/RiveMascot";
 import { useHeroParallax } from "../../../shared/hooks/useHeroParallax";
 
+type StatusCardProps = {
+  icon: React.ReactNode;
+  iconClassName: string;
+  label: string;
+  value: string;
+  className?: string;
+};
+
+function StatusCard({
+  icon,
+  iconClassName,
+  label,
+  value,
+  className,
+}: StatusCardProps) {
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-3 rounded-2xl",
+        "border border-white/15 bg-white/14",
+        "px-4 py-3",
+        "backdrop-blur-md",
+        "shadow-[0_18px_45px_rgba(0,0,0,0.18)]",
+        className,
+      )}
+    >
+      <div
+        className={cn(
+          "grid h-11 w-11 place-items-center rounded-xl",
+          "ring-1 ring-white/25 shadow-[0_14px_30px_rgba(0,0,0,0.16)]",
+          iconClassName,
+        )}
+      >
+        {icon}
+      </div>
+      <div className="leading-tight">
+        <div className="text-[11px] font-semibold text-white/80">{label}</div>
+        <div className="text-[15px] font-extrabold text-white">{value}</div>
+      </div>
+    </div>
+  );
+}
+
 export default function GamesPage() {
   const { stageX, stageY, stageRotate, mascotX, mascotY } = useHeroParallax();
 
@@ -142,6 +185,24 @@ export default function GamesPage() {
 
               {/* RIGHT VISUAL - MOBILE */}
               <div className="relative mt-10 flex justify-center lg:hidden">
+                <div className="pointer-events-none absolute right-2 top-2 z-30">
+                  <StatusCard
+                    icon={<Trophy className="h-5 w-5 text-black" />}
+                    iconClassName="bg-[#FFB020]"
+                    label="Rank"
+                    value="2450"
+                  />
+                </div>
+
+                <div className="pointer-events-none absolute left-2 top-[58%] z-30">
+                  <StatusCard
+                    icon={<Zap className="h-5 w-5 text-[#FFB020]" />}
+                    iconClassName="bg-black"
+                    label="Streak"
+                    value="+900"
+                  />
+                </div>
+
                 <motion.div
                   animate={{ y: [0, -12, 0], rotate: [-1, 1, -1] }}
                   transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
@@ -161,6 +222,25 @@ export default function GamesPage() {
                 className="pointer-events-none absolute right-0 top-0 hidden h-full lg:block"
                 style={{ width: "54%" }}
               >
+                {/* mini status cards (like reference) */}
+                <div className="pointer-events-none absolute right-10 top-10 z-30">
+                  <StatusCard
+                    icon={<Trophy className="h-5 w-5 text-black" />}
+                    iconClassName="bg-[#FFB020]"
+                    label="Rank"
+                    value="2450"
+                  />
+                </div>
+
+                <div className="pointer-events-none absolute left-10 top-[58%] z-30">
+                  <StatusCard
+                    icon={<Zap className="h-5 w-5 text-[#FFB020]" />}
+                    iconClassName="bg-black"
+                    label="Streak"
+                    value="+900"
+                  />
+                </div>
+
                 <div
                   className="absolute bottom-0 right-[-36px] flex h-full items-end"
                   style={{ width: "720px", maxWidth: "none" }}
