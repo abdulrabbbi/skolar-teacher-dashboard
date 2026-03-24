@@ -140,6 +140,13 @@ export default function LiveQuizPage() {
       <LaunchQuizModal
         isOpen={isLaunchModalOpen}
         onClose={handleCloseLaunchModal}
+        onStart={() => {
+          try {
+            window.open("/student/live-quiz", "_blank", "noopener,noreferrer");
+          } catch {
+            // ignore
+          }
+        }}
         classOptions={classOptions}
         topicOptions={topicOptions}
         questionOptions={launchQuestionOptions}

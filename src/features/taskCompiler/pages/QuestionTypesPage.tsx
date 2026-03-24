@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   CheckSquare2,
   ClipboardList,
@@ -11,10 +11,23 @@ import {
   SquareAsterisk,
   X,
 } from "lucide-react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 
 import Button from "../../../shared/components/ui/Button";
 import { cn } from "../../../shared/lib/cn";
+import PrintableTaskPreviewModal from "../components/PrintableTaskPreviewModal";
+import { getAreaDetailContent } from "../data/areaOfStudyDetail.mock";
+import {
+  buildSelectedContentTaskHtml,
+  type QuestionTypeBreakdownItem,
+} from "./areaOfStudyDetail/printSelectedContentTask";
+import type { Difficulty } from "./areaOfStudyDetail/types";
+import { getAreaById, getSubjectById } from "../utils/taskCompilerSelectors";
 
 type QuestionTypeId =
   | "multipleChoice"
@@ -38,6 +51,7 @@ type QuestionTypeConfig = {
 
 const MAX_TOTAL = 250;
 const MAX_PER_TYPE = 200;
+const WIZARD_STORAGE_KEY = "taskCompiler:questionTypesWizard:v1";
 
 const questionTypes: QuestionTypeConfig[] = [
   {
@@ -112,10 +126,74 @@ function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value));
 }
 
+type WizardState = {
+  includedAreaIds: string[];
+  selectedOutcomes: string[];
+  selectedKnowledge: string[];
+  selectedSkills: string[];
+  duration: string;
+  difficulty: Difficulty;
+  includeMarkingGuide: boolean;
+};
+
+function isWizardState(value: unknown): value is WizardState {
+  if (!value || typeof value !== "object") return false;
+  const v = value as Record<string, unknown>;
+
+  return (
+    Array.isArray(v.includedAreaIds) &&
+    Array.isArray(v.selectedOutcomes) &&
+    Array.isArray(v.selectedKnowledge) &&
+    Array.isArray(v.selectedSkills) &&
+    typeof v.duration === "string" &&
+    typeof v.difficulty === "string" &&
+    typeof v.includeMarkingGuide === "boolean"
+  );
+}
+
+function readWizardState(): WizardState | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.sessionStorage.getItem(WIZARD_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed: unknown = JSON.parse(raw);
+    if (!isWizardState(parsed)) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function writeWizardState(state: WizardState) {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.setItem(WIZARD_STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // ignore
+  }
+}
+
 export default function QuestionTypesPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { subjectId, areaId } = useParams<{ subjectId: string; areaId: string }>();
   const [searchParams] = useSearchParams();
+
+  const wizardFromLocation = useMemo(() => {
+    return isWizardState(location.state) ? (location.state as WizardState) : null;
+  }, [location.state]);
+
+  const [storedWizard] = useState<WizardState | null>(() => readWizardState());
+  const wizard = wizardFromLocation ?? storedWizard;
+
+  useEffect(() => {
+    if (!wizardFromLocation) return;
+    writeWizardState(wizardFromLocation);
+  }, [wizardFromLocation]);
+
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewTitle, setPreviewTitle] = useState("");
+  const [previewHtml, setPreviewHtml] = useState("");
 
   const [counts, setCounts] = useState<Record<QuestionTypeId, number>>({
     multipleChoice: 20,
@@ -132,6 +210,7 @@ export default function QuestionTypesPage() {
   );
 
   const canIncrementTotal = total < MAX_TOTAL;
+  const canGenerateTask = total > 0;
 
   const setTypeCount = (type: QuestionTypeId, nextRaw: number) => {
     setCounts((previous) => {
@@ -178,8 +257,97 @@ export default function QuestionTypesPage() {
   };
 
   const handleNext = () => {
-    // Next step placeholder (wire to generation later).
-    handleBack();
+    if (!canGenerateTask) return;
+
+    const subject = getSubjectById(subjectId);
+    const primaryArea = subjectId ? getAreaById(subjectId, areaId) : null;
+
+    const includedAreaIds = wizard?.includedAreaIds ?? (areaId ? [areaId] : []);
+    const includedAreas = subjectId
+      ? Array.from(new Set(includedAreaIds.filter(Boolean)))
+          .map((id) => getAreaById(subjectId, id))
+          .filter((value): value is NonNullable<typeof value> => value != null)
+      : [];
+
+    const many = includedAreas.length > 1;
+    const areaMetaById = includedAreas.reduce<Record<string, { title: string; unit: string }>>(
+      (map, item) => {
+        map[item.id] = { title: item.title, unit: item.unit };
+        return map;
+      },
+      {},
+    );
+
+    const prefix = (areaIdValue: string, label: string) => {
+      if (!many) return label;
+      const meta = areaMetaById[areaIdValue];
+      if (!meta) return label;
+      return `${meta.unit} • ${meta.title}: ${label}`;
+    };
+
+    const combined = {
+      outcomes: [] as { id: string; label: string }[],
+      keyKnowledge: [] as { id: string; label: string }[],
+      keySkills: [] as { id: string; label: string }[],
+    };
+
+    for (const included of includedAreas) {
+      const next = getAreaDetailContent(included.id);
+      combined.outcomes.push(
+        ...next.outcomes.map((item) => ({
+          id: item.id,
+          label: prefix(included.id, item.label),
+        })),
+      );
+      combined.keyKnowledge.push(
+        ...next.keyKnowledge.map((item) => ({
+          id: item.id,
+          label: prefix(included.id, item.label),
+        })),
+      );
+      combined.keySkills.push(
+        ...next.keySkills.map((item) => ({
+          id: item.id,
+          label: prefix(included.id, item.label),
+        })),
+      );
+    }
+
+    const selectedOutcomeIds = new Set(wizard?.selectedOutcomes ?? []);
+    const selectedKnowledgeIds = new Set(wizard?.selectedKnowledge ?? []);
+    const selectedSkillIds = new Set(wizard?.selectedSkills ?? []);
+
+    const selectedOutcomeLabels = combined.outcomes
+      .filter((item) => selectedOutcomeIds.has(item.id))
+      .map((item) => item.label);
+    const selectedKnowledgeLabels = combined.keyKnowledge
+      .filter((item) => selectedKnowledgeIds.has(item.id))
+      .map((item) => item.label);
+    const selectedSkillLabels = combined.keySkills
+      .filter((item) => selectedSkillIds.has(item.id))
+      .map((item) => item.label);
+
+    const questionTypeBreakdown: QuestionTypeBreakdownItem[] = questionTypes
+      .map((t) => ({ title: t.title, count: counts[t.id] ?? 0 }))
+      .filter((item) => item.count > 0);
+
+    const { titleText, html } = buildSelectedContentTaskHtml({
+      subjectTitle: subject?.title ?? "Task Compiler",
+      areaTitle: primaryArea?.title ?? "Printable Task",
+      areaUnitLabel: primaryArea?.unit ?? "Area",
+      includedAreas: includedAreas.map((a) => ({ unit: a.unit, title: a.title })),
+      duration: wizard?.duration ?? "45 minutes",
+      difficulty: wizard?.difficulty ?? "Mixed",
+      includeMarkingGuide: wizard?.includeMarkingGuide ?? true,
+      selectedOutcomeLabels,
+      selectedKnowledgeLabels,
+      selectedSkillLabels,
+      questionTypeBreakdown,
+    });
+
+    setPreviewTitle(titleText);
+    setPreviewHtml(html);
+    setPreviewOpen(true);
   };
 
   return (
@@ -360,7 +528,7 @@ export default function QuestionTypesPage() {
               size="sm"
               className={cn(
                 "h-10 rounded-xl px-10 !bg-blue-600 hover:!bg-blue-700 focus-visible:ring-blue-600",
-                total === 0 && "opacity-60 pointer-events-none",
+                !canGenerateTask && "opacity-60 pointer-events-none",
               )}
               onClick={handleNext}
             >
@@ -467,6 +635,13 @@ export default function QuestionTypesPage() {
           </div>
         </div>
       </div>
+
+      <PrintableTaskPreviewModal
+        open={previewOpen}
+        title={previewTitle}
+        html={previewHtml}
+        onClose={() => setPreviewOpen(false)}
+      />
     </section>
   );
 }

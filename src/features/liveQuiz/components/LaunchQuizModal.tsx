@@ -162,8 +162,9 @@ export default function LaunchQuizModal({
       // ignore
     }
 
-    const copied = await handleCopyJoinCode();
     onStart?.(code);
+
+    const copied = await handleCopyJoinCode();
     if (copied) {
       onClose();
     }

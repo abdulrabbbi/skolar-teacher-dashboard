@@ -1,21 +1,21 @@
-import { ArrowLeft, CircleAlert } from 'lucide-react';
-import { useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { ArrowLeft, CircleAlert } from "lucide-react";
+import { useMemo } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { ROUTES } from '../../../../app/router/routes';
-import Button from '../../../../shared/components/ui/Button';
-import Card from '../../../../shared/components/ui/Card';
+import { ROUTES } from "../../../../app/router/routes";
+import Button from "../../../../shared/components/ui/Button";
+import Card from "../../../../shared/components/ui/Card";
 import {
   liveQuizSessions,
   type LiveQuizQuizQuestion,
   type LiveQuizStudentAnswer,
-} from '../../data/liveQuizSession.mock';
+} from "../../data/liveQuizSession.mock";
 
 type WrongStudent = {
   studentId: string;
   studentName: string;
-  selectedOption: LiveQuizStudentAnswer['selectedOption'];
-  correctOption: LiveQuizStudentAnswer['correctOption'];
+  selectedOption: LiveQuizStudentAnswer["selectedOption"];
+  correctOption: LiveQuizStudentAnswer["correctOption"];
 };
 
 type WrongQuestionRow = {
@@ -24,9 +24,13 @@ type WrongQuestionRow = {
   questionText: string;
   topic: string;
   correctRate: number;
-  mostCommonWrongOption: LiveQuizStudentAnswer['selectedOption'];
+  mostCommonWrongOption: LiveQuizStudentAnswer["selectedOption"];
   wrongStudents: WrongStudent[];
 };
+
+function getCorrectOptionId(question: LiveQuizQuizQuestion | null, fallback?: string) {
+  return question?.options.find((option) => option.isCorrect)?.id ?? fallback ?? null;
+}
 
 export default function LiveQuizMisconceptionsAnalyticsPage() {
   const navigate = useNavigate();
@@ -51,7 +55,7 @@ export default function LiveQuizMisconceptionsAnalyticsPage() {
 
     const rows = commonWrongQuestions.map((insight) => {
       const question = questionByLabel.get(insight.questionLabel);
-      const topic = question?.topic ?? 'Area of Study not available';
+      const topic = question?.topic ?? "Area of Study not available";
 
       const wrongStudents: WrongStudent[] = studentResults.flatMap((student) => {
         const wrongAnswers = student.answers.filter(
@@ -144,10 +148,26 @@ export default function LiveQuizMisconceptionsAnalyticsPage() {
           {wrongQuestions.map((row) => {
             const wrongCount = row.wrongStudents.length;
             const wrongPct =
-              studentCount > 0 ? Math.round((wrongCount / studentCount) * 100) : 0;
+              studentCount > 0
+                ? Math.round((wrongCount / studentCount) * 100)
+                : 0;
 
             const question = questionByLabel.get(row.questionLabel) ?? null;
             const prompt = question?.prompt ?? row.questionText;
+
+            const correctOptionId = getCorrectOptionId(
+              question,
+              row.wrongStudents[0]?.correctOption,
+            );
+
+            const wrongOptionText =
+              question?.options.find((option) => option.id === row.mostCommonWrongOption)
+                ?.text ?? null;
+            const correctOptionText =
+              correctOptionId
+                ? question?.options.find((option) => option.id === correctOptionId)
+                    ?.text ?? null
+                : null;
 
             return (
               <Card
@@ -179,9 +199,42 @@ export default function LiveQuizMisconceptionsAnalyticsPage() {
                     <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                       Most Common Wrong Option
                     </p>
-                    <p className="mt-2 text-sm font-semibold text-slate-900">
-                      {row.mostCommonWrongOption}
-                    </p>
+
+                    <div className="mt-2 flex items-start justify-between gap-3">
+                      <p className="text-sm font-semibold text-slate-900">
+                        {row.mostCommonWrongOption}
+                      </p>
+                      <span className="inline-flex items-center rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-700">
+                        Wrong
+                      </span>
+                    </div>
+
+                    {wrongOptionText ? (
+                      <p className="mt-2 text-xs leading-5 text-slate-600">
+                        {wrongOptionText}
+                      </p>
+                    ) : null}
+
+                    <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-3">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                        The Correct Answer
+                      </p>
+
+                      <div className="mt-2 flex items-start justify-between gap-3">
+                        <p className="text-sm font-semibold text-emerald-900">
+                          {correctOptionId ?? "—"}
+                        </p>
+                        <span className="inline-flex items-center rounded-full border border-emerald-200 bg-white px-2.5 py-1 text-xs font-semibold text-emerald-700">
+                          Correct
+                        </span>
+                      </div>
+
+                      {correctOptionText ? (
+                        <p className="mt-2 text-xs leading-5 text-emerald-800">
+                          {correctOptionText}
+                        </p>
+                      ) : null}
+                    </div>
                   </div>
 
                   <div className="rounded-xl border border-slate-200 bg-white p-4">
@@ -203,7 +256,7 @@ export default function LiveQuizMisconceptionsAnalyticsPage() {
                               {student.studentName}
                             </span>
                             <span className="text-xs font-semibold text-slate-600">
-                              Selected {student.selectedOption} • Correct{' '}
+                              Selected {student.selectedOption} • Correct{" "}
                               {student.correctOption}
                             </span>
                           </div>

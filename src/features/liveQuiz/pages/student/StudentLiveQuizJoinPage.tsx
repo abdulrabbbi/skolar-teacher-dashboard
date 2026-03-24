@@ -11,7 +11,9 @@ export default function StudentLiveQuizJoinPage() {
   const initialCode = useMemo(() => {
     if (typeof window === "undefined") return "";
     try {
-      return normalizeJoinCode(window.localStorage.getItem("liveQuiz:lastJoinCode") ?? "");
+      return normalizeJoinCode(
+        window.localStorage.getItem("liveQuiz:lastJoinCode") ?? "",
+      );
     } catch {
       return "";
     }
@@ -60,7 +62,7 @@ export default function StudentLiveQuizJoinPage() {
                 h-20 w-full rounded-2xl border border-white/20 bg-white/10
                 px-6 text-center font-mono text-4xl font-semibold tracking-[0.35em] text-white placeholder:text-white/20
                 outline-none ring-0
-                focus:border-white/35 focus:bg-white/15 focus:ring-2 focus:ring-indigo-300/60
+                focus:border-white/35 focus:bg-white/15 focus:ring-2 focus:ring-sky-300/70
               "
               aria-label="Join code"
               onKeyDown={(e) => {
@@ -90,10 +92,11 @@ export default function StudentLiveQuizJoinPage() {
         </div>
 
         <p className="mt-8 text-xs text-white/35">
-          Student view preview •{" "}
+          Student view preview -{" "}
           <span className="font-mono text-white/55">/student/live-quiz</span>
         </p>
       </div>
     </div>
   );
 }
+
