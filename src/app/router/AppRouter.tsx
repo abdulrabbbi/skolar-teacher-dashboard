@@ -49,6 +49,7 @@ export default function AppRouter() {
         <Route element={<OnboardingLayout />}>
           <Route path="/" element={<SplashPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
+          
         </Route>
 
         {/* Auth pages */}
