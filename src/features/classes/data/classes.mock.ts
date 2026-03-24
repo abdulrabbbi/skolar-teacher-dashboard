@@ -44,6 +44,8 @@ export type ClassSummary = {
   students: number;
   subject: string;
   avgScore: number;
+  description?: string;
+  imageUrl?: string;
 };
 
 const classMeta: Record<string, { subject: string; avgScore: number }> = {

@@ -22,12 +22,15 @@ export default function SubmissionDetail({
   onBack,
   blindMode,
   onToggleBlindMode,
+  blindStudentLabel,
 }: SubmissionDetailProps) {
   const isProcessing =
     detail.questionMarking.length === 0 && detail.criteriaMarks.length === 0;
 
   const displayAssessment = detail.assessment.replace(/\bSAC\b/g, "QUIZ");
-  const displayStudentName = blindMode ? detail.studentName : null;
+  const displayStudentName = blindMode
+    ? blindStudentLabel?.trim() || null
+    : detail.studentName?.trim() || null;
 
   const handleExportPdf = () => {
     const escapeHtml = (value: string) =>

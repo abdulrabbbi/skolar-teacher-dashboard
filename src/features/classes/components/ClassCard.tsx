@@ -1,5 +1,5 @@
 
-import { ArrowRight, Users } from "lucide-react";
+import { ArrowRight, School, Users } from "lucide-react";
 import Card from "../../../shared/components/ui/Card";
 import ProgressBar from "../../../shared/components/ui/ProgressBar";
 import type { ClassSummary } from "../data/classes.mock";
@@ -15,6 +15,7 @@ const getProgressVariant = (score: number) => {
 };
 
 export default function ClassCard({ classItem }: ClassCardProps) {
+  const hasImage = Boolean(classItem.imageUrl?.trim());
   return (
     <Card
       className="
@@ -25,14 +26,30 @@ export default function ClassCard({ classItem }: ClassCardProps) {
     >
       {/* TOP */}
       <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h3 className="truncate text-base sm:text-lg font-semibold text-slate-900">
-            {classItem.title}
-          </h3>
+        <div className="flex min-w-0 items-start gap-3">
+          <div className="h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
+            {hasImage ? (
+              <img
+                src={classItem.imageUrl}
+                alt=""
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center">
+                <School className="h-5 w-5 text-slate-500" />
+              </div>
+            )}
+          </div>
 
-          <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
-            <Users className="h-4 w-4 shrink-0" />
-            <span>{classItem.students} students</span>
+          <div className="min-w-0">
+            <h3 className="truncate text-base sm:text-lg font-semibold text-slate-900">
+              {classItem.title}
+            </h3>
+
+            <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
+              <Users className="h-4 w-4 shrink-0" />
+              <span>{classItem.students} students</span>
+            </div>
           </div>
         </div>
 
