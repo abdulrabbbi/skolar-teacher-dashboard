@@ -1,18 +1,18 @@
 
 export const ONBOARDING_SLIDES = [
   {
-    title: "Practice Smarter, Not Longer",
-    subtitle: "AI-guided practice aligned with your curriculum",
+    title: "Teach Smarter, Not Harder",
+    subtitle: "AI-powered tools aligned with your curriculum to save prep time",
     icon: "book",
   },
   {
-    title: "Find Where You Lost Marks",
-    subtitle: "Get targeted feedback, examiner notes, and common mistakes",
+    title: "Know Where Students Struggle",
+    subtitle: "Get targeted analytics, misconception reports, and class insights",
     icon: "search",
   },
   {
-    title: "Improve Every Week",
-    subtitle: "Smart planner and progress tracking",
+    title: "Track Progress Every Week",
+    subtitle: "Smart dashboards and assessment tracking for your classes",
     icon: "trend",
   },
 ] as const;
