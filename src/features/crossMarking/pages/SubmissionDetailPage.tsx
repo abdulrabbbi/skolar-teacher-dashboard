@@ -14,6 +14,8 @@ function readBlindModeFromStorage() {
   }
 }
 
+// sdfjasdkfj
+
 function parseBlindParam(value: string | null) {
   if (!value) return null;
   const normalized = value.trim().toLowerCase();
