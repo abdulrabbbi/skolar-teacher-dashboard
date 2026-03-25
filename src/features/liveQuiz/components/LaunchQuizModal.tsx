@@ -128,9 +128,12 @@ export default function LaunchQuizModal({
     }
   };
 
-  const handleCopyJoinCode = async () => {
+  const handleCopyJoinCode = async (value?: string) => {
+    const codeToCopy = normalizeJoinCode(value ?? joinCode);
+    if (!codeToCopy) return false;
+
     try {
-      await navigator.clipboard.writeText(joinCode);
+      await navigator.clipboard.writeText(codeToCopy);
       setJoinCodeMessage("Join code copied");
       return true;
     } catch {
@@ -140,7 +143,7 @@ export default function LaunchQuizModal({
   };
 
   const handleStart = async () => {
-    const code = joinCode.trim();
+    const code = normalizeJoinCode(joinCode);
     if (!code) return;
 
     try {
@@ -162,9 +165,17 @@ export default function LaunchQuizModal({
       // ignore
     }
 
-    onStart?.(code);
+    if (onStart) {
+      onStart(code);
+    } else {
+      try {
+        window.open("/student/live-quiz", "_blank", "noopener,noreferrer");
+      } catch {
+        // ignore
+      }
+    }
 
-    const copied = await handleCopyJoinCode();
+    const copied = await handleCopyJoinCode(code);
     if (copied) {
       onClose();
     }
@@ -278,7 +289,7 @@ export default function LaunchQuizModal({
 
                 <button
                   type="button"
-                  onClick={handleCopyJoinCode}
+                  onClick={() => void handleCopyJoinCode()}
                   disabled={!joinCode.trim()}
                   className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-white/85 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
                 >
@@ -374,7 +385,7 @@ export default function LaunchQuizModal({
                       size="sm"
                       variant="outline"
                       className="h-14 rounded-2xl px-6"
-                      onClick={handleCopyJoinCode}
+                      onClick={() => void handleCopyJoinCode()}
                       disabled={!joinCode.trim()}
                     >
                       Copy

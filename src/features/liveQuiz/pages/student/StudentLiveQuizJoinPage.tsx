@@ -35,6 +35,18 @@ export default function StudentLiveQuizJoinPage() {
     navigate(`/student/live-quiz/session/${code}`);
   };
 
+  const joinButtonClassName = canJoin
+    ? `
+        mt-5 h-16 w-full rounded-2xl px-6 text-base font-semibold text-white
+        shadow-lg transition
+        bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500
+        hover:brightness-110 active:brightness-95
+      `
+    : `
+        mt-5 h-16 w-full rounded-2xl px-6 text-base font-semibold text-white/70
+        border border-white/15 bg-white/10
+      `;
+
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-10">
       <div className="w-full max-w-3xl text-center">
@@ -58,15 +70,18 @@ export default function StudentLiveQuizJoinPage() {
               placeholder="ABC123"
               inputMode="text"
               autoCapitalize="characters"
+              autoCorrect="off"
+              spellCheck={false}
+              maxLength={8}
               className="
-                h-20 w-full rounded-2xl border border-white/20 bg-white/10
+                h-20 w-full rounded-2xl border border-sky-300/40 bg-white/10
                 px-6 text-center font-mono text-4xl font-semibold tracking-[0.35em] text-white placeholder:text-white/20
                 outline-none ring-0
-                focus:border-white/35 focus:bg-white/15 focus:ring-2 focus:ring-sky-300/70
+                focus:border-sky-300/70 focus:bg-white/15 focus:ring-2 focus:ring-sky-300/70
               "
               aria-label="Join code"
               onKeyDown={(e) => {
-                if (e.key === "Enter") handleJoin();
+                if (e.key === "Enter" && canJoin) handleJoin();
               }}
             />
 
@@ -74,13 +89,10 @@ export default function StudentLiveQuizJoinPage() {
               type="button"
               onClick={handleJoin}
               disabled={!canJoin}
-              className="
-                mt-5 h-16 w-full rounded-2xl px-6 text-base font-semibold text-white
-                shadow-lg transition
-                bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500
-                hover:brightness-110 active:brightness-95
-                disabled:cursor-not-allowed disabled:opacity-50
-              "
+              className={[
+                joinButtonClassName,
+                "disabled:cursor-not-allowed disabled:opacity-60",
+              ].join(" ")}
             >
               Join Sesh
             </button>
@@ -90,13 +102,7 @@ export default function StudentLiveQuizJoinPage() {
             </p>
           </div>
         </div>
-
-        <p className="mt-8 text-xs text-white/35">
-          Student view preview -{" "}
-          <span className="font-mono text-white/55">/student/live-quiz</span>
-        </p>
       </div>
     </div>
   );
 }
-
