@@ -45,7 +45,7 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Splash + Onboarding */}
+        {/* Splash + Oasdffnboarding */}
         <Route element={<OnboardingLayout />}>
           <Route path="/" element={<SplashPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
