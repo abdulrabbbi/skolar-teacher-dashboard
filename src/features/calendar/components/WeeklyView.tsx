@@ -1,6 +1,6 @@
 import Card from "../../../shared/components/ui/Card";
 import ProgressBar from "../../../shared/components/ui/ProgressBar";
-import type { WeeklyDay, WeeklyStats } from "../data/calendar.weekly.mock";
+import type { WeeklyDay, WeeklyEvent, WeeklyStats } from "../data/calendar.weekly.mock";
 import WeeklyEventCard from "./WeeklyEventCard";
 
 export type WeeklyViewProps = {
@@ -9,6 +9,8 @@ export type WeeklyViewProps = {
   days: WeeklyDay[];
   onToggleEvent?: (id: string) => void;
   onDeleteEvent?: (id: string) => void;
+  onSelectEvent?: (event: WeeklyEvent) => void;
+  onEditEvent?: (event: WeeklyEvent) => void;
 };
 
 export default function WeeklyView({
@@ -16,6 +18,8 @@ export default function WeeklyView({
   days,
   onToggleEvent,
   onDeleteEvent,
+  onSelectEvent,
+  onEditEvent,
 }: WeeklyViewProps) {
   const numberClass = "mt-1 text-2xl font-semibold text-slate-900";
 
@@ -99,6 +103,8 @@ export default function WeeklyView({
                     checked={Boolean(event.completed)}
                     onToggle={onToggleEvent}
                     onDelete={onDeleteEvent}
+                    onSelect={onSelectEvent}
+                    onEdit={onEditEvent}
                   />
                 ))
               )}

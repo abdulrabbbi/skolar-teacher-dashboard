@@ -1,4 +1,4 @@
-import { Check, Clock, X } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { cn } from "../../../shared/lib/cn";
 import type { WeeklyEvent } from "../data/calendar.weekly.mock";
 
@@ -43,20 +43,43 @@ export default function WeeklyEventCard({
   checked,
   onToggle,
   onDelete,
+  onSelect,
+  onEdit,
 }: {
   event: WeeklyEvent;
   checked?: boolean;
   onToggle?: (id: string) => void;
   onDelete?: (id: string) => void;
+  onSelect?: (event: WeeklyEvent) => void;
+  onEdit?: (event: WeeklyEvent) => void;
 }) {
   const { subject, main } = splitTitle(event);
   const isChecked = Boolean(checked);
+  const clickTimeoutRef = useRef<ReturnType<typeof window.setTimeout> | null>(null);
+  const color = (event as any).color as string | undefined;
+  const className = ((event as any).className as string | undefined) ?? undefined;
+
+  useEffect(() => {
+    return () => {
+      if (clickTimeoutRef.current) window.clearTimeout(clickTimeoutRef.current);
+    };
+  }, []);
 
   return (
     <div
       title={`${subject}: ${main}`}
+      onClick={() => {
+        if (!onSelect) return;
+        if (clickTimeoutRef.current) window.clearTimeout(clickTimeoutRef.current);
+        clickTimeoutRef.current = window.setTimeout(() => onSelect(event), 220);
+      }}
+      onDoubleClick={() => {
+        if (clickTimeoutRef.current) window.clearTimeout(clickTimeoutRef.current);
+        onEdit?.(event);
+      }}
       className={cn(
         "group relative w-full rounded-2xl border px-3 py-3 shadow-sm transition-colors",
+        (onSelect || onEdit) && "cursor-pointer",
         isChecked
           ? "border-slate-300 bg-slate-50"
           : "border-slate-200/70 bg-slate-50 hover:bg-white",
@@ -64,7 +87,9 @@ export default function WeeklyEventCard({
     >
       <button
         type="button"
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
+          if (clickTimeoutRef.current) window.clearTimeout(clickTimeoutRef.current);
           if (!onDelete) return;
 
           const label = [subject, main].filter(Boolean).join(": ").trim();
@@ -82,13 +107,19 @@ export default function WeeklyEventCard({
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300/60",
         )}
       >
-        <X className="h-3.5 w-3.5" />
+        <span aria-hidden="true" className="text-[16px] leading-none">
+          &times;
+        </span>
       </button>
 
       <div className="flex items-start gap-3">
         <button
           type="button"
-          onClick={() => onToggle?.(event.id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (clickTimeoutRef.current) window.clearTimeout(clickTimeoutRef.current);
+            onToggle?.(event.id);
+          }}
           aria-pressed={isChecked}
           className={cn(
             "mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-lg border transition",
@@ -99,16 +130,25 @@ export default function WeeklyEventCard({
           )}
           aria-label="Toggle event"
         >
-          {isChecked ? <Check className="h-3 w-3 text-white" /> : null}
+          {isChecked ? (
+            <span aria-hidden="true" className="text-[10px] leading-none text-white">
+              ✓
+            </span>
+          ) : null}
         </button>
 
         <div className="min-w-0 flex-1 pr-7">
           <div className="flex items-center gap-2">
             <span
-              className={cn("h-2 w-2 shrink-0 rounded-full", dotMap[event.type])}
+              className={cn(
+                "h-2 w-2 shrink-0 rounded-full",
+                color ? "" : dotMap[event.type],
+              )}
+              style={color ? { backgroundColor: color } : undefined}
+              aria-hidden="true"
             />
             <span className="truncate text-[11px] font-medium text-slate-500">
-              {subject || "Subject"}
+              {className || subject || "Subject"}
             </span>
           </div>
 
@@ -123,7 +163,6 @@ export default function WeeklyEventCard({
           </p>
 
           <div className="mt-2 flex items-center gap-1.5 text-[11px] text-slate-500">
-            <Clock className="h-3.5 w-3.5 text-slate-400" />
             <span className="truncate">{event.duration}</span>
           </div>
         </div>

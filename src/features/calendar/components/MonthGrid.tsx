@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import Card from "../../../shared/components/ui/Card";
 import { cn } from "../../../shared/lib/cn";
 import type { CalendarEvent, EventTypeConfig } from "../data/calendar.mock";
@@ -17,6 +17,7 @@ export type MonthGridProps = {
 
   onSelectDay?: (dateISO: string) => void;
   onSelectEvent?: (event: CalendarEvent) => void;
+  onEditEvent?: (event: CalendarEvent) => void;
 };
 
 type MonthCell = {
@@ -105,11 +106,20 @@ export default function MonthGrid({
   onNextMonth,
   onSelectDay,
   onSelectEvent,
+  onEditEvent,
 }: MonthGridProps) {
   const typeMap = useMemo(
     () => new Map(eventTypes.map((t) => [String(t.id), t])),
     [eventTypes],
   );
+
+  const clickTimeoutRef = useRef<ReturnType<typeof window.setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (clickTimeoutRef.current) window.clearTimeout(clickTimeoutRef.current);
+    };
+  }, []);
 
   const cells = useMemo(() => buildMonthCells(monthISO), [monthISO]);
 
@@ -188,7 +198,23 @@ export default function MonthGrid({
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
-                            onSelectEvent?.(event);
+
+                            if (!onSelectEvent) return;
+                            if (clickTimeoutRef.current) {
+                              window.clearTimeout(clickTimeoutRef.current);
+                            }
+
+                            // Delay to allow double-click to be handled as "edit" instead.
+                            clickTimeoutRef.current = window.setTimeout(() => {
+                              onSelectEvent(event);
+                            }, 220);
+                          }}
+                          onDoubleClick={(e) => {
+                            e.stopPropagation();
+                            if (clickTimeoutRef.current) {
+                              window.clearTimeout(clickTimeoutRef.current);
+                            }
+                            onEditEvent?.(event);
                           }}
                           className={cn(
                             "flex h-7 w-full items-center rounded-lg px-2 py-1 text-left text-[11px] font-medium",

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useRive, useStateMachineInput } from "@rive-app/react-canvas-lite";
+import { StateMachineInputType } from "@rive-app/canvas-lite";
 import { OnboardingCarousel } from "../components/OnboardingCarousel";
 import { ONBOARDING_SLIDES } from "../data/auth.mock";
 
@@ -15,17 +16,49 @@ export function OnboardingPage() {
     autoplay: true,
   });
 
+  const summonInput = useStateMachineInput(rive, "octopus", "Summon");
   const thinkingInput = useStateMachineInput(rive, "octopus", "Thinking");
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const idlingInput = useStateMachineInput(rive, "octopus", "Idling");
+
+  const intervalRef = useRef<ReturnType<typeof window.setInterval> | null>(null);
+  const tickCountRef = useRef(0);
 
   useEffect(() => {
     if (!thinkingInput) return;
-    thinkingInput.fire();
-    intervalRef.current = setInterval(() => thinkingInput.fire(), 2500);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+    tickCountRef.current = 0;
+
+    const tick = () => {
+      tickCountRef.current += 1;
+
+      // Keep the octopus visible.
+      if (summonInput?.type === StateMachineInputType.Boolean) {
+        summonInput.value = true;
+      } else if (summonInput?.type === StateMachineInputType.Trigger) {
+        // Re-fire summon occasionally as a keepalive so it never vanishes.
+        if (tickCountRef.current === 1 || tickCountRef.current % 6 === 0) {
+          summonInput.fire();
+        }
+      }
+
+      if (idlingInput?.type === StateMachineInputType.Boolean) {
+        idlingInput.value = true;
+      }
+
+      // Keep it "thinking" continuously.
+      if (thinkingInput.type === StateMachineInputType.Boolean) {
+        thinkingInput.value = true;
+      } else {
+        thinkingInput.fire();
+      }
     };
-  }, [thinkingInput]);
+
+    tick();
+    intervalRef.current = window.setInterval(tick, 2200);
+
+    return () => {
+      if (intervalRef.current) window.clearInterval(intervalRef.current);
+    };
+  }, [thinkingInput, summonInput, idlingInput]);
 
   const total = ONBOARDING_SLIDES.length;
   const isLast = index === total - 1;
@@ -59,18 +92,17 @@ export function OnboardingPage() {
       >
         <div className="relative mx-auto w-full max-w-[620px] p-0">
           <div className="relative flex flex-col p-5 sm:p-8 md:p-10">
-            {/* Octopus */}
-            <motion.div
-              className="absolute right-5 top-4 z-50 h-36 w-36 select-none sm:right-6 sm:top-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, y: [0, -6, 0], rotate: [-0.5, 0.5, -0.5] }}
-              transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <OctopusRive style={{ width: "100%", height: "100%" }} />
-            </motion.div>
+            {/* Slide + Octopus */}
+            <div className="relative pt-12 sm:pt-10">
+              <motion.div
+                className="pointer-events-none absolute left-1/2 top-2 z-50 h-28 w-28 -translate-x-1/2 -translate-y-[30%] translate-x-24 select-none sm:h-32 sm:w-32 sm:translate-x-28 md:h-36 md:w-36 md:-translate-y-[35%] md:translate-x-32 lg:translate-x-36"
+                initial={false}
+                animate={{ y: [0, -6, 0], rotate: [-0.5, 0.5, -0.5] }}
+                transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <OctopusRive style={{ width: "100%", height: "100%" }} />
+              </motion.div>
 
-            {/* Slide */}
-            <div className="pt-8 sm:pt-6">
               <OnboardingCarousel slides={ONBOARDING_SLIDES} index={index} />
             </div>
 

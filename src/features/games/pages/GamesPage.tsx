@@ -1,9 +1,11 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Bell, ChevronLeft, Sparkles, Trophy, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "../../../shared/lib/cn";
 import RiveMascot from "../../../shared/components/RiveMascot";
 import { useHeroParallax } from "../../../shared/hooks/useHeroParallax";
+import NotifyGamesModal from "../components/NotifyGamesModal";
 
 type StatusCardProps = {
   icon: React.ReactNode;
@@ -50,6 +52,18 @@ function StatusCard({
 
 export default function GamesPage() {
   const { stageX, stageY, stageRotate, mascotX, mascotY } = useHeroParallax();
+  const [notifyOpen, setNotifyOpen] = useState(false);
+  const [notifyEmail, setNotifyEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const saved = window.localStorage.getItem("skolar.games.notifyEmail");
+      if (saved) setNotifyEmail(saved);
+    } catch {
+      // ignore storage errors
+    }
+  }, []);
 
   return (
     <div className="w-full min-h-[90vh]">
@@ -165,6 +179,8 @@ export default function GamesPage() {
 
                 <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
                   <button
+                    type="button"
+                    onClick={() => setNotifyOpen(true)}
                     className={cn(
                       "inline-flex items-center justify-center gap-2",
                       "rounded-xl bg-[#FF9D00] px-6 py-3.5",
@@ -174,11 +190,11 @@ export default function GamesPage() {
                     )}
                   >
                     <Bell className="h-4 w-4" />
-                    Notify me
+                    Notify me when Games launches
                   </button>
 
                   <span className="text-sm text-white/75">
-                    Get notified when Games launch
+                    {notifyEmail ? "You’re on the list." : "Get notified when Games launch"}
                   </span>
                 </div>
               </div>
@@ -266,6 +282,21 @@ export default function GamesPage() {
           </div>
         </motion.div>
       </div>
+
+      <NotifyGamesModal
+        open={notifyOpen}
+        initialEmail={notifyEmail}
+        onClose={() => setNotifyOpen(false)}
+        onSubmit={(email) => {
+          setNotifyEmail(email);
+          setNotifyOpen(false);
+          try {
+            window.localStorage.setItem("skolar.games.notifyEmail", email);
+          } catch {
+            // ignore storage errors
+          }
+        }}
+      />
     </div>
   );
 }

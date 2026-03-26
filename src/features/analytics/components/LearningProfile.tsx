@@ -1,13 +1,23 @@
 import Card from "../../../shared/components/ui/Card";
 import ProgressBar from "../../../shared/components/ui/ProgressBar"; 
 import type { LearningProfileItem } from "../data/analytics.mock";
-import { ChevronDown } from "lucide-react";
+import FilterDropdown, {
+  type FilterDropdownOption,
+} from "../../../shared/components/ui/FilterDropdown";
 
 export type LearningProfileProps = {
   profiles: LearningProfileItem[];
+  topicValue?: string;
+  topicOptions?: ReadonlyArray<FilterDropdownOption>;
+  onTopicChange?: (next: string) => void;
 };
 
-export default function LearningProfile({ profiles }: LearningProfileProps) {
+export default function LearningProfile({
+  profiles,
+  topicValue,
+  topicOptions,
+  onTopicChange,
+}: LearningProfileProps) {
   return (
     <section>
       <Card className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
@@ -21,13 +31,15 @@ export default function LearningProfile({ profiles }: LearningProfileProps) {
             </p>
           </div>
 
-          <button
-            type="button"
-            className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-200"
-          >
-            All Topics
-            <ChevronDown className="h-4 w-4 text-slate-500" />
-          </button>
+          {topicValue && topicOptions && onTopicChange ? (
+            <FilterDropdown
+              label="All Topics"
+              value={topicValue}
+              options={topicOptions}
+              onChange={onTopicChange}
+              className="!h-9 !rounded-xl !px-4 !text-sm"
+            />
+          ) : null}
         </div>
 
         <p className="mt-4 text-sm text-slate-500">

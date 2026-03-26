@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import type { Transition } from "framer-motion";
 import { useRive, useStateMachineInput } from "@rive-app/react-canvas-lite";
+import { StateMachineInputType } from "@rive-app/canvas-lite";
 
 type Phase = "bg" | "logo" | "loading" | "welcome";
 
@@ -58,17 +59,52 @@ export function SplashPage() {
     autoplay: true,
   });
 
+  const summonInput = useStateMachineInput(rive, "octopus", "Summon");
   const thinkingInput = useStateMachineInput(rive, "octopus", "Thinking");
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const idlingInput = useStateMachineInput(rive, "octopus", "Idling");
+
+  const intervalRef = useRef<ReturnType<typeof window.setInterval> | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof window.setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (!summonInput) return;
+    if (summonInput.type === StateMachineInputType.Boolean) {
+      summonInput.value = true;
+      return;
+    }
+    summonInput.fire();
+  }, [summonInput]);
 
   useEffect(() => {
     if (!thinkingInput) return;
-    thinkingInput.fire();
-    intervalRef.current = setInterval(() => thinkingInput.fire(), 2500);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+
+    if (thinkingInput.type === StateMachineInputType.Boolean) {
+      thinkingInput.value = true;
+      if (idlingInput?.type === StateMachineInputType.Boolean) {
+        idlingInput.value = false;
+      }
+      return;
+    }
+
+    const tick = () => {
+      thinkingInput.fire();
+
+      if (idlingInput?.type === StateMachineInputType.Trigger) {
+        if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+        timeoutRef.current = window.setTimeout(() => idlingInput.fire(), 2600);
+      } else if (idlingInput?.type === StateMachineInputType.Boolean) {
+        idlingInput.value = true;
+      }
     };
-  }, [thinkingInput]);
+
+    tick();
+    intervalRef.current = window.setInterval(tick, 3000);
+
+    return () => {
+      if (intervalRef.current) window.clearInterval(intervalRef.current);
+      if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+    };
+  }, [thinkingInput, idlingInput]);
 
   const phaseIndex =
     phase === "bg" ? 0 : phase === "logo" ? 1 : phase === "loading" ? 2 : 3;

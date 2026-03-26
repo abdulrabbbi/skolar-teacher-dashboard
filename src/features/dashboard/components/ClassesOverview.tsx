@@ -58,19 +58,19 @@ export default function ClassesOverview({ classes }: ClassesOverviewProps) {
                 </div>
               </div>
 
-              <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 text-[15px] xl:flex-nowrap xl:gap-x-6">
-                <div className="inline-flex min-w-0 shrink-0 items-center gap-2 whitespace-nowrap text-[#202020]">
-                  <Users className="h-[18px] w-[18px] shrink-0 text-[#7A8094]" />
+              <div className="mt-5 grid grid-cols-1 gap-y-3 text-[13px] sm:grid-cols-[auto_auto_auto] sm:items-center sm:justify-between sm:gap-x-6 sm:text-[14px]">
+                <div className="inline-flex min-w-0 items-center gap-2 text-[#202020] sm:whitespace-nowrap">
+                  <Users className="h-4 w-4 shrink-0 text-[#7A8094]" />
                   <span>{item.total} students</span>
                 </div>
 
-                <div className="inline-flex min-w-0 shrink-0 items-center gap-2 whitespace-nowrap font-medium text-[#00B96B]">
-                  <CheckCircle2 className="h-[18px] w-[18px] shrink-0" />
+                <div className="inline-flex min-w-0 items-center gap-2 font-medium text-[#00B96B] sm:whitespace-nowrap">
+                  <CheckCircle2 className="h-4 w-4 shrink-0" />
                   <span>{item.onTrack} on track</span>
                 </div>
 
-                <div className="inline-flex min-w-0 shrink-0 items-center gap-2 whitespace-nowrap font-medium text-[#F28C1B]">
-                  <AlertTriangle className="h-[18px] w-[18px] shrink-0" />
+                <div className="inline-flex min-w-0 items-center gap-2 font-medium text-[#F28C1B] sm:whitespace-nowrap">
+                  <AlertTriangle className="h-4 w-4 shrink-0" />
                   <span>{item.atRisk} at risk</span>
                 </div>
               </div>
