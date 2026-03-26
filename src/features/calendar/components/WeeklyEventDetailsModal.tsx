@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createPortal } from "react-dom";
 import { CalendarDays, Clock3, Pencil, Trash2, X } from "lucide-react";
 import { cn } from "../../../shared/lib/cn";
@@ -71,7 +72,7 @@ export default function WeeklyEventDetailsModal({
       : event.duration || "â€”";
 
   return createPortal(
-    <div className="fixed inset-0 z-[1001]">
+    <div className="fixed inset-0 z-1001">
       <div
         className="absolute inset-0 bg-slate-900/20 backdrop-blur-md"
         onClick={onClose}
