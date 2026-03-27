@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '../../../../app/router/routes';
 import { liveQuizSessions } from '../../data/liveQuizSession.mock';
+import { ensureLiveQuizJoinCode } from '../../lib/joinCode';
 import SessionStatusBar from './components/SessionStatusBar';
 import QuestionCard from './components/QuestionCard';
 import ParticipationCard from './components/ParticipationCard';
@@ -13,6 +14,7 @@ import QuickActionsCard from './components/QuickActionsCard';
 export default function LiveQuizSessionPage() {
   const navigate = useNavigate();
   const { quizId } = useParams<{ quizId: string }>();
+  const [joinCode, setJoinCode] = useState('');
 
   const session = useMemo(() => {
     return (
@@ -20,6 +22,10 @@ export default function LiveQuizSessionPage() {
       liveQuizSessions[0]
     );
   }, [quizId]);
+
+  useEffect(() => {
+    setJoinCode(ensureLiveQuizJoinCode(session.id));
+  }, [session.id]);
 
   const participationPercent = Math.round(
     (session.studentsAnswered.answered / session.studentsAnswered.total) *
@@ -36,6 +42,7 @@ export default function LiveQuizSessionPage() {
         progress={session.progress}
         timeRemaining={session.timeRemaining}
         studentsAnswered={session.studentsAnswered}
+        joinCode={joinCode}
         onEndQuiz={handleEndQuiz}
       />
 

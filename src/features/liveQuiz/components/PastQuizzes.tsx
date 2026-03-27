@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import {
   Calendar,
   Users,
@@ -20,6 +21,8 @@ export type PastQuizzesProps = {
   onRelaunch?: (quizId: string) => void;
 };
 
+type PastQuizDifficultyFilter = "All Quizzes" | QuizDifficulty;
+
 const difficultyVariant: Record<
   QuizDifficulty,
   "success" | "warning" | "danger" | "neutral"
@@ -30,7 +33,26 @@ const difficultyVariant: Record<
   Mixed: "neutral",
 };
 
+const difficultyFilters: PastQuizDifficultyFilter[] = [
+  "All Quizzes",
+  "Easy",
+  "Medium",
+  "Hard",
+  "Mixed",
+];
+
 export default function PastQuizzes({ quizzes, onRelaunch }: PastQuizzesProps) {
+  const [selectedDifficulty, setSelectedDifficulty] =
+    useState<PastQuizDifficultyFilter>("All Quizzes");
+
+  const filteredQuizzes = useMemo(() => {
+    if (selectedDifficulty === "All Quizzes") {
+      return quizzes;
+    }
+
+    return quizzes.filter((quiz) => quiz.difficulty === selectedDifficulty);
+  }, [quizzes, selectedDifficulty]);
+
   return (
     <section>
       <Card className="p-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
@@ -50,24 +72,36 @@ export default function PastQuizzes({ quizzes, onRelaunch }: PastQuizzesProps) {
             </div>
           </div>
 
-          <button
-            type="button"
-            className="
-              group inline-flex items-center gap-2
-              rounded-xl bg-slate-100
-              px-4 py-2 text-sm font-medium text-slate-700
-              transition hover:bg-slate-50
-              whitespace-nowrap
-            "
-          >
-            All Quizzes
-            <ChevronDown className="h-4 w-4 text-slate-400 transition-transform duration-200 group-hover:scale-110" />
-          </button>
+          <div className="relative shrink-0">
+            <select
+              aria-label="Filter past quizzes by difficulty"
+              value={selectedDifficulty}
+              onChange={(event) =>
+                setSelectedDifficulty(
+                  event.target.value as PastQuizDifficultyFilter,
+                )
+              }
+              className="
+                appearance-none rounded-xl border border-slate-200 bg-slate-100
+                py-2 pl-4 pr-10 text-sm font-medium text-slate-700
+                transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200
+                whitespace-nowrap
+              "
+            >
+              {difficultyFilters.map((filter) => (
+                <option key={filter} value={filter}>
+                  {filter}
+                </option>
+              ))}
+            </select>
+
+            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          </div>
         </div>
 
         {/* ✅ Separate panels like Figma */}
         <div className="space-y-4">
-          {quizzes.map((quiz) => (
+          {filteredQuizzes.map((quiz) => (
             <div
               key={quiz.id}
               className="
@@ -149,6 +183,12 @@ export default function PastQuizzes({ quizzes, onRelaunch }: PastQuizzesProps) {
               </div>
             </div>
           ))}
+
+          {filteredQuizzes.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-center text-sm text-slate-500">
+              No past quizzes match the {selectedDifficulty.toLowerCase()} filter yet.
+            </div>
+          ) : null}
         </div>
 
         <div className="pt-4 text-center">

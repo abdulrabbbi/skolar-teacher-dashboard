@@ -11,6 +11,10 @@ import PastQuizzes from "../components/PastQuizzes";
 import LaunchQuizModal from "../components/LaunchQuizModal";
 import type { QuickLaunchTemplate } from "../data/liveQuiz.mock";
 import {
+  generateLiveQuizJoinCode,
+  persistLiveQuizJoinCode,
+} from "../lib/joinCode";
+import {
   classOptions,
   difficultyOptions,
   liveQuizStats,
@@ -34,6 +38,7 @@ export default function LiveQuizPage() {
   };
 
   const handleRelaunchQuiz = (quizId: string) => {
+    persistLiveQuizJoinCode(generateLiveQuizJoinCode(), quizId);
     navigate(`/teacher/live-quiz/session/${quizId}`);
   };
 

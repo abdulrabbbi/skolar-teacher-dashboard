@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, type ReactNode } from 'react';
-import { Clock, Pause, Users, XCircle } from 'lucide-react';
+import { Clock, Copy, ExternalLink, Pause, Users, XCircle } from 'lucide-react';
 import Card from '../../../../../shared/components/ui/Card';
 import Button from '../../../../../shared/components/ui/Button';
 import { cn } from '../../../../../shared/lib/cn';
+import { persistLiveQuizJoinCode } from '../../../lib/joinCode';
 
 export type SessionStatusBarProps = {
   progress: {
@@ -15,6 +16,7 @@ export type SessionStatusBarProps = {
     answered: number;
     total: number;
   };
+  joinCode?: string;
   onEndQuiz?: () => void;
 };
 
@@ -60,12 +62,14 @@ export default function SessionStatusBar({
   progress,
   timeRemaining,
   studentsAnswered,
+  joinCode,
   onEndQuiz,
 }: SessionStatusBarProps) {
   const [currentQuestion, setCurrentQuestion] = useState(progress.current);
   const [isPaused, setIsPaused] = useState(false);
   const [isEnded, setIsEnded] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
+  const [joinCodeMessage, setJoinCodeMessage] = useState('');
 
   useEffect(() => {
     setCurrentQuestion(progress.current);
@@ -73,6 +77,10 @@ export default function SessionStatusBar({
     setIsEnded(false);
     setStatusMessage('');
   }, [progress.current, progress.total]);
+
+  useEffect(() => {
+    setJoinCodeMessage('');
+  }, [joinCode]);
 
   const canGoToNext = !isEnded && !isPaused && currentQuestion < progress.total;
 
@@ -132,6 +140,33 @@ export default function SessionStatusBar({
     setStatusMessage('Quiz ended (frontend preview). Backend action pending.');
   };
 
+  const handleCopyJoinCode = async () => {
+    if (!joinCode) {
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(joinCode);
+      setJoinCodeMessage('Join code copied.');
+    } catch {
+      setJoinCodeMessage('Copy failed.');
+    }
+  };
+
+  const handleOpenStudentJoinPreview = () => {
+    if (!joinCode) {
+      return;
+    }
+
+    persistLiveQuizJoinCode(joinCode);
+
+    try {
+      window.open('/student/live-quiz', '_blank', 'noopener,noreferrer');
+    } catch {
+      setJoinCodeMessage('Preview could not be opened.');
+    }
+  };
+
   return (
     <Card className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:p-5">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -156,43 +191,84 @@ export default function SessionStatusBar({
           />
         </div>
 
-        <div className="ml-auto flex w-full flex-wrap items-center justify-end gap-2 sm:w-auto">
-          <Button
-            variant="secondary"
-            size="sm"
-            className="h-10 rounded-xl border border-slate-300 bg-white px-4 text-sm text-slate-900 hover:bg-slate-50"
-            onClick={handlePause}
-            disabled={isEnded}
-          >
-            <Pause className="h-4 w-4" />
-            {isPaused ? 'Resume' : 'Pause'}
-          </Button>
+        <div className="ml-auto flex w-full flex-col gap-3 lg:w-auto lg:flex-row lg:items-center lg:justify-end">
+          {joinCode ? (
+            <div className="min-w-0 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-800">
+                Student Join Code
+              </p>
 
-          <Button
-            variant="success"
-            size="sm"
-            className="h-10 rounded-xl bg-[#00B96B] px-4 text-sm text-white hover:bg-[#009f5c]"
-            onClick={handleNextQuestion}
-            disabled={!canGoToNext}
-          >
-            <NextQuestionIcon className="h-4 w-4" />
-            Next Question
-          </Button>
+              <div className="mt-1 flex items-center justify-between gap-3">
+                <p className="min-w-0 font-mono text-xl font-bold tracking-[0.28em] text-slate-950 sm:text-2xl">
+                  {joinCode}
+                </p>
 
-          <Button
-            size="sm"
-            className={cn(
-              'h-10 rounded-xl px-4 text-sm text-white',
-              isEnded
-                ? 'bg-slate-300 text-slate-600 hover:bg-slate-300'
-                : 'bg-rose-600 hover:bg-rose-700',
-            )}
-            onClick={handleEndQuiz}
-            disabled={isEnded}
-          >
-            <XCircle className="h-4 w-4" />
-            {isEnded ? 'Quiz Ended' : 'End Quiz'}
-          </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-9 shrink-0 rounded-xl border-emerald-200 bg-white px-3 text-emerald-900 hover:bg-emerald-100"
+                  onClick={() => void handleCopyJoinCode()}
+                >
+                  <Copy className="h-4 w-4" />
+                  Copy
+                </Button>
+              </div>
+
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-900 hover:text-emerald-950"
+                  onClick={handleOpenStudentJoinPreview}
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  Open join page
+                </button>
+
+                <p className="text-xs text-emerald-900/80">
+                  {joinCodeMessage || 'Students use this code to join the quiz.'}
+                </p>
+              </div>
+            </div>
+          ) : null}
+
+          <div className="flex w-full flex-wrap items-center justify-end gap-2 lg:w-auto">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="h-10 rounded-xl border border-slate-300 bg-white px-4 text-sm text-slate-900 hover:bg-slate-50"
+              onClick={handlePause}
+              disabled={isEnded}
+            >
+              <Pause className="h-4 w-4" />
+              {isPaused ? 'Resume' : 'Pause'}
+            </Button>
+
+            <Button
+              variant="success"
+              size="sm"
+              className="h-10 rounded-xl bg-[#00B96B] px-4 text-sm text-white hover:bg-[#009f5c]"
+              onClick={handleNextQuestion}
+              disabled={!canGoToNext}
+            >
+              <NextQuestionIcon className="h-4 w-4" />
+              Next Question
+            </Button>
+
+            <Button
+              size="sm"
+              className={cn(
+                'h-10 rounded-xl px-4 text-sm text-white',
+                isEnded
+                  ? 'bg-slate-300 text-slate-600 hover:bg-slate-300'
+                  : 'bg-rose-600 hover:bg-rose-700',
+              )}
+              onClick={handleEndQuiz}
+              disabled={isEnded}
+            >
+              <XCircle className="h-4 w-4" />
+              {isEnded ? 'Quiz Ended' : 'End Quiz'}
+            </Button>
+          </div>
         </div>
       </div>
 
