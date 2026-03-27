@@ -56,7 +56,7 @@ export default function StudentLiveQuizJoinPage() {
         hover:brightness-110 active:brightness-95
       `
     : `
-        mt-5 h-16 w-full rounded-2xl px-6 text-base font-semibold text-white/70
+        mt-5 h-16 w-full rounded-2xl px-6 text-base font-semibold text-white/80
         border border-white/15 bg-white/10
       `;
 
@@ -70,13 +70,13 @@ export default function StudentLiveQuizJoinPage() {
         <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-6xl">
           StudySesh
         </h1>
-        <p className="mt-3 text-base text-white/70 sm:text-lg">
+        <p className="mt-3 text-base text-white/85 sm:text-lg">
           Challenge your mates. Level up together.
         </p>
 
         <div className="mx-auto mt-10 w-full max-w-xl rounded-3xl border border-white/15 bg-white/10 p-6 shadow-[0_30px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:p-8">
           <p className="text-xl font-semibold text-white">Got a code?</p>
-          <p className="mt-1 text-sm text-white/60">
+          <p className="mt-1 text-sm text-white/80">
             Enter it below to jump into the action
           </p>
 
@@ -92,7 +92,7 @@ export default function StudentLiveQuizJoinPage() {
               maxLength={8}
               className="
                 h-20 w-full rounded-2xl border border-sky-300/40 bg-white/10
-                px-6 text-center font-mono text-4xl font-semibold tracking-[0.35em] text-white placeholder:text-white/20
+                px-6 text-center font-mono text-4xl font-semibold tracking-[0.35em] text-white placeholder:text-white/35
                 outline-none ring-0
                 focus:border-sky-300/70 focus:bg-white/15 focus:ring-2 focus:ring-sky-300/70
               "
@@ -114,7 +114,7 @@ export default function StudentLiveQuizJoinPage() {
               Join Sesh
             </button>
 
-            <p className="mt-4 text-xs text-white/45">
+            <p className="mt-4 text-xs text-white/70">
               Tip: your teacher shares this join code when they launch a quiz.
             </p>
           </div>
