@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRive, useStateMachineInput } from "@rive-app/react-canvas-lite";
 
 function normalizeJoinCode(raw: string) {
   return raw.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 8);
@@ -7,6 +8,18 @@ function normalizeJoinCode(raw: string) {
 
 export default function StudentLiveQuizJoinPage() {
   const navigate = useNavigate();
+
+  const { rive, RiveComponent: OctopusRive } = useRive({
+    src: "/animations/octopus.riv",
+    stateMachines: "octopus",
+    autoplay: true,
+  });
+
+  const correctInput = useStateMachineInput(rive, "octopus", "Correct");
+
+  useEffect(() => {
+    if (rive && correctInput) correctInput.fire();
+  }, [rive, correctInput]);
 
   const initialCode = useMemo(() => {
     if (typeof window === "undefined") return "";
@@ -48,7 +61,11 @@ export default function StudentLiveQuizJoinPage() {
       `;
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-10">
+    <div className="flex min-h-screen flex-col items-center justify-center px-4 py-10">
+      <div className="mb-4 h-32 w-32 sm:h-40 sm:w-40">
+        <OctopusRive />
+      </div>
+
       <div className="w-full max-w-3xl text-center">
         <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-6xl">
           StudySesh

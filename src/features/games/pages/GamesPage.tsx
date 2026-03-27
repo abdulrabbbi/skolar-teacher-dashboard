@@ -289,7 +289,6 @@ export default function GamesPage() {
         onClose={() => setNotifyOpen(false)}
         onSubmit={(email) => {
           setNotifyEmail(email);
-          setNotifyOpen(false);
           try {
             window.localStorage.setItem("skolar.games.notifyEmail", email);
           } catch {
