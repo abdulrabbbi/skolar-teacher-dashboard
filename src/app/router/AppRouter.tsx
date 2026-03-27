@@ -52,7 +52,7 @@ export default function AppRouter() {
           
         </Route>
 
-        {/* Auth pages */}
+        {/* Auth pageadfsdsfs */}
         <Route element={<AuthLayout />}>
           <Route path="/auth/account-type" element={<WelcomePage />} />
           <Route path="/auth/login" element={<LoginPage />} />
