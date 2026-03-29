@@ -6,6 +6,8 @@ import { Copy, Mail, UserPlus, X } from "lucide-react";
 import Button from "../../../shared/components/ui/Button";
 import { cn } from "../../../shared/lib/cn";
 
+const INVITE_BASE_URL = "https://www.skolar.com/classrooms";
+
 export type ManageStudentsModalProps = {
   open: boolean;
   onClose: () => void;
@@ -51,7 +53,7 @@ export default function ManageStudentsModal({
 
   const joinInstructions = useMemo(
     () =>
-      `Students can also join by going to https://www.studyfetch.com/classrooms and entering the code: ${inviteCode}`,
+      `Students can also join by going to ${INVITE_BASE_URL} and entering the code: ${inviteCode}`,
     [inviteCode],
   );
 

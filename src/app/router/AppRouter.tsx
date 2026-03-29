@@ -14,6 +14,7 @@ import ContactSkolarPage from "../../features/auth/pages/ContactSkolarPage";
 
 import AnalyticsPage from "../../features/analytics/pages/AnalyticsPage";
 import CalendarPage from "../../features/calendar/pages/CalendarPage";
+import ClassAddStudentPage from "../../features/classes/pages/ClassAddStudentPage";
 import ClassDetailPage from "../../features/classes/pages/ClassDetailPage";
 import MyClassesPage from "../../features/classes/pages/MyClassesPage";
 import CrossMarkingPage from "../../features/crossMarking/pages/CrossMarkingPage";
@@ -76,6 +77,10 @@ export default function AppRouter() {
             element={<UpcomingAssessmentsPage />}
           />
           <Route path="classes" element={<MyClassesPage />} />
+          <Route
+            path="classes/:classId/add-student"
+            element={<ClassAddStudentPage />}
+          />
           <Route path="classes/:classId" element={<ClassDetailPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="calendar" element={<CalendarPage />} />

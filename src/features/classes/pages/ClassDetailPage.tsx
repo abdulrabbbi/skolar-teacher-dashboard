@@ -12,7 +12,6 @@ export default function ClassDetailPage() {
     customClassrooms,
     updateClassroom,
     deleteClassroom,
-    addStudent,
     removeStudent,
   } = useTeacherClassrooms();
 
@@ -29,7 +28,6 @@ export default function ClassDetailPage() {
         classroom={customClassroom}
         onUpdateClassroom={updateClassroom}
         onDeleteClassroom={deleteClassroom}
-        onAddStudent={addStudent}
         onRemoveStudent={removeStudent}
       />
     );
@@ -37,4 +35,3 @@ export default function ClassDetailPage() {
 
   return <StandardClassDetailPage classItem={classItem} />;
 }
-

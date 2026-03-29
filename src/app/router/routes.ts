@@ -179,6 +179,8 @@ export const ROUTES = {
 
   // ✅ NEW: class details route helper
   classDetails: (slug: string) => buildTeacherRoute(`classes/${slug}`),
+  classAddStudent: (slug: string) =>
+    buildTeacherRoute(`classes/${slug}/add-student`),
 
   analytics: buildTeacherRoute("analytics"),
   upcomingAssessments: buildTeacherRoute("upcoming-assessments"),

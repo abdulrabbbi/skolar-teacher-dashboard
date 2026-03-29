@@ -4,6 +4,7 @@ import { ArrowLeft, Download, Plus } from "lucide-react";
 
 import ClassroomPulse from "../../components/ClassroomPulse";
 import StudentsTable from "../../components/StudentsTable";
+import { ROUTES } from "../../../../app/router/routes";
 import Button from "../../../../shared/components/ui/Button";
 import { openPrintToPdfWindow } from "../../../../shared/lib/printToPdf";
 
@@ -24,6 +25,7 @@ const statusByFilter: Record<
 
 export type StandardClassDetailPageProps = {
   classItem: {
+    id: string;
     title: string;
     subject: string;
   };
@@ -102,6 +104,7 @@ export default function StandardClassDetailPage({
               size="sm"
               variant="primary"
               className="w-full justify-center transition-all duration-200 hover:-translate-y-0.5 sm:w-auto"
+              onClick={() => navigate(ROUTES.classAddStudent(classItem.id))}
             >
               <Plus className="mr-1 h-4 w-4" />
               Add Student
@@ -161,4 +164,3 @@ export default function StandardClassDetailPage({
     </div>
   );
 }
-

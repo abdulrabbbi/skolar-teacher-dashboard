@@ -19,10 +19,10 @@ import ClassroomPulse from "../../components/ClassroomPulse";
 import StudentsTable from "../../components/StudentsTable";
 import Button from "../../../../shared/components/ui/Button";
 import Card from "../../../../shared/components/ui/Card";
+import { ROUTES } from "../../../../app/router/routes";
 import CreateClassroomModal, {
   type CreateClassroomPayload,
 } from "../../components/CreateClassroomModal";
-import ManageStudentsModal from "../../components/ManageStudentsModal";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { openPrintToPdfWindow } from "../../../../shared/lib/printToPdf";
 
@@ -50,7 +50,6 @@ export type CustomClassroomDetailPageProps = {
   classroom: CustomClassroom;
   onUpdateClassroom: (id: string, input: CreateClassroomInput) => void;
   onDeleteClassroom: (id: string) => void;
-  onAddStudent: (classroomId: string, email: string) => void;
   onRemoveStudent: (classroomId: string, studentId: string) => void;
 };
 
@@ -58,7 +57,6 @@ export default function CustomClassroomDetailPage({
   classroom,
   onUpdateClassroom,
   onDeleteClassroom,
-  onAddStudent,
   onRemoveStudent,
 }: CustomClassroomDetailPageProps) {
   const navigate = useNavigate();
@@ -71,8 +69,6 @@ export default function CustomClassroomDetailPage({
     | "safety"
   >("workspaces");
 
-  const [manageOpen, setManageOpen] = useState(false);
-  const [manageKey, setManageKey] = useState(0);
   const [editOpen, setEditOpen] = useState(false);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [studentQuery, setStudentQuery] = useState("");
@@ -90,16 +86,6 @@ export default function CustomClassroomDetailPage({
 
   const classroomId = classroom.id;
   const roster = classroom.roster;
-
-  const inviteCode = useMemo(() => {
-    const cleaned = classroomId.replace(/[^a-z0-9]/gi, "");
-    const base = cleaned.slice(0, 7) || "CLASSRM";
-    return base.toUpperCase();
-  }, [classroomId]);
-
-  const inviteLink = useMemo(() => {
-    return `https://www.studyfetch.com/classrooms/${inviteCode.toLowerCase()}`;
-  }, [inviteCode]);
 
   const filteredRoster = useMemo(() => {
     const q = studentQuery.trim().toLowerCase();
@@ -131,8 +117,7 @@ export default function CustomClassroomDetailPage({
     "text-slate-500 hover:text-slate-900 border-b-2 border-transparent";
 
   const openAddStudent = () => {
-    setManageKey((k) => k + 1);
-    setManageOpen(true);
+    navigate(ROUTES.classAddStudent(classroomId));
   };
 
   const onEditSave = (payload: CreateClassroomPayload) => {
@@ -727,17 +712,6 @@ export default function CustomClassroomDetailPage({
           </p>
         </Card>
       ) : null}
-
-      <ManageStudentsModal
-        key={manageKey}
-        open={manageOpen}
-        onClose={() => setManageOpen(false)}
-        inviteLink={inviteLink}
-        inviteCode={inviteCode}
-        onAddDirect={(email) => onAddStudent(classroomId, email)}
-        defaultTab={roster.length === 0 ? "direct" : "invite"}
-      />
-
       <CreateClassroomModal
         open={editOpen}
         onClose={() => setEditOpen(false)}
@@ -762,4 +736,3 @@ export default function CustomClassroomDetailPage({
     </div>
   );
 }
-
