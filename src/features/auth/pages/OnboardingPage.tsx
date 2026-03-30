@@ -22,44 +22,47 @@ export function OnboardingPage() {
   const idlingInput = useStateMachineInput(rive, "octopus", "Idling");
 
   const intervalRef = useRef<ReturnType<typeof window.setInterval> | null>(null);
-  const tickCountRef = useRef(0);
+  const timeoutRef = useRef<ReturnType<typeof window.setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (!summonInput) return;
+    if (summonInput.type === StateMachineInputType.Boolean) {
+      summonInput.value = true;
+      return;
+    }
+    summonInput.fire();
+  }, [summonInput]);
 
   useEffect(() => {
     if (!thinkingInput) return;
-    tickCountRef.current = 0;
+
+    if (thinkingInput.type === StateMachineInputType.Boolean) {
+      thinkingInput.value = true;
+      if (idlingInput?.type === StateMachineInputType.Boolean) {
+        idlingInput.value = false;
+      }
+      return;
+    }
 
     const tick = () => {
-      tickCountRef.current += 1;
+      thinkingInput.fire();
 
-      // Keep the octopus visible.
-      if (summonInput?.type === StateMachineInputType.Boolean) {
-        summonInput.value = true;
-      } else if (summonInput?.type === StateMachineInputType.Trigger) {
-        // Re-fire summon occasionally as a keepalive so it never vanishes.
-        if (tickCountRef.current === 1 || tickCountRef.current % 6 === 0) {
-          summonInput.fire();
-        }
-      }
-
-      if (idlingInput?.type === StateMachineInputType.Boolean) {
+      if (idlingInput?.type === StateMachineInputType.Trigger) {
+        if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+        timeoutRef.current = window.setTimeout(() => idlingInput.fire(), 2600);
+      } else if (idlingInput?.type === StateMachineInputType.Boolean) {
         idlingInput.value = true;
-      }
-
-      // Keep it "thinking" continuously.
-      if (thinkingInput.type === StateMachineInputType.Boolean) {
-        thinkingInput.value = true;
-      } else {
-        thinkingInput.fire();
       }
     };
 
     tick();
-    intervalRef.current = window.setInterval(tick, 2200);
+    intervalRef.current = window.setInterval(tick, 3000);
 
     return () => {
       if (intervalRef.current) window.clearInterval(intervalRef.current);
+      if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
     };
-  }, [thinkingInput, summonInput, idlingInput]);
+  }, [thinkingInput, idlingInput]);
 
   const total = ONBOARDING_SLIDES.length;
   const isLast = index === total - 1;
@@ -86,17 +89,23 @@ export function OnboardingPage() {
       className="w-full"
     >
       <motion.div
-        className="mx-auto w-full max-w-[620px]"
+        className="mx-auto w-full max-w-155"
         whileHover={{ y: -2, scale: 1.003 }}
         whileTap={{ scale: 0.998 }}
         transition={{ duration: 0.25, ease: "easeOut" }}
       >
-        <div className="relative mx-auto w-full max-w-[620px] p-0">
+        <div className="relative mx-auto w-full max-w-155 p-0">
           <div className="relative flex flex-col p-5 sm:p-8 md:p-10">
             {/* Slide + Octopus */}
-            <div className="relative pt-12 sm:pt-10">
+            <div className="relative pt-14 sm:pt-12">
               <motion.div
-                className="pointer-events-none absolute left-1/2 top-2 z-50 h-28 w-28 -translate-x-1/2 -translate-y-[30%] translate-x-24 select-none sm:h-32 sm:w-32 sm:translate-x-28 md:h-36 md:w-36 md:-translate-y-[35%] md:translate-x-32 lg:translate-x-36"
+                className="
+                  pointer-events-none absolute z-50 select-none
+                  right-3 top-0
+                  h-20 w-20
+                  sm:right-5 sm:-top-1 sm:h-24 sm:w-24
+                  md:right-7 md:-top-2 md:h-28 md:w-28
+                "
                 initial={false}
                 animate={{ y: [0, -6, 0], rotate: [-0.5, 0.5, -0.5] }}
                 transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
