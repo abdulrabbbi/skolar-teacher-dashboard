@@ -224,125 +224,127 @@ export default function AppTopbar({ onMenuClick, onLogoClick }: AppTopbarProps) 
   };
 
   return (
-    <header
-      className="
-        flex h-14 items-center justify-between
-        rounded-2xl
-        border border-slate-200
-        bg-white/90 backdrop-blur
-        px-4 md:px-6
-        shadow-sm
-      "
-    >
-      <div className="flex items-center gap-3">
-        {onMenuClick && (
+    <div className="w-full px-3 pt-3 md:px-4 md:pt-4 lg:px-6">
+      <header
+        className="
+          flex h-[72px] w-full items-center justify-between
+          rounded-2xl
+          border border-slate-200
+          bg-white/90 backdrop-blur
+          px-4 sm:px-5 md:px-6
+          shadow-sm
+        "
+      >
+        <div className="flex items-center gap-3">
+          {onMenuClick && (
+            <button
+              type="button"
+              onClick={onMenuClick}
+              aria-label="Open menu"
+              className="
+                inline-flex h-9 w-9 items-center justify-center
+                rounded-lg border border-slate-200
+                text-slate-600
+                transition-all duration-200
+                hover:bg-[#00B96B14] hover:text-[#00B96B]
+                active:scale-95
+                md:hidden
+              "
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+          )}
+
           <button
             type="button"
-            onClick={onMenuClick}
-            aria-label="Open menu"
+            onClick={onLogoClick}
             className="
-              inline-flex h-9 w-9 items-center justify-center
-              rounded-lg border border-slate-200
-              text-slate-600
-              transition-all duration-200
-              hover:bg-[#00B96B14] hover:text-[#00B96B]
-              active:scale-95
-              md:hidden
+              group flex items-center gap-2
+              rounded-xl
+              px-1 py-1
+              transition-all duration-300 ease-out
+              hover:bg-slate-50
             "
           >
-            <Menu className="h-5 w-5" />
+            <RiveMascot
+              src="/animations/octopus.riv"
+              stateMachine="octopus"
+              className="h-12 w-12 shrink-0 transition-transform duration-300 ease-out group-hover:scale-125"
+              style={{ cursor: "inherit" }}
+            />
+            <span className="text-lg font-extrabold tracking-wide text-slate-900 transition-transform duration-300 ease-out group-hover:-translate-y-[1px]">
+              SKOLAR
+            </span>
           </button>
-        )}
-
-        <button
-          type="button"
-          onClick={onLogoClick}
-          className="
-            group flex items-center gap-2
-            rounded-xl
-            px-1 py-1
-            transition-all duration-300 ease-out
-            hover:bg-slate-50
-          "
-        >
-          <RiveMascot
-            src="/animations/octopus.riv"
-            stateMachine="octopus"
-            className="h-12 w-12 shrink-0 transition-transform duration-300 ease-out group-hover:scale-125"
-            style={{ cursor: "inherit" }}
-          />
-          <span className="text-lg font-extrabold tracking-wide text-slate-900 transition-transform duration-300 ease-out group-hover:-translate-y-[1px]">
-            SKOLAR
-          </span>
-        </button>
-      </div>
-
-      <div className="flex items-center gap-3">
-        <IconButton label="Open calendar" onClick={handleOpenCalendar}>
-          <Calendar className="h-5 w-5" />
-        </IconButton>
-
-        <div ref={notificationsRef} className="relative">
-          <div className="relative">
-            <IconButton
-              label="View notifications"
-              onClick={handleToggleNotifications}
-              ariaExpanded={notificationsOpen}
-            >
-              <Bell className="h-5 w-5" />
-            </IconButton>
-
-            {unreadCount > 0 && (
-              <span className="pointer-events-none absolute -right-1 -top-1 grid h-5 min-w-[20px] place-items-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white shadow-sm">
-                {unreadCount > 9 ? "9+" : unreadCount}
-              </span>
-            )}
-          </div>
         </div>
 
-        {notificationsOpen && typeof document !== "undefined"
-          ? createPortal(
-              <div
-                ref={notificationsPanelRef}
-                className="fixed z-[9999]"
-                style={{
-                  top: `${panelPosition.top}px`,
-                  right: `${panelPosition.right}px`,
-                }}
-              >
-                <NotificationsPopover
-                  open={notificationsOpen}
-                  unreadCount={unreadCount}
-                  notifications={notifications}
-                  onClose={() => setNotificationsOpen(false)}
-                  onMarkAllRead={handleMarkAllRead}
-                  onEditProfile={handleEditProfile}
-                  onNotificationClick={handleNotificationClick}
-                />
-              </div>,
-              document.body,
-            )
-          : null}
+        <div className="flex items-center gap-3">
+          <IconButton label="Open calendar" onClick={handleOpenCalendar}>
+            <Calendar className="h-5 w-5" />
+          </IconButton>
 
-        <button
-          type="button"
-          className="
-            hidden sm:flex items-center gap-2
-            rounded-full border border-slate-200
-            bg-white px-2.5 py-1.5
-            text-sm font-medium text-slate-700
-            transition-all duration-200
-            hover:border-[#00B96B]
-            hover:bg-[#00B96B14]
-            hover:text-[#00B96B]
-          "
-        >
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#00B96B] text-xs font-semibold text-white">
-            J
-          </span>
-          Account
-        </button>
-      </div>
-    </header>
+          <div ref={notificationsRef} className="relative">
+            <div className="relative">
+              <IconButton
+                label="View notifications"
+                onClick={handleToggleNotifications}
+                ariaExpanded={notificationsOpen}
+              >
+                <Bell className="h-5 w-5" />
+              </IconButton>
+
+              {unreadCount > 0 && (
+                <span className="pointer-events-none absolute -right-1 -top-1 grid h-5 min-w-[20px] place-items-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white shadow-sm">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {notificationsOpen && typeof document !== "undefined"
+            ? createPortal(
+                <div
+                  ref={notificationsPanelRef}
+                  className="fixed z-[9999]"
+                  style={{
+                    top: `${panelPosition.top}px`,
+                    right: `${panelPosition.right}px`,
+                  }}
+                >
+                  <NotificationsPopover
+                    open={notificationsOpen}
+                    unreadCount={unreadCount}
+                    notifications={notifications}
+                    onClose={() => setNotificationsOpen(false)}
+                    onMarkAllRead={handleMarkAllRead}
+                    onEditProfile={handleEditProfile}
+                    onNotificationClick={handleNotificationClick}
+                  />
+                </div>,
+                document.body,
+              )
+            : null}
+
+          <button
+            type="button"
+            className="
+              hidden sm:flex items-center gap-2
+              rounded-full border border-slate-200
+              bg-white px-2.5 py-1.5
+              text-sm font-medium text-slate-700
+              transition-all duration-200
+              hover:border-[#00B96B]
+              hover:bg-[#00B96B14]
+              hover:text-[#00B96B]
+            "
+          >
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#00B96B] text-xs font-semibold text-white">
+              J
+            </span>
+            Account
+          </button>
+        </div>
+      </header>
+    </div>
   );
 }
