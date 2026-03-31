@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
+// Calendar page – weekly/monthly schedule view for classes and events
 import { useMemo, useState } from "react";
 
 import Card from "../../../shared/components/ui/Card";

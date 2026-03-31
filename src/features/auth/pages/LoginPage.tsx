@@ -1,3 +1,4 @@
+// Login page – handles teacher authentication and forgot-password flow
 import { ArrowLeft, CheckCircle2, Mail } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

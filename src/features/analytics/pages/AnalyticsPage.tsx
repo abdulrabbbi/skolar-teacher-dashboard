@@ -1,3 +1,4 @@
+// Analytics page – displays class and student performance metrics
 import { Download } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
